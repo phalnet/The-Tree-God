@@ -1,0 +1,2652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incense Tree God</title>
+<style>
+:root{
+  --bg:#141416; --panel:#17191b; --panel2:#1e2022; --line:#2e3336; --line2:#4a3f22;
+  --jade:#74c69d; --jade2:#40916c; --gold:#ffd166; --gold2:#a8842f;
+  --cin:#e63946; --blood:#d00000; --ink:#ebe4d0; --muted:#8e9a92;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:radial-gradient(ellipse at 50% -10%,#1e2022 0%,#141416 60%) fixed;color:var(--ink);
+  font-family:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC","SimSun",Georgia,serif;overflow-x:hidden}
+button{font-family:inherit;color:inherit}
+#app{display:flex;flex-direction:column;min-height:100vh}
+header{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding:8px 14px;border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(30,32,34,.96),rgba(20,20,22,.96))}
+.brand .cn{font-size:19px;letter-spacing:1px;color:var(--gold);text-shadow:0 0 12px rgba(224,184,90,.35)}
+.brand .en{font-size:11px;color:var(--muted);letter-spacing:1px}
+.res{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-width:92px;padding:4px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel2);line-height:1.15}
+.chip .l{display:block;font-size:10px;color:var(--muted);letter-spacing:.5px}
+.chip .v{font-size:17px;font-variant-numeric:tabular-nums}
+.chip.vit .v{color:#7fe08f}.chip.fai .v{color:var(--gold)}.chip.ric .v{color:#e0607a}.chip.pop .v{color:#cfd8e0}
+.meters{display:flex;flex-wrap:wrap;gap:8px;flex:1;min-width:260px}
+.meter{flex:1;min-width:150px}
+.meter .l{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:3px}
+.bar{height:10px;border-radius:6px;background:#0b0f0e;border:1px solid var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:0;transition:width .15s linear}
+#bTree{background:linear-gradient(90deg,#40916c,#74c69d)}
+#bRaid{background:linear-gradient(90deg,#7a2a22,#d0503e)}
+.meter.hot .bar{box-shadow:0 0 10px rgba(208,80,62,.7);animation:pulse .8s infinite alternate}
+@keyframes pulse{from{border-color:#4a2a22}to{border-color:#e06a50}}
+.sys{display:flex;align-items:center;gap:6px;margin-left:auto}
+.sys .day{font-size:13px;color:var(--gold);margin-right:6px;white-space:nowrap}
+.ib{width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--panel2);cursor:pointer;font-size:14px}
+.ib:hover{border-color:var(--gold2)}
+#main{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:12px;padding:10px 12px 12px;flex:1}
+#left{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0}
+#stageWrap{width:100%;max-width:calc((100vh - 200px) * 16 / 9);min-width:min(100%,520px)}
+#stage{position:relative;width:100%;aspect-ratio:16/9;border:1px solid var(--line2);border-radius:10px;overflow:hidden;background:#050707;
+  box-shadow:0 0 0 1px rgba(0,0,0,.6),0 10px 40px rgba(0,0,0,.6),inset 0 0 40px rgba(224,184,90,.06)}
+#stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+#status{position:absolute;left:8px;top:8px;display:flex;flex-wrap:wrap;gap:5px;pointer-events:none;max-width:60%}
+#status span{font-size:11px;padding:2px 7px;border-radius:10px;background:rgba(8,12,10,.75);border:1px solid var(--line)}
+#status .bad{border-color:#7a2a22;color:#f09080}#status .good{border-color:#40916c;color:#8fe8c0}#status .gold{border-color:#a8842f;color:#f0d080}
+#toast{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);padding:6px 14px;border-radius:8px;background:rgba(10,14,12,.9);
+  border:1px solid var(--gold2);font-size:13px;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;max-width:94%;overflow:hidden;text-overflow:ellipsis}
+#toast.show{opacity:1}
+#skills{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;width:100%}
+.sk{position:relative;width:132px;padding:6px 6px 5px 44px;min-height:50px;text-align:left;border-radius:9px;border:1px solid var(--line);
+  background:linear-gradient(180deg,#1a2420,#111815);cursor:pointer;overflow:hidden}
+.sk:hover{border-color:var(--jade2)}
+.sk .g{position:absolute;left:6px;top:8px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;letter-spacing:.5px;
+  background:radial-gradient(circle at 40% 35%,#2b4a3c,#0e1512);border:1px solid var(--jade2);color:var(--jade)}
+.sk.gold .g{border-color:var(--gold2);color:var(--gold);background:radial-gradient(circle at 40% 35%,#5a4620,#16120a)}
+.sk .n{display:block;font-size:12px;line-height:1.15}
+.sk .c{display:block;font-size:10px;color:var(--muted)}
+.sk .k{position:absolute;right:5px;top:3px;font-size:10px;color:var(--muted)}
+.sk .cd{position:absolute;left:0;bottom:0;width:100%;height:0;background:rgba(0,0,0,.6);pointer-events:none}
+.sk.off{opacity:.55}.sk.locked{opacity:.35;filter:grayscale(1)}
+.sk.armed{border-color:var(--gold);box-shadow:0 0 12px rgba(224,184,90,.5)}
+#side{display:flex;flex-direction:column;gap:10px;max-height:calc(100vh - 80px);min-height:0}
+.panel{border:1px solid var(--line);border-radius:10px;background:linear-gradient(180deg,var(--panel2),var(--panel));padding:9px 10px}
+.panel h3{margin:0 0 7px;font-size:13px;font-weight:600;color:var(--gold);letter-spacing:1px;display:flex;justify-content:space-between}
+.mini{font-family:inherit;font-size:10px;font-weight:400;letter-spacing:.5px;padding:2px 8px;border-radius:6px;border:1px solid var(--line);background:#0e1110;color:var(--muted);cursor:pointer}
+.mini:hover{border-color:var(--jade);color:var(--jade)}
+.mini.on{background:var(--jade);color:#0d1a14;border-color:var(--jade)}
+.panel h3 small{color:var(--muted);font-weight:400;letter-spacing:0}
+#acts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.act{padding:6px 7px;border-radius:8px;border:1px solid var(--line);background:#121a17;cursor:pointer;text-align:left;line-height:1.2}
+.act b{display:block;font-size:13px;font-weight:600}
+.act span{display:block;font-size:10px;color:var(--muted)}
+.act em{display:block;font-style:normal;font-size:10px;color:var(--gold);margin-top:2px}
+.act:hover{border-color:var(--gold2);background:#18221e}
+.act.off>b,.act.off>span,.act.off>em{opacity:.45}
+.act.hl{border-color:var(--jade);box-shadow:0 0 10px rgba(116,198,157,.35)}
+.role{display:grid;grid-template-columns:1fr auto 26px 26px;align-items:center;gap:6px;padding:3px 0;border-bottom:1px dashed #22302a;font-size:12px}
+.role:last-child{border-bottom:0}
+.role small{display:block;color:var(--muted);font-size:10px}
+.role .n{font-size:15px;min-width:22px;text-align:right;font-variant-numeric:tabular-nums}
+.role button{height:24px;border-radius:6px;border:1px solid var(--line);background:#121a17;cursor:pointer}
+.role button:hover{border-color:var(--jade2)}
+#hero{font-size:11px;color:var(--muted);margin-top:6px}
+#hero b{color:#d8f0e4;font-weight:600}
+#logP{flex:1;min-height:140px;display:flex;flex-direction:column}
+#log{overflow:auto;flex:1;font-size:12px;line-height:1.4;padding-right:3px}
+#log .e{padding:3px 0;border-bottom:1px solid #1a2420}
+#log .e .d{color:#5c6a62;margin-right:6px;font-size:10px}
+#log .good{color:#9be8c3}#log .bad{color:#f0907c}#log .gold{color:#f0d080}#log .info{color:#b9c3bd}
+.modal{position:fixed;inset:0;background:rgba(3,5,4,.78);display:none;align-items:center;justify-content:center;z-index:20;padding:16px}
+.modal.open{display:flex}
+.card{max-width:640px;width:100%;max-height:90vh;overflow:auto;border:1px solid var(--gold2);border-radius:14px;padding:22px 24px;
+  background:radial-gradient(ellipse at 50% 0%,#1e2a24,#0d1210 70%);box-shadow:0 0 60px rgba(224,184,90,.12)}
+.card h1{margin:0;font-size:30px;letter-spacing:1.5px;line-height:1.2;color:var(--gold);text-align:center;text-shadow:0 0 20px rgba(224,184,90,.4)}
+.card h2{margin:4px 0 14px;font-size:14px;color:var(--muted);text-align:center;font-weight:400;letter-spacing:1px}
+.card p,.card li{font-size:13.5px;line-height:1.6;color:#d4d0c2}
+.card ul{padding-left:18px;margin:8px 0}
+.card .row{display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.big{padding:10px 26px;border-radius:10px;border:1px solid var(--gold);background:linear-gradient(180deg,#4a3a18,#2a200c);color:#ffe9b0;font-size:16px;letter-spacing:2px;cursor:pointer}
+.big:hover{box-shadow:0 0 16px rgba(224,184,90,.45)}
+.big.alt{border-color:var(--jade2);background:linear-gradient(180deg,#1d3a2e,#0f1d17);color:#c8f5df}
+.art{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px dashed #2a3832}
+.art .g{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:700;border:1px solid var(--jade2);color:var(--jade);background:#0f1814}
+.art.lk{opacity:.45}
+.art b{font-size:14px}.art small{display:block;color:var(--muted);font-size:12px;line-height:1.45}
+.art button{padding:6px 12px;border-radius:8px;border:1px solid var(--gold2);background:#2a200c;color:#ffe9b0;cursor:pointer}
+kbd{font-family:inherit;font-size:11px;border:1px solid #3a4a42;border-radius:4px;padding:0 4px;background:#0e1512}
+/* skill categories */
+.sk{--cat:#74c69d;border-left:3px solid var(--cat)}
+.sk .g{border-color:var(--cat);color:var(--cat);background:radial-gradient(circle at 40% 35%,color-mix(in srgb,var(--cat) 28%,#141416),#0e1110)}
+.sk:hover{border-color:var(--cat)}
+.sk .cd{background:color-mix(in srgb,var(--cat) 14%,rgba(0,0,0,.65))}
+.sk .lv{position:absolute;right:5px;bottom:4px;font-size:8px;letter-spacing:1px;color:var(--cat)}
+#legend{display:flex;flex-wrap:wrap;gap:4px 14px;justify-content:center;font-size:11px;color:var(--muted)}
+#legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+/* auto toggles */
+.act{position:relative}
+.act:last-child:nth-child(odd){grid-column:1/-1}
+.act .auto{position:absolute;right:6px;top:6px;font-style:normal;font-size:9px;letter-spacing:1px;padding:2px 6px;border-radius:6px;border:1px solid var(--line);color:var(--muted);background:#0e1110;cursor:pointer}
+.act .auto:hover{border-color:var(--jade);color:var(--jade)}
+.act .auto.on{color:#0d1a14;background:var(--jade);border-color:var(--jade);box-shadow:0 0 8px rgba(116,198,157,.5)}
+/* choice cards (deduction insights, dreams) */
+.card.wide{max-width:820px}
+.picks{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+.pick{--cat:#ffd166;position:relative;display:block;text-align:left;padding:14px 14px 12px;border-radius:12px;border:1px solid color-mix(in srgb,var(--cat) 50%,transparent);border-top:3px solid var(--cat);
+  background:linear-gradient(180deg,color-mix(in srgb,var(--cat) 10%,#1e2022),#141416);cursor:pointer;transition:transform .12s,box-shadow .12s;color:var(--ink)}
+.pick:hover{transform:translateY(-3px);box-shadow:0 8px 24px color-mix(in srgb,var(--cat) 25%,transparent)}
+.pick .tag{display:block;font-size:10px;letter-spacing:1.5px;color:var(--cat);text-transform:uppercase}
+.pick .gl{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:16px;font-weight:700;margin:10px 0 8px;border:1px solid var(--cat);color:var(--cat);background:#0e1110}
+.pick b{display:block;font-size:15px}
+.pick .cn{display:block;font-size:11px;color:var(--muted)}
+.pick p{font-size:12.5px;line-height:1.5;margin:8px 0 0;color:#cfd2c8}
+.pick .cost{display:block;margin-top:8px;font-size:11px;color:var(--gold)}
+.pick .key{position:absolute;right:10px;top:10px;font-size:10px;color:var(--muted)}
+.pick.dis{opacity:.45;cursor:not-allowed}
+.pick.dis:hover{transform:none;box-shadow:none}
+@media (max-width:700px){.picks{grid-template-columns:1fr}}
+/* skill tooltip */
+#tip{--cat:#74c69d;position:fixed;left:0;top:0;z-index:30;width:290px;max-width:calc(100vw - 16px);padding:10px 12px 11px;border-radius:10px;
+  background:rgba(14,16,17,.97);border:1px solid var(--line);border-top:3px solid var(--cat);box-shadow:0 10px 30px rgba(0,0,0,.6);
+  font-size:12px;line-height:1.5;color:#d4d0c2;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .12s,transform .12s}
+#tip.show{opacity:1;transform:none}
+#tip .t{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+#tip b{font-size:14px;color:var(--ink)}
+#tip .cat{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--cat);white-space:nowrap}
+#tip .meta{display:flex;flex-wrap:wrap;gap:2px 12px;margin:5px 0 6px;font-size:11px;color:var(--gold)}
+#tip .note{margin-top:6px;font-size:11px;color:var(--muted)}
+#tip .upg{color:var(--cat)}
+#tip .lock{color:#f0907c}
+#tip .ok{color:#9be8c3}
+@media (max-width:1000px){
+  #main{grid-template-columns:1fr}
+  #side{max-height:none}
+  #stageWrap{max-width:100%;min-width:0}
+  #log{max-height:260px}
+}
+@media (max-width:560px){
+  header{padding:8px}
+  .chip{min-width:70px;padding:3px 7px}
+  .sk{width:calc(50% - 4px)}
+  #main{padding:8px}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="brand"><div class="cn">From Withered Wood to Incense Tree God</div><div class="en">A xianxia shrine defense</div></div>
+    <div class="res">
+      <div class="chip vit" title="Vitality — from beast blood offerings and gathered Qi. Grows, heals, and fuels Deduction."><span class="l">Vitality</span><span class="v" id="vVit">0</span></div>
+      <div class="chip fai" title="Incense Faith — from prayers, festivals and victories. Fuels miracles."><span class="l">Incense Faith</span><span class="v" id="vFai">0</span></div>
+      <div class="chip ric" title="Blood Rice — harvested from the Blood Spring terraces. Feeds the clan, funds expansion."><span class="l">Blood Rice</span><span class="v" id="vRic">0</span></div>
+      <div class="chip pop" title="Clan population / housing"><span class="l">Chen Clan</span><span class="v" id="vPop">0</span></div>
+    </div>
+    <div class="meters">
+      <div class="meter"><div class="l"><span>Locust Tree: <span id="vTreeName"></span></span><span id="vTreeHp"></span></div><div class="bar"><i id="bTree"></i></div></div>
+      <div class="meter" id="mRaid"><div class="l"><span>Raid Danger · <span id="vTier"></span></span><span id="vRaid"></span></div><div class="bar"><i id="bRaid"></i></div></div>
+    </div>
+    <div class="sys">
+      <span class="day" id="vDay"></span>
+      <button class="ib" id="btnPause" title="Pause (P)">❚❚</button>
+      <button class="ib" id="btnMute" title="Mute (M)">♪</button>
+      <button class="ib" id="btnHelp" title="How to play">?</button>
+    </div>
+  </header>
+  <div id="main">
+    <div id="left">
+      <div id="stageWrap">
+        <div id="stage">
+          <canvas id="game"></canvas>
+          <div id="status"></div>
+          <div id="toast"></div>
+        </div>
+      </div>
+      <div id="skills"></div>
+      <div id="legend"></div>
+    </div>
+    <aside id="side">
+      <div class="panel"><h3>Shrine Actions <button class="mini" id="btnQiAll" title="Choose whether one click on the tree gathers one Qi orb or every orb at once">Tree click: 1 Qi</button></h3><div id="acts"></div></div>
+      <div class="panel"><h3>Clan Duties <small id="vIdle"></small></h3><div id="roles"></div><div id="hero"></div></div>
+      <div class="panel" id="logP"><h3>Chronicle</h3><div id="log"></div></div>
+    </aside>
+  </div>
+</div>
+
+<div id="tip" role="tooltip"></div>
+
+<div class="modal open" id="mTitle"><div class="card">
+  <h1>From Withered Wood<br>to Incense Tree God</h1>
+  <h2>A Xianxia Shrine Defense</h2>
+  <p><b>Ji Yang</b> died and was reborn as the <b>withered ancestral locust tree</b> in the Chen clan's ancestral shrine on <b>Luanzang Mountain</b>. He cannot walk and he cannot speak. He can only reach the world through vitality miracles, ancestral tablets, leaf armor, and dreams sent to the clan elders and to the prodigy <b>Chen Qingyu</b>.</p>
+  <ul>
+    <li><b>Click the tree</b> to draw in ambient Qi (Vitality). Switch the tree click to <b>collect all Qi</b> in the Shrine Actions panel. Hunters' sacrifices of ferocious beasts also feed your roots.</li>
+    <li><b>Clan Duties</b>: farmers irrigate the Blood Spring terraces (Blood Rice), devotees burn incense (Faith), hunters bring beast blood (Vitality), and warriors guard the shrine. Spend Blood Rice to <b>recruit warriors</b> or <b>trade at Yong'an</b>.</li>
+    <li><b>World Deduction</b> (25 Vitality) is a 30-second trial. Grow a central sapling's roots toward drifting gold and blue orbs while avoiding red hazard zones, and survive to <b>choose 1 of 3 insights</b>: a new art (such as <i>One Leaf Obscuring Sight</i> or <i>Reversed Pill Circulation</i>), an art upgrade, or a permanent blessing.</li>
+    <li><b>Send Dream</b>: a tree cannot speak, but it can visit dreams. Warn the elders of the next raid, teach Chen Qingyu the Locust Sword, or comfort the whole clan.</li>
+    <li><b>Raids</b> begin when Raid Danger fills. <b>Click the ground</b> for Root Spikes, and use <kbd>1</kbd>–<kbd>8</kbd> for your arts.</li>
+    <li><b>Three tiers of enemies</b>: the Li &amp; Liu clans, then the Four Great Clans of Yong'an City (Shi, Xie, Gan, Shen), and finally the Blood-, Qi- and Spirit-eating Totems. Destroy the <b>Spirit-eating Totem</b> to become the Incense Tree God.</li>
+  </ul>
+  <div class="row"><button class="big" id="btnStart">Awaken</button></div>
+</div></div>
+
+<div class="modal" id="mCodex"><div class="card">
+  <h1 style="font-size:24px">Divine Arts</h1>
+  <h2 id="codexSub">Arts sealed in the void are revealed through World Deduction</h2>
+  <div id="codexList"></div>
+  <div class="row"><button class="big alt" id="btnCodexClose">Return</button></div>
+</div></div>
+
+<div class="modal" id="mPick"><div class="card wide">
+  <h1 style="font-size:24px" id="pickTitle"></h1>
+  <h2 id="pickSub"></h2>
+  <div class="picks" id="pickList"></div>
+  <div class="row" id="pickRow"></div>
+</div></div>
+
+<div class="modal" id="mEnd"><div class="card">
+  <h1 id="endTitle"></h1>
+  <h2 id="endSub"></h2>
+  <p id="endText"></p>
+  <div class="row" id="endBtns"></div>
+</div></div>
+
+<script>
+'use strict';
+/* ================= CORE UTILS ================= */
+const W = 1280, H = 720, TAU = Math.PI * 2;
+const $ = id => document.getElementById(id);
+const cvs = $('game'), ctx = cvs.getContext('2d');
+const bg = document.createElement('canvas'), bctx = bg.getContext('2d');
+const rand = (a, b) => a + Math.random() * (b - a);
+const randi = (a, b) => Math.floor(rand(a, b + 1));
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const lerp = (a, b, t) => a + (b - a) * t;
+const dist = (a, b, c, d) => Math.hypot(a - c, b - d);
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+/* ================= AUDIO (Web Audio synth) ================= */
+const Sfx = {
+  ac: null, master: null, noise: null, muted: false, last: {},
+  init() {
+    try {
+      if (!this.ac) {
+        const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+        this.ac = new AC();
+        this.master = this.ac.createGain(); this.master.gain.value = this.muted ? 0 : 0.6;
+        const comp = this.ac.createDynamicsCompressor(); comp.threshold.value = -14; comp.ratio.value = 4;
+        this.master.connect(comp); comp.connect(this.ac.destination);
+        const len = Math.floor(this.ac.sampleRate * 2);
+        this.noise = this.ac.createBuffer(1, len, this.ac.sampleRate);
+        const d = this.noise.getChannelData(0); for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+      }
+      if (this.ac.state === 'suspended') this.ac.resume();
+    } catch (e) { this.ac = null; }
+  },
+  setMuted(m) { this.muted = m; if (this.master) this.master.gain.setTargetAtTime(m ? 0 : 0.6, this.ac.currentTime, 0.05); },
+  ready(name, gap) {
+    if (!this.ac || this.muted) return false;
+    const n = performance.now(); if (gap && this.last[name] && n - this.last[name] < gap) return false;
+    this.last[name] = n; return true;
+  },
+  tone(type, f, t, a, d, peak, f2) {
+    const o = this.ac.createOscillator(), g = this.ac.createGain();
+    o.type = type; o.frequency.setValueAtTime(f, t); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + a + d);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + a); g.gain.exponentialRampToValueAtTime(0.0001, t + a + d);
+    o.connect(g); g.connect(this.master); o.start(t); o.stop(t + a + d + 0.05);
+  },
+  hiss(t, a, d, peak, ftype, f1, f2, q) {
+    const s = this.ac.createBufferSource(); s.buffer = this.noise;
+    const f = this.ac.createBiquadFilter(); f.type = ftype; f.Q.value = q || 1;
+    f.frequency.setValueAtTime(f1, t); if (f2) f.frequency.exponentialRampToValueAtTime(f2, t + a + d);
+    const g = this.ac.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + a); g.gain.exponentialRampToValueAtTime(0.0001, t + a + d);
+    s.connect(f); f.connect(g); g.connect(this.master); s.start(t); s.stop(t + a + d + 0.05);
+  },
+  // Gentle sine harmonic for prayer / incense
+  playChime() {
+    if (!this.ready('chime', 90)) return; const t = this.ac.currentTime;
+    const f = pick([396, 440, 528, 594, 660]);
+    this.tone('sine', f, t, 0.005, 1.8, 0.16); this.tone('sine', f * 2, t, 0.005, 1.1, 0.07);
+    this.tone('sine', f * 3.01, t, 0.005, 0.6, 0.035); this.tone('sine', f * 1.5, t + 0.11, 0.005, 1.4, 0.08);
+  },
+  // Low pitch-dropping war drum
+  playDrum() {
+    if (!this.ready('drum', 100)) return; const t = this.ac.currentTime;
+    this.tone('triangle', 120, t, 0.004, 0.5, 0.55, 30); this.tone('sine', 150, t, 0.004, 0.45, 0.85, 40);
+    this.hiss(t, 0.002, 0.09, 0.3, 'lowpass', 1200, 300, 0.7);
+  },
+  // Resonant metallic gong (inharmonic partials)
+  playGong() {
+    if (!this.ready('gong', 400)) return; const t = this.ac.currentTime; const f = 92;
+    [1, 1.48, 2.02, 2.51, 3.13, 4.07].forEach((m, i) => this.tone('sine', f * m, t, 0.01 + i * 0.004, 4.8 - i * 0.55, 0.32 / (1 + i * 0.7)));
+    this.tone('sine', f * 0.5, t, 0.03, 3, 0.25); this.hiss(t, 0.005, 0.6, 0.18, 'bandpass', 2600, 700, 3);
+  },
+  // Filtered white-noise sweep for leaf abilities
+  playWoosh() {
+    if (!this.ready('woosh', 70)) return; const t = this.ac.currentTime;
+    const s = this.ac.createBufferSource(); s.buffer = this.noise;
+    const f = this.ac.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 1.4;
+    f.frequency.setValueAtTime(350, t); f.frequency.exponentialRampToValueAtTime(2800, t + 0.25); f.frequency.exponentialRampToValueAtTime(500, t + 0.7);
+    const g = this.ac.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.5, t + 0.18); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.72);
+    s.connect(f); f.connect(g); g.connect(this.master); s.start(t); s.stop(t + 0.8);
+  },
+  playPluck() { if (!this.ready('pluck', 45)) return; const t = this.ac.currentTime; const f = pick([784, 880, 988, 1175]); this.tone('sine', f, t, 0.003, 0.28, 0.11); this.tone('triangle', f * 2, t, 0.003, 0.12, 0.03); },
+  playThud() { if (!this.ready('thud', 60)) return; const t = this.ac.currentTime; this.tone('sine', 120, t, 0.004, 0.35, 0.7, 38); this.hiss(t, 0.003, 0.25, 0.35, 'lowpass', 700, 150, 0.8); },
+  playZap() { if (!this.ready('zap', 80)) return; const t = this.ac.currentTime; this.hiss(t, 0.002, 0.35, 0.45, 'highpass', 3500, 700, 0.9); this.tone('sawtooth', 1400, t, 0.002, 0.3, 0.1, 80); },
+  playHit() { if (!this.ready('hit', 55)) return; const t = this.ac.currentTime; this.hiss(t, 0.002, 0.07, 0.16, 'bandpass', 1800, 900, 2); this.tone('square', 220, t, 0.002, 0.06, 0.04, 110); },
+  playHarvest() { if (!this.ready('harv', 200)) return; const t = this.ac.currentTime; this.tone('sine', 659.25, t, 0.005, 0.5, 0.1); this.tone('sine', 880, t + 0.1, 0.005, 0.7, 0.1); },
+  playSuccess() { if (!this.ready('succ', 300)) return; const t = this.ac.currentTime; [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => this.tone('sine', f, t + i * 0.12, 0.005, 1.2, 0.12)); },
+  playFail() { if (!this.ready('fail', 300)) return; const t = this.ac.currentTime; [392, 329.6, 261.6].forEach((f, i) => this.tone('triangle', f, t + i * 0.18, 0.01, 0.6, 0.12)); },
+  playGrow() { if (!this.ready('grow', 300)) return; const t = this.ac.currentTime; [261.6, 392, 523.25, 784, 1046.5].forEach((f, i) => this.tone('sine', f, t + i * 0.08, 0.01, 1.6, 0.09)); },
+  // 528 Hz "healing" prayer chime for worship, festivals and dreams
+  playPrayerChime() {
+    if (!this.ready('pchime', 120)) return; const t = this.ac.currentTime;
+    this.tone('sine', 528, t, 0.005, 1.4, 0.16); this.tone('sine', 1056, t, 0.005, 0.9, 0.05); this.tone('sine', 792, t + 0.09, 0.005, 1.1, 0.06);
+  },
+  // Triangle war drum (120 → 30 Hz), alias of playDrum
+  playWarDrum() { this.playDrum(); }
+};
+const SoundFX = Sfx;
+
+/* ================= CONSTANTS ================= */
+const TREE_X = 640, TREE_Y = 548;
+const ALTAR = { x: 640, y: 600 };
+const BURNERS = [{ x: 640, y: 582, big: true }, { x: 548, y: 616 }, { x: 732, y: 616 }];
+const SPRING = { x: 520, y: 570 };
+const STAGES = [null,
+  { en: 'Withered Wood' }, { en: 'Sprouting Locust' }, { en: 'Spirit Locust' },
+  { en: 'Ancient Divine Locust' }, { en: 'Incense Tree God' }];
+const GROW_COST = [0, 45, 100, 190, 320];
+function realmName(n) { return n <= 9 ? `Qi Refining ${n}` : `Foundation Establishment ${n - 9}`; }
+
+const ETYPES = {
+  raider: { en: 'Li Clan Blade', hp: 50, dmg: 9, cd: 1.0, range: 22, speed: 38, tdmg: 6, r: 10, vit: 2, fai: 1 },
+  archer: { en: 'Li Clan Archer', hp: 34, dmg: 7, cd: 1.6, range: 210, speed: 32, tdmg: 6, r: 10, ranged: 'arrow', vit: 2, fai: 1 },
+  cultivator: { en: 'Liu Clan Cultivator', hp: 130, dmg: 14, cd: 2.4, range: 250, speed: 26, tdmg: 12, r: 11, ranged: 'fire', vit: 6, fai: 3 },
+  elder: { en: 'Li Clan Elder', hp: 1000, dmg: 28, cd: 1.3, range: 34, speed: 17, tdmg: 22, r: 16, boss: true, vit: 60, fai: 50 },
+  retainer: { en: "Yong'an Retainer", hp: 90, dmg: 12, cd: 1.1, range: 22, speed: 30, tdmg: 9, r: 11, vit: 4, fai: 2 },
+  crossbow: { en: "Yong'an Crossbowman", hp: 50, dmg: 10, cd: 1.8, range: 230, speed: 30, tdmg: 7, r: 10, ranged: 'arrow', vit: 3, fai: 2 },
+  champion: { en: 'Shen Clan Champion', hp: 1600, dmg: 34, cd: 1.2, range: 34, speed: 20, tdmg: 26, r: 16, boss: true, vit: 80, fai: 60 },
+  thrall: { en: 'Totem Thrall', hp: 60, dmg: 11, cd: 0.9, range: 20, speed: 52, tdmg: 8, r: 10, beast: true, vit: 3, fai: 1 },
+  totemBlood: { en: 'Blood-eating Totem', hp: 2600, dmg: 20, cd: 1.6, range: 60, speed: 12, tdmg: 30, r: 24, boss: true, totem: 'blood', vit: 120, fai: 80 },
+  totemQi: { en: 'Qi-eating Totem', hp: 3400, dmg: 22, cd: 1.6, range: 60, speed: 12, tdmg: 32, r: 24, boss: true, totem: 'qi', vit: 150, fai: 100 },
+  totemSpirit: { en: 'Spirit-eating Totem', hp: 4200, dmg: 26, cd: 1.5, range: 60, speed: 12, tdmg: 36, r: 24, boss: true, totem: 'spirit', vit: 200, fai: 150 }
+};
+
+const ARTS = {
+  root:    { en: 'Root Spikes', g: 'RS', cost: { vit: 6 }, cd: 1.2, raidOnly: true, target: true,
+             desc: 'Roots burst from the earth at the target, damaging and binding invaders. Click the ground during a raid to cast it instantly.' },
+  infuse:  { en: 'Vitality Infusion', g: 'VI', cost: { vit: 20 }, cd: 12,
+             desc: 'Warriors gain +30% attack and speed for 15s and recover 35% HP. Also cures plague and beast poison.' },
+  barrier: { en: 'Incense Barrier', g: 'IB', cost: { faith: 20 }, cd: 15, raidOnly: true,
+             desc: 'Incense smoke hardens into a golden dome that absorbs damage aimed at the tree for 20s.' },
+  barrage: { en: 'Leaf Barrage', g: 'LB', cost: { faith: 15 }, cd: 5, raidOnly: true,
+             desc: 'A storm of razor locust leaves seeks out the invaders.' },
+  mist:    { en: 'One Leaf Obscuring Sight', g: 'OS', cost: { faith: 30 }, cd: 30,
+             desc: 'Veils the village in spirit mist. In peace it halts the Raid meter for 30s and lowers it by 20%. In a raid, enemies are slowed and miss 40% of their attacks for 10s.' },
+  reverse: { en: 'Reversed Pill Circulation', g: 'RP', cost: { faith: 30 }, cd: 25,
+             desc: 'Reverses the flow of the inner pill. Converts 30 Faith into 45 Vitality and heals the tree by 20%. During a raid it also siphons 12% of every invader\'s HP (4% from bosses) back into the tree.' },
+  soul:    { en: 'Soul Gathering & Leaf Armor', g: 'SG', cost: { faith: 35, vit: 15 }, cd: 30, raidOnly: true,
+             desc: 'Summons ancestral spirit warriors for 25s and clads every defender in divine leaf armor (−50% damage for 15s).' },
+  golden:  { en: 'Incense Golden Body', g: 'GB', cost: { faith: 100 }, cd: 90, raidOnly: true, gold: true,
+             desc: 'Ultimate. A colossal golden tree avatar rises and smites every invader on the field, and the tree recovers 30% HP.' }
+};
+const ART_ORDER = ['root', 'infuse', 'barrier', 'barrage', 'mist', 'reverse', 'soul', 'golden'];
+const UNLOCK_ORDER = ['barrage', 'mist', 'reverse', 'soul', 'golden'];
+const CAT = { root: 'attack', barrage: 'attack', infuse: 'support', reverse: 'support', barrier: 'defense', soul: 'defense', mist: 'control', golden: 'ultimate' };
+const CATS = { attack: { en: 'Attack', col: '#e63946' }, support: { en: 'Support', col: '#74c69d' }, defense: { en: 'Defense', col: '#5aa9e6' }, control: { en: 'Control', col: '#b388eb' }, ultimate: { en: 'Ultimate', col: '#ffd166' } };
+const catCol = id => CATS[CAT[id]].col;
+const UPG = {
+  root: '+35% damage and +20% area', infuse: '+6s duration and +20% healing', barrier: '+50% shield strength', barrage: '+5 leaves per volley',
+  mist: '+5s duration; in peace it lowers Raid Danger by 10% more', reverse: '+20 Vitality and +10% tree healing', soul: '+1 spirit warrior and +5s duration', golden: '+30% damage and −20s cooldown'
+};
+const BOONS = {
+  bloodPact: { g: 'BP', en: 'Beast Blood Pact', desc: 'Each hunter offers +1 blood per offering, and hunts yield +20%.' },
+  springVein: { g: 'SV', en: 'Blood Spring Vein', desc: 'Blood Rice harvests +25%.' },
+  resonance: { g: 'IR', en: 'Incense Resonance', desc: 'Faith gain +20%.' },
+  deepRoots: { g: 'DR', en: 'Deep Roots', desc: 'Tree max HP +15%.' },
+  qiWell: { g: 'QW', en: 'Qi Well', desc: 'Max ambient Qi +6, and Qi regenerates 30% faster.' },
+  vigil: { g: 'AV', en: 'Ancestral Vigil', desc: 'Warriors gain +1 rank (+12% HP and damage).' },
+  dao: { g: 'DC', en: 'Dao Comprehension', desc: 'All Divine Arts gain +15% power.' },
+  essence: { g: 'EH', en: 'Essence Harvest', desc: 'Condense the trial realm into +40 Vitality.' }
+};
+const DREAMS = {
+  omen: { g: 'OW', col: '#e63946', en: 'Omen of War', who: 'to the elders', cost: { faith: 25 },
+    desc: "Reveal the next raid's forces. The clan prepares: Raid Danger −15%, and in that raid defenders deal +25% damage while the tree takes −20% damage." },
+  sword: { g: 'LS', col: '#74c69d', en: 'Locust Sword Dream', who: 'to Chen Qingyu', cost: { faith: 35, vit: 15 },
+    desc: 'Teach Qingyu the Locust Sword Art (Lv {lv}/3): +15% damage, and his strikes cleave nearby foes for 35% per level.' },
+  solace: { g: 'AS', col: '#ffd166', en: 'Ancestral Solace', who: 'to the whole clan', cost: { faith: 20 },
+    desc: 'Cures plague and poison, reveals a forgotten grain cache (+20 Blood Rice), and kindles devotion (Faith +50% for 40s).' }
+};
+const up = id => (G && G.artUp && G.artUp[id]) || 0;
+const boon = id => (G && G.boons && G.boons[id]) || 0;
+const artCd = id => ARTS[id].cd - (id === 'golden' ? 20 * up('golden') : 0);
+const autoPref = { hunt: false, tend: false, qiAll: false };
+const AUTO_RICE_RESERVE = 25, AUTO_VIT_RESERVE = 30;
+
+const REALMS = [
+  { id: 'desert', en: 'Scorched Desert', hz: ['rock'], pests: true,
+    desc: 'Boulders fall from a burning sky while sand scarabs hunt the living root.' },
+  { id: 'cliffs', en: 'Shear Cliffs', hz: ['bolt', 'bolt', 'rock'], pests: false,
+    desc: 'Corrosive lightning lashes the sheer cliff faces. Watch the red omens and slip between the strikes.' },
+  { id: 'underworld', en: 'Underworld Depths', hz: ['frost', 'frost', 'bolt'], pests: true,
+    desc: 'Frost blight creeps through the underworld depths, and hungry wraiths drift toward warmth.' },
+  { id: 'wilderness', en: 'Primeval Wilderness', hz: ['rock', 'frost', 'bolt'], pests: true,
+    desc: 'Every hazard of the primeval world at once: falling rock, frost blight, corrosive lightning and swarming vermin.' }
+];
+const RAIDS = [null,
+  { en: 'Li Clan Raiders' }, { en: 'Li & Liu Skirmishers' }, { en: 'Grand Assault of the Li & Liu Clans' },
+  { en: "Yong'an Clan Enforcers" }, { en: "The Four Great Clans of Yong'an" },
+  { en: 'The Blood-eating Totem' }, { en: 'The Qi-eating Totem' }, { en: 'The Spirit-eating Totem' }];
+const FINAL_RAID = 8;
+const raidInfo = r => RAIDS[r] || { en: 'Totem Remnants & Rival Clans' };
+const tierOf = r => r <= 3 ? 1 : r <= 5 ? 2 : 3;
+const TIER_NAMES = ['', 'Tier I · Li & Liu clans', "Tier II · Yong'an Four Clans", 'Tier III · Totems'];
+const CLAN_COL = { Shi: '#2b4a7a', Xie: '#226a64', Gan: '#8a6a2a', Shen: '#55555f' }, CLAN_CHAR = { Shi: 'SHI', Xie: 'XIE', Gan: 'GAN', Shen: 'SHEN' };
+const BOSS_LINES = {
+  elder: 'The <b>Li Clan Elder</b> enters the field. His killing intent chills the mountain.',
+  champion: 'The <b>Shen Clan Champion</b>, a sworn retainer of Yong\'an\'s Four Great Clans, comes to claim the Blood Spring.',
+  totemBlood: 'The <b>Blood-eating Totem</b> drifts out of the ravines. It siphons the blood of every defender near it.',
+  totemQi: 'The <b>Qi-eating Totem</b> descends. Your Faith and ambient Qi drain away, and it devours barriers.',
+  totemSpirit: 'The <b>Spirit-eating Totem</b> awakens. It devours ancestral spirits, rends souls, and gnaws at your Vitality.'
+};
+
+/* ================= STATE ================= */
+let G = null;
+let villagers = [], guards = [], enemies = [], projs = [], parts = [], smoke = [], fx = [], floaters = [];
+let TREE = null;
+const mouse = { x: 640, y: 360, inside: false };
+const keys = {};
+let modalOpen = 'mTitle';
+
+const popTotal = () => { const r = G.roles; return r.farmers + r.hunters + r.devotees + r.warriors + G.idle; };
+const housing = () => 8 + 4 * G.housingLvl;
+const treeMax = () => Math.round((250 + 130 * (G.treeLvl - 1)) * (1 + 0.15 * boon('deepRoots')));
+const qiMax = () => 8 + 4 * G.treeLvl + 6 * boon('qiWell');
+const raidTime = () => Math.max(50, 100 - G.raidCount * 7);
+const artMul = () => 1 + 0.15 * G.artLvl;
+
+function newGame() {
+  G = {
+    mode: 'village', userPause: false, time: 0, anim: 0, day: 1, dayT: 0,
+    vit: 30, faith: 20, rice: 40,
+    roles: { farmers: 4, hunters: 2, devotees: 2, warriors: 2 }, idle: 0,
+    housingLvl: 1, springLvl: 1,
+    treeLvl: 1, treeHp: 250, qi: 8, treePulse: 0, treeHit: 0,
+    fieldGrowth: 0.35, huntT: 0, birthT: 0, starveT: 0,
+    raidMeter: 0, raidCount: 0, mistPause: 0, scoutWarned: false, raid: null,
+    arts: { root: true, infuse: true, barrier: true, barrage: false, mist: false, soul: false, golden: false },
+    artLvl: 0, cds: {}, deductions: 0, dedRuns: 0,
+    heroRealm: 1, rank: 0, blessCount: 0,
+    buffs: { infuse: 0, armor: 0, barrier: 0, mistRaid: 0, spring: 0, beast: 0, blight: 0, famine: 0, marketUp: 0, marketDown: 0, devotion: 0 }, market: 1, barrierHp: 0, artUp: {}, boons: {}, heroArt: 0, dreamCd: 0, prepared: false, auto: autoPref, autoT: 0, autoTendT: 0,
+    plague: 0, plagueDeathT: 0, poison: 0,
+    exp: null, tendCd: 0, healCd: 0, eventT: 40, festivalDay: 7,
+    treeAtkT: 0, golden: null, targeting: null, shake: 0, flash: 0, banner: null,
+    kills: 0, won: false, over: false, ded: null
+  };
+  villagers = []; guards = []; enemies = []; projs = []; parts = []; fx = []; floaters = [];
+  TREE = buildTree(1);
+  syncVillagers(); syncGuards();
+  $('log').innerHTML = '';
+  log('You died, and woke as <b>Ji Yang</b>: a <b>withered locust tree</b> in the Chen ancestral shrine on Luanzang Mountain.', 'gold');
+  log('Click the tree to gather ambient Qi. Hunters\' beast blood will also feed your roots.', 'info');
+  log('Rumors spread that the Li clan is mustering. Watch the Raid Danger meter.', 'bad');
+  log('Tip: <b>World Deduction</b> (25 Vitality) lets you choose new arts, upgrades and blessings.', 'info');
+  log('Tip: toggle <b>AUTO</b> on Assign Hunters and Tend Blood Rice to automate them.', 'info');
+}
+
+/* ================= SCENERY ================= */
+const TERRACES = [];
+(function () {
+  const L = [{ x0: 24, x1: 420, y: 494, h: 18 }, { x0: 12, x1: 402, y: 518, h: 18 }, { x0: 0, x1: 384, y: 542, h: 18 }];
+  for (const b of L) { TERRACES.push(b); TERRACES.push({ x0: W - b.x1, x1: W - b.x0, y: b.y, h: b.h }); }
+})();
+const STALKS = [];
+for (const b of TERRACES) for (let x = b.x0 + 12; x < b.x1 - 8; x += 12) STALKS.push({ x: x + Math.random() * 4, y: b.y + b.h * 0.62, p: Math.random() * TAU });
+const HUTS = [{ x: 80, s: 1 }, { x: 200, s: 0.85 }, { x: 320, s: 0.95 }, { x: 960, s: 0.9 }, { x: 1080, s: 1 }, { x: 1200, s: 0.85 }];
+
+function ridge(c, seed, base, amp, fill, fogTo) {
+  const r = mulberry32(seed); const p = [r() * 9, r() * 9, r() * 9], f = [0.004 + r() * 0.002, 0.011 + r() * 0.004, 0.03 + r() * 0.01];
+  c.beginPath(); c.moveTo(0, H);
+  for (let x = 0; x <= W; x += 6) {
+    const y = base - amp * (0.55 * Math.sin(x * f[0] + p[0]) + 0.3 * Math.sin(x * f[1] + p[1]) + 0.15 * Math.sin(x * f[2] + p[2]) + 0.5);
+    c.lineTo(x, y);
+  }
+  c.lineTo(W, H); c.closePath();
+  const g = c.createLinearGradient(0, base - amp, 0, fogTo); g.addColorStop(0, fill); g.addColorStop(1, 'rgba(20,20,22,0)');
+  c.fillStyle = g; c.fill();
+}
+
+function renderBackground() {
+  const c = bctx; c.setTransform(bg.width / W, 0, 0, bg.height / H, 0, 0); c.clearRect(0, 0, W, H);
+  if (G && G.mode === 'deduction' && G.ded) { renderRealmBg(c, G.ded.realm); return; }
+  // sky
+  let g = c.createLinearGradient(0, 0, 0, 500); g.addColorStop(0, '#141416'); g.addColorStop(0.55, '#1e2022'); g.addColorStop(1, '#2c2a26');
+  c.fillStyle = g; c.fillRect(0, 0, W, 500);
+  const r = mulberry32(5);
+  for (let i = 0; i < 140; i++) { c.fillStyle = `rgba(230,228,205,${r() * 0.55})`; const s = r() < 0.1 ? 2 : 1.2; c.fillRect(r() * W, r() * 320, s, s); }
+  // moon
+  const mx = 1060, my = 100;
+  g = c.createRadialGradient(mx, my, 10, mx, my, 150); g.addColorStop(0, 'rgba(235,228,190,0.35)'); g.addColorStop(1, 'rgba(235,228,190,0)');
+  c.fillStyle = g; c.fillRect(mx - 150, my - 150, 300, 300);
+  c.fillStyle = '#ece5c6'; c.beginPath(); c.arc(mx, my, 30, 0, TAU); c.fill();
+  c.fillStyle = 'rgba(160,150,120,0.25)'; [[-8, -6, 7], [9, 5, 5], [-3, 12, 4]].forEach(([a, b, rr]) => { c.beginPath(); c.arc(mx + a, my + b, rr, 0, TAU); c.fill(); });
+  // ink-wash mountains (Luanzang)
+  ridge(c, 11, 300, 110, 'rgba(84,90,96,0.5)', 470);
+  ridge(c, 23, 370, 90, 'rgba(40,44,48,0.92)', 500);
+  // mist band
+  g = c.createLinearGradient(0, 330, 0, 450); g.addColorStop(0, 'rgba(160,180,170,0)'); g.addColorStop(0.6, 'rgba(160,180,170,0.13)'); g.addColorStop(1, 'rgba(160,180,170,0)');
+  c.fillStyle = g; c.fillRect(0, 330, W, 120);
+  ridge(c, 37, 440, 60, '#18191c', 520);
+  // grave mounds & steles on Luanzang
+  const r2 = mulberry32(77);
+  for (let i = 0; i < 22; i++) {
+    const x = r2() * W, y = 418 + r2() * 40; if (x > 430 && x < 850) continue;
+    c.fillStyle = '#0f1513'; c.beginPath(); c.ellipse(x, y, 9 + r2() * 6, 5, 0, Math.PI, 0); c.fill();
+    c.fillStyle = '#2a302c'; c.fillRect(x - 2, y - 11, 4, 8);
+  }
+  // ground
+  g = c.createLinearGradient(0, 465, 0, H); g.addColorStop(0, '#1d211a'); g.addColorStop(1, '#0c0f0c');
+  c.fillStyle = g; c.fillRect(0, 465, W, H - 465);
+  // huts
+  for (const h of HUTS) drawHut(c, h.x, 486, h.s);
+  // courtyard stone
+  c.fillStyle = '#25271f'; c.beginPath(); c.moveTo(430, 492); c.lineTo(850, 492); c.lineTo(1010, H); c.lineTo(270, H); c.closePath(); c.fill();
+  c.strokeStyle = 'rgba(0,0,0,0.35)'; c.lineWidth = 1;
+  for (let i = 0; i < 9; i++) { const t = i / 8, y = 492 + Math.pow(t, 1.4) * (H - 492); const xl = lerp(430, 270, (y - 492) / (H - 492)), xr = lerp(850, 1010, (y - 492) / (H - 492)); c.beginPath(); c.moveTo(xl, y); c.lineTo(xr, y); c.stroke(); }
+  for (let i = 0; i <= 12; i++) { const t = i / 12; c.beginPath(); c.moveTo(lerp(430, 850, t), 492); c.lineTo(lerp(270, 1010, t), H); c.stroke(); }
+  // terraces
+  for (const b of TERRACES) {
+    c.fillStyle = '#3a2b1c'; c.beginPath(); c.roundRect(b.x0, b.y + b.h - 4, b.x1 - b.x0, 8, 3); c.fill();
+    g = c.createLinearGradient(0, b.y, 0, b.y + b.h); g.addColorStop(0, '#2a2016'); g.addColorStop(1, '#1d1610');
+    c.fillStyle = g; c.beginPath(); c.roundRect(b.x0, b.y, b.x1 - b.x0, b.h, 5); c.fill();
+    c.fillStyle = 'rgba(157,2,8,0.3)'; c.fillRect(b.x0 + 6, b.y + b.h * 0.55, b.x1 - b.x0 - 12, 2);
+  }
+  // blood spring channels
+  c.strokeStyle = 'rgba(157,2,8,0.65)'; c.lineWidth = 2.5;
+  c.beginPath(); c.moveTo(SPRING.x - 30, SPRING.y); c.bezierCurveTo(470, 560, 440, 540, 384, 552); c.stroke();
+  c.beginPath(); c.moveTo(SPRING.x + 10, SPRING.y - 6); c.bezierCurveTo(600, 540, 820, 540, W - 384, 552); c.stroke();
+  // spring basin
+  c.fillStyle = '#3a3b35'; c.beginPath(); c.ellipse(SPRING.x, SPRING.y, 40, 13, 0, 0, TAU); c.fill();
+  // shrine hall
+  drawShrine(c);
+  // vignette
+  g = c.createRadialGradient(W / 2, H / 2, 300, W / 2, H / 2, 820); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0.55)');
+  c.fillStyle = g; c.fillRect(0, 0, W, H);
+}
+
+function drawHut(c, x, y, s) {
+  c.save(); c.translate(x, y); c.scale(s, s);
+  c.fillStyle = '#2b2219'; c.fillRect(-26, -24, 52, 24);
+  c.fillStyle = '#3d3020'; c.beginPath(); c.moveTo(-36, -22); c.lineTo(0, -46); c.lineTo(36, -22); c.closePath(); c.fill();
+  c.fillStyle = 'rgba(240,170,80,0.55)'; c.fillRect(-14, -16, 8, 8); c.fillRect(8, -16, 8, 8);
+  c.restore();
+}
+
+function drawShrine(c) {
+  // platform
+  c.fillStyle = '#2e2b24'; c.fillRect(448, 478, 384, 18);
+  c.fillStyle = '#3a362d'; c.fillRect(448, 478, 384, 4);
+  // back wall
+  c.fillStyle = '#24170f'; c.fillRect(470, 430, 340, 48);
+  c.strokeStyle = 'rgba(150,100,50,0.25)'; c.lineWidth = 1;
+  for (let x = 476; x < 806; x += 9) { c.beginPath(); c.moveTo(x, 436); c.lineTo(x, 474); c.stroke(); }
+  // columns
+  c.fillStyle = '#74261f';
+  for (const x of [474, 538, 600, 672, 734, 798]) c.fillRect(x, 428, 9, 52);
+  // ancestral tablets
+  for (const [x0, x1] of [[546, 598], [682, 734]]) {
+    c.fillStyle = '#3a2418'; c.fillRect(x0 - 2, 466, x1 - x0 + 4, 6); c.fillRect(x0 + 4, 458, x1 - x0 - 8, 6);
+    for (let x = x0; x <= x1 - 6; x += 9) {
+      const h = 18 + ((x * 7) % 5);
+      c.fillStyle = '#1c120c'; c.fillRect(x, 466 - h, 6, h); c.fillStyle = '#b08a3a'; c.fillRect(x, 466 - h, 6, 2); c.fillRect(x + 2, 470 - h, 2, h - 8);
+    }
+  }
+  // roof
+  c.fillStyle = '#1b2224';
+  c.beginPath(); c.moveTo(420, 400); c.quadraticCurveTo(450, 420, 470, 418); c.lineTo(462, 384);
+  c.lineTo(818, 384); c.lineTo(810, 418); c.quadraticCurveTo(830, 420, 860, 400);
+  c.quadraticCurveTo(850, 426, 820, 434); c.lineTo(460, 434); c.quadraticCurveTo(430, 426, 420, 400); c.closePath(); c.fill();
+  c.strokeStyle = 'rgba(120,140,140,0.25)';
+  for (let x = 470; x < 812; x += 8) { c.beginPath(); c.moveTo(x, 386); c.lineTo(x + (x - 640) * 0.04, 432); c.stroke(); }
+  c.fillStyle = '#2a3234'; c.fillRect(456, 378, 368, 8);
+  c.fillStyle = '#b08a3a'; c.beginPath(); c.moveTo(456, 378); c.quadraticCurveTo(450, 366, 440, 364); c.lineTo(456, 384); c.fill();
+  c.beginPath(); c.moveTo(824, 378); c.quadraticCurveTo(830, 366, 840, 364); c.lineTo(824, 384); c.fill();
+}
+
+function drawLanterns(t) {
+  for (const x of [490, 790]) {
+    const fl = 0.75 + Math.sin(t * 7 + x) * 0.1 + Math.sin(t * 13 + x) * 0.05;
+    ctx.strokeStyle = '#111'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x, 434); ctx.lineTo(x, 444); ctx.stroke();
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    const g = ctx.createRadialGradient(x, 456, 2, x, 456, 46); g.addColorStop(0, `rgba(255,120,60,${0.35 * fl})`); g.addColorStop(1, 'rgba(255,90,40,0)');
+    ctx.fillStyle = g; ctx.fillRect(x - 46, 410, 92, 92); ctx.restore();
+    ctx.fillStyle = '#b02a20'; ctx.beginPath(); ctx.ellipse(x, 456, 10, 12, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = `rgba(255,200,120,${0.5 * fl})`; ctx.beginPath(); ctx.ellipse(x, 456, 6, 9, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#2a0a06'; ctx.font = '700 10px Georgia,serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('C', x, 457);
+  }
+}
+
+function renderRealmBg(c, realm) {
+  let g; const r = mulberry32(realm.id.length * 97);
+  if (realm.id === 'desert') {
+    g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#2a1208'); g.addColorStop(0.4, '#6e3414'); g.addColorStop(1, '#b8722e');
+    c.fillStyle = g; c.fillRect(0, 0, W, H);
+    g = c.createRadialGradient(980, 120, 20, 980, 120, 260); g.addColorStop(0, 'rgba(255,220,140,0.8)'); g.addColorStop(0.2, 'rgba(255,150,60,0.35)'); g.addColorStop(1, 'rgba(255,120,40,0)');
+    c.fillStyle = g; c.fillRect(0, 0, W, H);
+    for (let i = 0; i < 6; i++) {
+      const base = 220 + i * 90, col = `rgba(${150 + i * 12},${80 + i * 8},${35 + i * 3},0.55)`;
+      c.fillStyle = col; c.beginPath(); c.moveTo(0, H);
+      for (let x = 0; x <= W; x += 10) c.lineTo(x, base + Math.sin(x * 0.006 + i * 1.7) * 30 + Math.sin(x * 0.017 + i) * 10);
+      c.lineTo(W, H); c.fill();
+    }
+    c.strokeStyle = 'rgba(60,25,8,0.35)'; c.lineWidth = 1.2;
+    for (let i = 0; i < 40; i++) { let x = r() * W, y = 250 + r() * 470; c.beginPath(); c.moveTo(x, y); for (let k = 0; k < 4; k++) { x += (r() - 0.5) * 40; y += (r() - 0.5) * 20; c.lineTo(x, y); } c.stroke(); }
+  } else if (realm.id === 'cliffs') {
+    g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#07040f'); g.addColorStop(0.5, '#1b1336'); g.addColorStop(1, '#241e3a');
+    c.fillStyle = g; c.fillRect(0, 0, W, H);
+    for (let i = 0; i < 8; i++) { c.fillStyle = `rgba(60,50,100,${0.12 + r() * 0.12})`; c.beginPath(); c.ellipse(r() * W, 60 + r() * 140, 160 + r() * 200, 30 + r() * 30, 0, 0, TAU); c.fill(); }
+    for (const side of [0, 1]) {
+      c.fillStyle = side ? '#0d0a18' : '#100c1c'; c.beginPath();
+      const x0 = side ? W : 0, dir = side ? -1 : 1; c.moveTo(x0, H); c.lineTo(x0, 120);
+      for (let y = 120; y <= H; y += 30) c.lineTo(x0 + dir * (90 + r() * 90), y);
+      c.lineTo(x0, H); c.fill();
+    }
+    c.strokeStyle = 'rgba(140,120,220,0.08)'; c.lineWidth = 1;
+    for (let i = 0; i < 30; i++) { const y = 200 + r() * 500; c.beginPath(); c.moveTo(180, y); c.lineTo(W - 180, y + (r() - 0.5) * 40); c.stroke(); }
+  } else if (realm.id === 'wilderness') {
+    g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#06100a'); g.addColorStop(0.5, '#0f2414'); g.addColorStop(1, '#183020');
+    c.fillStyle = g; c.fillRect(0, 0, W, H);
+    for (let i = 0; i < 9; i++) { const x = r() * W, w = 30 + r() * 40; c.fillStyle = `rgba(10,22,12,${0.6 + r() * 0.3})`; c.fillRect(x, 0, w, H); c.beginPath(); c.ellipse(x + w / 2, 60 + r() * 60, w * 3, 70, 0, 0, TAU); c.fill(); }
+    for (let i = 0; i < 40; i++) { const x = r() * W, y = 160 + r() * 560, s = 10 + r() * 20; c.fillStyle = `rgba(${40 + r() * 30},${90 + r() * 50},${50 + r() * 20},0.45)`; for (let k = 0; k < 5; k++) { c.beginPath(); c.ellipse(x + Math.cos(k * 1.25) * s, y + Math.sin(k * 1.25) * s * 0.5, s, s * 0.28, k * 1.25, 0, TAU); c.fill(); } }
+  } else {
+    g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#07070d'); g.addColorStop(0.5, '#141026'); g.addColorStop(1, '#1b1530');
+    c.fillStyle = g; c.fillRect(0, 0, W, H);
+    for (let i = 0; i < 26; i++) { const x = r() * W, y = 180 + r() * 540; c.fillStyle = '#0b0914'; c.beginPath(); c.roundRect(x - 8, y - 22, 16, 22, [6, 6, 0, 0]); c.fill(); }
+    for (let i = 0; i < 30; i++) { const x = r() * W, y = 150 + r() * 560; c.strokeStyle = 'rgba(200,200,220,0.12)'; c.lineWidth = 3; c.beginPath(); c.moveTo(x - 8, y); c.lineTo(x + 8, y + (r() - 0.5) * 6); c.stroke(); }
+    for (let i = 0; i < 18; i++) { const x = r() * W, y = 120 + r() * 600; const gg = c.createRadialGradient(x, y, 0, x, y, 14); gg.addColorStop(0, 'rgba(120,230,220,0.5)'); gg.addColorStop(1, 'rgba(120,230,220,0)'); c.fillStyle = gg; c.fillRect(x - 14, y - 14, 28, 28); }
+  }
+  g = c.createRadialGradient(W / 2, H / 2, 250, W / 2, H / 2, 800); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0.6)');
+  c.fillStyle = g; c.fillRect(0, 0, W, H);
+}
+
+/* ================= THE LOCUST TREE ================= */
+function buildTree(lvl) {
+  const rng = mulberry32(9001 + lvl * 131);
+  const maxD = [0, 4, 5, 6, 6, 7][lvl], len0 = [0, 92, 96, 100, 106, 110][lvl], w0 = [0, 30, 32, 36, 40, 44][lvl];
+  const leafN = [0, 0, 3, 5, 6, 7][lvl];
+  function mk(len, w, ang, depth) {
+    const n = { len, w, ang, depth, bend: (rng() - 0.5) * len * 0.28, ph: rng() * TAU, kids: [], leaves: null };
+    let k = 0;
+    if (depth < maxD) { k = depth === 0 ? (lvl >= 3 ? 3 : 2) : (rng() < 0.3 ? 3 : 2); }
+    if (lvl === 1 && depth >= 2 && rng() < 0.3) k = 0;
+    for (let i = 0; i < k; i++) {
+      const spread = depth === 0 ? 0.5 : 0.42 + rng() * 0.25;
+      const a = (k === 1 ? 0 : (i / (k - 1) - 0.5) * 2 * spread) + (rng() - 0.5) * 0.35;
+      n.kids.push(mk(len * (0.66 + rng() * 0.14), w * 0.64, a, depth + 1));
+    }
+    if (leafN && depth >= maxD - 2) {
+      n.leaves = []; const c = depth === maxD ? leafN : Math.ceil(leafN / 2);
+      for (let j = 0; j < c; j++) n.leaves.push({ dx: (rng() - 0.5) * 28, dy: (rng() - 0.5) * 22, rot: rng() * TAU, s: 0.7 + rng() * 0.6, sh: rng() });
+    }
+    return n;
+  }
+  const roots = []; for (let i = 0; i < 6; i++) roots.push({ a: (i / 5 - 0.5) * 2.6 + (rng() - 0.5) * 0.3, l: 40 + rng() * 40 + lvl * 8, w: 8 + rng() * 5 + lvl });
+  return { root: mk(len0, w0, (rng() - 0.5) * 0.08, 0), roots, lvl };
+}
+const LEAF_PAL = [null, null, ['#95d5b2', '#74c69d', '#52b788'], ['#74c69d', '#52b788', '#40916c', '#74c69d'], ['#74c69d', '#52b788', '#95d5b2', '#ffd166'], ['#ffd166', '#74c69d', '#ffe08a', '#52b788']];
+let VEIN = '#40916c';
+const MASS = [null, null, null, 'rgba(27,67,50,0.55)', 'rgba(27,77,58,0.55)', 'rgba(70,80,40,0.5)'];
+let leafBuf = [];
+
+function drawTree(t) {
+  const L = G.treeLvl;
+  const ratio = clamp(G.treeHp / treeMax(), 0, 1), LS = 0.75 + 0.35 * ratio;
+  VEIN = L === 1 ? `hsla(${140 * ratio},30%,32%,0.5)` : `hsl(${140 * ratio},45%,${30 + 12 * ratio}%)`;
+  const glow = [0, 0.05, 0.15, 0.28, 0.45, 0.65][L] + G.treePulse * 0.35;
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  let g = ctx.createRadialGradient(TREE_X, 360, 20, TREE_X, 360, 300);
+  const gc = L >= 5 ? '230,190,90' : '116,198,157';
+  g.addColorStop(0, `rgba(${gc},${0.3 * glow})`); g.addColorStop(1, `rgba(${gc},0)`);
+  ctx.fillStyle = g; ctx.fillRect(TREE_X - 300, 60, 600, 600);
+  if (L >= 5) {
+    ctx.strokeStyle = 'rgba(240,200,110,0.35)'; ctx.lineWidth = 2;
+    for (let i = 0; i < 2; i++) { ctx.beginPath(); ctx.ellipse(TREE_X, 300, 210 + i * 26, 190 + i * 22, t * 0.1 * (i ? -1 : 1), 0, TAU); ctx.setLineDash([4, 10 + i * 6]); ctx.stroke(); }
+    ctx.setLineDash([]);
+  }
+  ctx.restore();
+  // surface roots
+  ctx.lineCap = 'round';
+  const bark = L === 1 ? '#3a3430' : '#2c2523';
+  for (const r of TREE.roots) {
+    ctx.strokeStyle = bark; ctx.lineWidth = r.w;
+    const ex = TREE_X + Math.sin(r.a) * r.l * 1.4, ey = TREE_Y + 6 + Math.abs(Math.cos(r.a)) * 4 + Math.abs(Math.sin(r.a)) * 10;
+    ctx.beginPath(); ctx.moveTo(TREE_X + Math.sin(r.a) * 10, TREE_Y - 6); ctx.quadraticCurveTo(TREE_X + Math.sin(r.a) * r.l * 0.6, TREE_Y + 2, ex, ey); ctx.stroke();
+  }
+  leafBuf = [];
+  drawNode(TREE.root, TREE_X, TREE_Y + 4, 0, t, L);
+  // trunk texture
+  ctx.strokeStyle = 'rgba(0,0,0,0.3)'; ctx.lineWidth = 1.5;
+  for (let i = 0; i < 4; i++) { ctx.beginPath(); ctx.moveTo(TREE_X - 9 + i * 6, TREE_Y - 4); ctx.quadraticCurveTo(TREE_X - 12 + i * 7, TREE_Y - 40, TREE_X - 6 + i * 5, TREE_Y - 80); ctx.stroke(); }
+  // canopy
+  const pal = LEAF_PAL[L];
+  if (pal) {
+    if (MASS[L]) { ctx.fillStyle = MASS[L]; for (const lb of leafBuf) { ctx.beginPath(); ctx.arc(lb.x, lb.y, 20, 0, TAU); ctx.fill(); } }
+    for (const lb of leafBuf) for (const l of lb.n.leaves) {
+      const sw = Math.sin(t * 2 + l.rot) * 1.5;
+      ctx.fillStyle = pal[Math.floor(l.sh * pal.length)];
+      ctx.beginPath(); ctx.ellipse(lb.x + l.dx + sw, lb.y + l.dy, 7 * l.s * LS, 3.4 * l.s * LS, l.rot + Math.sin(t + l.rot) * 0.25, 0, TAU); ctx.fill();
+    }
+    if (L >= 4) {
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      for (let i = 0; i < leafBuf.length; i += 3) { const lb = leafBuf[i]; const a = 0.25 + 0.25 * Math.sin(t * 2 + i); ctx.fillStyle = L >= 5 ? `rgba(255,220,120,${a})` : `rgba(120,255,200,${a})`; ctx.beginPath(); ctx.arc(lb.x, lb.y - 3, 2, 0, TAU); ctx.fill(); }
+      ctx.restore();
+    }
+  } else {
+    // withered: faint sparks of returning life
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    for (let i = 0; i < leafBuf.length; i++) { const lb = leafBuf[i]; const a = 0.2 + 0.2 * Math.sin(t * 1.5 + i * 2); ctx.fillStyle = `rgba(140,230,170,${a})`; ctx.beginPath(); ctx.arc(lb.x, lb.y, 2.2, 0, TAU); ctx.fill(); }
+    ctx.restore();
+  }
+  if (G.treeHit > 0) {
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    g = ctx.createRadialGradient(TREE_X, TREE_Y - 60, 10, TREE_X, TREE_Y - 60, 120);
+    g.addColorStop(0, `rgba(255,60,40,${G.treeHit})`); g.addColorStop(1, 'rgba(255,60,40,0)');
+    ctx.fillStyle = g; ctx.fillRect(TREE_X - 120, TREE_Y - 180, 240, 240); ctx.restore();
+  }
+}
+
+function drawNode(n, x, y, pa, t, L) {
+  const sway = Math.sin(t * 1.1 + n.ph) * 0.012 * n.depth + Math.sin(t * 0.6) * 0.006 * n.depth;
+  const a = pa + n.ang + sway;
+  const ex = x + Math.sin(a) * n.len, ey = y - Math.cos(a) * n.len;
+  const mx = (x + ex) / 2 + Math.cos(a) * n.bend, my = (y + ey) / 2 + Math.sin(a) * n.bend;
+  const dark = L === 1 ? ['#3a3430', '#423b36', '#4a423c'] : ['#2c2523', '#332a27', '#3a302c'];
+  ctx.strokeStyle = dark[Math.min(2, n.depth)]; ctx.lineWidth = n.w;
+  ctx.beginPath(); ctx.moveTo(x, y); ctx.quadraticCurveTo(mx, my, ex, ey); ctx.stroke();
+  if (n.depth <= 3) {
+    ctx.strokeStyle = VEIN; ctx.lineWidth = Math.max(1, n.w * 0.16);
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.quadraticCurveTo(mx, my, ex, ey); ctx.stroke();
+  }
+  if (n.leaves || (L === 1 && n.kids.length === 0)) leafBuf.push({ x: ex, y: ey, n });
+  for (const k of n.kids) drawNode(k, ex, ey, a, t, L);
+}
+
+function drawFields(t) {
+  const gr = G.fieldGrowth;
+  let col; if (gr < 0.5) col = '#4f8a3c'; else if (gr < 0.85) col = '#c9a640'; else col = '#d00000';
+  const h = 5 + gr * 12;
+  ctx.lineCap = 'round';
+  for (const s of STALKS) {
+    const sw = Math.sin(t * 1.6 + s.p) * 1.6 * (0.4 + gr);
+    ctx.strokeStyle = '#3d6a30'; ctx.lineWidth = 1.4;
+    ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.quadraticCurveTo(s.x + sw * 0.4, s.y - h * 0.6, s.x + sw, s.y - h); ctx.stroke();
+    if (gr > 0.4) { ctx.fillStyle = col; ctx.beginPath(); ctx.ellipse(s.x + sw, s.y - h, 1.8, 3.4, sw * 0.08, 0, TAU); ctx.fill(); }
+  }
+  // spring shimmer
+  const sp = 0.5 + 0.5 * Math.sin(t * 2);
+  const g = ctx.createRadialGradient(SPRING.x, SPRING.y, 2, SPRING.x, SPRING.y, 36);
+  g.addColorStop(0, '#d00000'); g.addColorStop(1, '#9d0208');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(SPRING.x, SPRING.y, 33, 9.5, 0, 0, TAU); ctx.fill();
+  ctx.strokeStyle = `rgba(255,140,140,${0.25 + sp * 0.25})`; ctx.lineWidth = 1;
+  for (let i = 0; i < 2; i++) { const rr = ((t * 0.6 + i * 0.5) % 1); ctx.globalAlpha = 1 - rr; ctx.beginPath(); ctx.ellipse(SPRING.x, SPRING.y, 6 + rr * 26, 2 + rr * 7, 0, 0, TAU); ctx.stroke(); }
+  ctx.globalAlpha = 1;
+  if (G.buffs.spring > 0) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(255,60,80,0.12)'; for (const b of TERRACES) ctx.fillRect(b.x0, b.y - 10, b.x1 - b.x0, b.h + 10); ctx.restore(); }
+}
+
+function drawAltar(t) {
+  // stone altar table
+  ctx.fillStyle = '#3b3a34'; ctx.fillRect(ALTAR.x - 52, ALTAR.y - 8, 104, 14);
+  ctx.fillStyle = '#4c4a42'; ctx.fillRect(ALTAR.x - 56, ALTAR.y - 12, 112, 6);
+  ctx.fillStyle = '#2a2925'; ctx.fillRect(ALTAR.x - 46, ALTAR.y + 6, 10, 12); ctx.fillRect(ALTAR.x + 36, ALTAR.y + 6, 10, 12);
+  // offering bowls
+  ctx.fillStyle = '#6a1a20'; ctx.beginPath(); ctx.ellipse(ALTAR.x - 34, ALTAR.y - 14, 8, 3, 0, 0, TAU); ctx.fill();
+  ctx.fillStyle = '#d0c8a0'; ctx.beginPath(); ctx.ellipse(ALTAR.x + 34, ALTAR.y - 15, 7, 3, 0, 0, TAU); ctx.fill();
+  for (const b of BURNERS) drawBurner(b, t);
+}
+function drawBurner(b, t) {
+  const s = b.big ? 1 : 0.85;
+  ctx.save(); ctx.translate(b.x, b.y); ctx.scale(s, s);
+  if (!b.big) { ctx.fillStyle = '#2b2a26'; ctx.fillRect(-10, -4, 20, 8); }
+  ctx.fillStyle = '#5a4a2a'; ctx.strokeStyle = '#2a2010'; ctx.lineWidth = 1;
+  ctx.fillRect(-9, -8, 2.5, 8); ctx.fillRect(6.5, -8, 2.5, 8);
+  ctx.beginPath(); ctx.moveTo(-14, -22); ctx.lineTo(14, -22); ctx.quadraticCurveTo(14, -8, 0, -7); ctx.quadraticCurveTo(-14, -8, -14, -22); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#7a6436'; ctx.fillRect(-15, -24, 30, 3);
+  ctx.strokeStyle = '#6a5530'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(-10, -27, 3, Math.PI, 0); ctx.arc(10, -27, 3, Math.PI, 0); ctx.stroke();
+  ctx.strokeStyle = '#8a3020'; ctx.lineWidth = 1.2;
+  for (let i = -1; i <= 1; i++) { ctx.beginPath(); ctx.moveTo(i * 4, -24); ctx.lineTo(i * 4.5, -38); ctx.stroke(); }
+  ctx.globalCompositeOperation = 'lighter';
+  for (let i = -1; i <= 1; i++) { ctx.fillStyle = `rgba(255,${120 + 60 * Math.sin(t * 9 + i)},60,0.9)`; ctx.beginPath(); ctx.arc(i * 4.5, -38.5, 1.6, 0, TAU); ctx.fill(); }
+  ctx.restore();
+}
+
+/* ================= FIGURES ================= */
+function drawFigure(x, y, o) {
+  const s = o.s || 1;
+  ctx.save(); ctx.translate(x, y);
+  if (o.alpha != null) ctx.globalAlpha *= o.alpha;
+  ctx.fillStyle = 'rgba(0,0,0,0.35)'; ctx.beginPath(); ctx.ellipse(0, 0, 10 * s, 3.2 * s, 0, 0, TAU); ctx.fill();
+  if (o.glow) {
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    const gg = ctx.createRadialGradient(0, -16 * s, 2, 0, -16 * s, 28 * s); gg.addColorStop(0, o.glow); gg.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = gg; ctx.fillRect(-28 * s, -44 * s, 56 * s, 56 * s); ctx.restore();
+  }
+  ctx.scale((o.dir || 1) * s, s);
+  if (o.lying) { ctx.rotate(-Math.PI / 2); ctx.translate(-4, 6); }
+  const ph = (o.walk || 0) * 9;
+  const bob = o.moving ? Math.abs(Math.sin(ph)) * 1.6 : 0;
+  const kn = o.kneel || 0;
+  ctx.translate(0, -bob + kn * 7 + (o.float || 0));
+  ctx.lineCap = 'round';
+  if (kn < 0.5) {
+    const sw = o.moving ? Math.sin(ph) * 4.5 : 0;
+    ctx.strokeStyle = '#15110d'; ctx.lineWidth = 2.6;
+    ctx.beginPath(); ctx.moveTo(-2, -8); ctx.lineTo(-2 + sw, 0); ctx.moveTo(2, -8); ctx.lineTo(2 - sw, 0); ctx.stroke();
+  }
+  ctx.translate(0, -8); ctx.rotate(o.bow || 0); ctx.translate(0, 8);
+  if (o.flag) {
+    ctx.strokeStyle = '#3a2a1a'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(-5, -14); ctx.lineTo(-5, -46); ctx.stroke();
+    ctx.fillStyle = o.robe; ctx.fillRect(-27, -46, 22, 10); ctx.strokeStyle = '#e63946'; ctx.lineWidth = 0.8; ctx.strokeRect(-27, -46, 22, 10);
+    ctx.save(); ctx.translate(-16, -41); ctx.scale(o.dir || 1, 1); ctx.fillStyle = '#f0e6c8'; ctx.font = '700 6.5px Georgia,serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(o.flag, 0, 0.5); ctx.restore();
+  }
+  const robe = o.flash ? '#f4e4d0' : o.robe;
+  ctx.fillStyle = robe; ctx.beginPath(); ctx.moveTo(-4.5, -23); ctx.lineTo(4.5, -23); ctx.lineTo(8.5, -5); ctx.quadraticCurveTo(0, -3, -8.5, -5); ctx.closePath(); ctx.fill();
+  if (o.outline) { ctx.strokeStyle = o.outline; ctx.lineWidth = 1.1; ctx.stroke(); }
+  ctx.fillStyle = o.trim; ctx.fillRect(-5, -15.5, 10, 2.4);
+  ctx.strokeStyle = o.trim; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(-3, -23); ctx.lineTo(0, -18); ctx.lineTo(3, -23); ctx.stroke();
+  if (o.armor) {
+    ctx.fillStyle = 'rgba(100,215,130,0.85)';
+    for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.ellipse(-4 + i * 4, -19, 2.2, 4, (i - 1) * 0.4, 0, TAU); ctx.fill(); }
+    ctx.beginPath(); ctx.ellipse(-6, -9, 2.4, 4.4, 0.3, 0, TAU); ctx.ellipse(6, -9, 2.4, 4.4, -0.3, 0, TAU); ctx.fill();
+  }
+  // arm + weapon
+  const th = 0.6 + (o.atk || 0) * 1.9;
+  const hx = 1 + Math.sin(th) * 9, hy = -20 + Math.cos(th) * 9;
+  ctx.strokeStyle = robe; ctx.lineWidth = 3.2; ctx.beginPath(); ctx.moveTo(1, -20); ctx.lineTo(hx, hy); ctx.stroke();
+  drawWeapon(o.weapon, hx, hy, th, o);
+  if (o.carry) {
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(255,40,60,0.9)';
+    ctx.beginPath(); ctx.arc(hx + 3, hy - 2, 3.5, 0, TAU); ctx.fill(); ctx.restore();
+  }
+  // head
+  ctx.fillStyle = '#d9b892'; ctx.beginPath(); ctx.arc(0, -27, 4.6, 0, TAU); ctx.fill();
+  ctx.fillStyle = o.hair || '#141414';
+  ctx.beginPath(); ctx.arc(-0.6, -28, 4.8, Math.PI * 0.95, Math.PI * 2.05); ctx.fill();
+  if (o.beard) { ctx.beginPath(); ctx.moveTo(1, -25); ctx.lineTo(5, -25); ctx.lineTo(2, -15); ctx.fill(); }
+  switch (o.hat) {
+    case 'straw': ctx.fillStyle = '#a8894e'; ctx.beginPath(); ctx.moveTo(-11, -28); ctx.lineTo(11, -28); ctx.lineTo(0, -36); ctx.closePath(); ctx.fill(); break;
+    case 'band': ctx.strokeStyle = o.bandCol || '#8a2a20'; ctx.lineWidth = 1.8; ctx.beginPath(); ctx.moveTo(-4.5, -29); ctx.lineTo(4.5, -29); ctx.lineTo(-6, -27); ctx.stroke(); break;
+    case 'crown': ctx.fillStyle = '#e0b85a'; ctx.fillRect(-2, -35, 4, 3); ctx.fillStyle = o.hair || '#141414'; ctx.beginPath(); ctx.arc(0, -32.5, 2.4, 0, TAU); ctx.fill(); break;
+    case 'hood': ctx.fillStyle = o.robe; ctx.beginPath(); ctx.arc(0, -28, 5.6, Math.PI, 0); ctx.lineTo(5.6, -24); ctx.lineTo(-5.6, -24); ctx.fill(); break;
+    case 'bun': ctx.beginPath(); ctx.arc(-1, -32.5, 2.4, 0, TAU); ctx.fill(); break;
+  }
+  ctx.restore();
+}
+function drawWeapon(w, hx, hy, th, o) {
+  if (!w) return;
+  ctx.lineCap = 'round';
+  if (w === 'spear') {
+    const a = lerp(-1.35, 0, o.atk || 0); const dx = Math.cos(a), dy = Math.sin(a);
+    ctx.strokeStyle = '#6a4a2a'; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(hx - dx * 12, hy - dy * 12); ctx.lineTo(hx + dx * 22, hy + dy * 22); ctx.stroke();
+    ctx.fillStyle = '#cfd6d8'; ctx.beginPath(); ctx.moveTo(hx + dx * 28, hy + dy * 28); ctx.lineTo(hx + dx * 21 - dy * 2.4, hy + dy * 21 + dx * 2.4); ctx.lineTo(hx + dx * 21 + dy * 2.4, hy + dy * 21 - dx * 2.4); ctx.fill();
+    ctx.fillStyle = '#b02a20'; ctx.beginPath(); ctx.arc(hx + dx * 20, hy + dy * 20, 1.6, 0, TAU); ctx.fill();
+  } else if (w === 'sword' || w === 'saber' || w === 'bigsword') {
+    const a = th - Math.PI / 2 - 0.2; const L = w === 'bigsword' ? 20 : 14;
+    const dx = Math.cos(a), dy = -Math.sin(a);
+    ctx.strokeStyle = w === 'sword' ? '#e6f2ee' : (w === 'bigsword' ? '#d8b45a' : '#b8b0a8'); ctx.lineWidth = w === 'bigsword' ? 2.4 : 1.7;
+    ctx.beginPath(); ctx.moveTo(hx, hy);
+    if (w === 'saber') ctx.quadraticCurveTo(hx + dx * L * 0.6 + dy * 3, hy + dy * L * 0.6 - dx * 3, hx + dx * L, hy + dy * L); else ctx.lineTo(hx + dx * L, hy + dy * L);
+    ctx.stroke();
+  } else if (w === 'bow') {
+    ctx.strokeStyle = '#6a4a2a'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(hx + 2, hy - 3, 9, -1.2, 1.2); ctx.stroke();
+    ctx.strokeStyle = 'rgba(220,220,200,0.6)'; ctx.lineWidth = 0.6; ctx.beginPath(); ctx.moveTo(hx + 2 + Math.cos(-1.2) * 9, hy - 3 + Math.sin(-1.2) * 9); ctx.lineTo(hx + 2 + Math.cos(1.2) * 9, hy - 3 + Math.sin(1.2) * 9); ctx.stroke();
+  } else if (w === 'hoe') {
+    ctx.strokeStyle = '#6a4a2a'; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.moveTo(hx - 3, hy - 10); ctx.lineTo(hx + 3, hy + 8); ctx.stroke();
+    ctx.strokeStyle = '#8a8a80'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(hx + 3, hy + 8); ctx.lineTo(hx + 8, hy + 6); ctx.stroke();
+  } else if (w === 'orb') {
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    const g = ctx.createRadialGradient(hx + 2, hy - 2, 0, hx + 2, hy - 2, 8); g.addColorStop(0, 'rgba(230,180,255,1)'); g.addColorStop(1, 'rgba(150,60,255,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(hx + 2, hy - 2, 8, 0, TAU); ctx.fill(); ctx.restore();
+  }
+}
+
+const TOTEM_COL = { blood: '208,0,0', qi: '120,220,255', spirit: '180,120,255' };
+function drawThrall(e, t) {
+  const a = e.dead ? Math.max(0, e.deadT / 0.7) : 1;
+  ctx.save(); ctx.globalAlpha = a; ctx.translate(e.x, e.y);
+  ctx.fillStyle = 'rgba(0,0,0,0.35)'; ctx.beginPath(); ctx.ellipse(0, 0, 14, 3.5, 0, 0, TAU); ctx.fill();
+  ctx.scale(e.dir || 1, 1);
+  const ph = e.walk * 14, bob = e.moving ? Math.abs(Math.sin(ph)) * 2 : 0, sw = e.moving ? Math.sin(ph) * 4 : 0;
+  ctx.translate(0, -bob);
+  ctx.strokeStyle = '#1a0606'; ctx.lineWidth = 2.4; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(-8, -9); ctx.lineTo(-8 + sw, 0); ctx.moveTo(-4, -9); ctx.lineTo(-4 - sw, 0); ctx.moveTo(6, -9); ctx.lineTo(6 - sw, 0); ctx.moveTo(9, -9); ctx.lineTo(9 + sw, 0); ctx.stroke();
+  const body = e.hitT > 0.08 ? '#f4e4d0' : '#3a0d10';
+  ctx.fillStyle = '#9d0208';
+  for (let i = 0; i < 4; i++) { ctx.beginPath(); ctx.moveTo(-8 + i * 5, -16); ctx.lineTo(-6 + i * 5, -23 - (i % 2) * 3); ctx.lineTo(-4 + i * 5, -16); ctx.fill(); }
+  ctx.fillStyle = body; ctx.strokeStyle = '#e63946'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.ellipse(0, -12, 13, 6.5, 0, 0, TAU); ctx.fill(); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(13, -15, 6.5, 5, -0.2 - e.atkAnim * 0.5, 0, TAU); ctx.fill(); ctx.stroke();
+  ctx.strokeStyle = '#3a0d10'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(-12, -13); ctx.quadraticCurveTo(-20, -16 + Math.sin(t * 6 + e.walk) * 3, -22, -10); ctx.stroke();
+  ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(255,40,40,1)'; ctx.beginPath(); ctx.arc(15, -17, 1.6, 0, TAU); ctx.fill();
+  ctx.restore();
+}
+function drawTotem(e, t) {
+  const T = ETYPES[e.type], col = TOTEM_COL[T.totem];
+  const a = e.dead ? Math.max(0, e.deadT / 0.7) : 1, flash = e.hitT > 0.08;
+  const fy = -30 + Math.sin(t * 1.5 + e.walk) * 5;
+  ctx.save(); ctx.globalAlpha = a; ctx.translate(e.x, e.y);
+  ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.beginPath(); ctx.ellipse(0, 0, 28, 7, 0, 0, TAU); ctx.fill();
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  const g = ctx.createRadialGradient(0, fy - 55, 10, 0, fy - 55, 110); g.addColorStop(0, `rgba(${col},0.4)`); g.addColorStop(1, `rgba(${col},0)`);
+  ctx.fillStyle = g; ctx.fillRect(-110, fy - 165, 220, 220);
+  ctx.strokeStyle = `rgba(${col},0.55)`; ctx.lineWidth = 2;
+  for (let i = 0; i < 5; i++) { const x0 = (i - 2) * 7; ctx.beginPath(); ctx.moveTo(x0, fy); ctx.bezierCurveTo(x0 + Math.sin(t * 3 + i) * 10, fy + 10, x0 - Math.sin(t * 2.4 + i) * 12, fy + 18, x0 + Math.sin(t * 2 + i * 2) * 8, fy + 26); ctx.stroke(); }
+  ctx.restore();
+  for (let i = 0; i < 3; i++) {
+    const y0 = fy - i * 36, w = 30 - i * 3;
+    ctx.fillStyle = flash ? '#f4e4d0' : (i % 2 ? '#3a2e28' : '#2c2523');
+    ctx.beginPath(); ctx.roundRect(-w / 2, y0 - 34, w, 34, 4); ctx.fill();
+    ctx.strokeStyle = '#e63946'; ctx.lineWidth = 1.2; ctx.stroke();
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = `rgba(${col},${0.7 + 0.3 * Math.sin(t * 4 + i)})`;
+    ctx.beginPath(); ctx.ellipse(-6, y0 - 22, 3.5, 2, 0, 0, TAU); ctx.ellipse(6, y0 - 22, 3.5, 2, 0, 0, TAU); ctx.fill(); ctx.restore();
+    ctx.strokeStyle = 'rgba(0,0,0,0.6)'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(-7, y0 - 11); ctx.lineTo(-3, y0 - 8); ctx.lineTo(3, y0 - 11); ctx.lineTo(7, y0 - 8); ctx.stroke();
+  }
+  const top = fy - 106, fl = Math.sin(t * 2) * 3;
+  ctx.fillStyle = flash ? '#f4e4d0' : '#2c2523'; ctx.strokeStyle = '#e63946'; ctx.lineWidth = 1.2;
+  ctx.beginPath(); ctx.moveTo(-12, top); ctx.lineTo(-38, top - 18 + fl); ctx.lineTo(-16, top - 6); ctx.lineTo(0, top - 26); ctx.lineTo(16, top - 6); ctx.lineTo(38, top - 18 + fl); ctx.lineTo(12, top); ctx.closePath(); ctx.fill(); ctx.stroke();
+  ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = `rgba(${col},0.9)`; ctx.beginPath(); ctx.arc(0, top - 12, 4, 0, TAU); ctx.fill();
+  ctx.restore();
+  if (!e.dead) { ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = '600 12px "Songti SC",serif'; ctx.fillStyle = `rgba(${col},0.95)`; ctx.fillText(T.en, e.x, e.y - 184); }
+}
+
+/* ================= VILLAGERS (ambient) ================= */
+const VSTYLE = {
+  farmers: { robe: '#5d6b4a', trim: '#3a2e22', hat: 'straw', weapon: 'hoe' },
+  hunters: { robe: '#5a4630', trim: '#2a1d12', hat: 'band', weapon: 'bow' },
+  devotees: { robe: '#8a6b3a', trim: '#d8b45a', hat: 'bun' },
+  idle: { robe: '#4a5560', trim: '#2a3038', hat: 'bun' }
+};
+function syncVillagers() {
+  const want = { farmers: Math.min(G.roles.farmers, 9), hunters: Math.min(G.roles.hunters, 6), devotees: Math.min(G.roles.devotees, 8), idle: Math.min(G.idle, 6) };
+  for (const role in want) {
+    const list = villagers.filter(v => v.role === role);
+    while (list.length < want[role]) { const v = makeVillager(role); villagers.push(v); list.push(v); }
+    while (list.length > want[role]) { const v = list.pop(); villagers.splice(villagers.indexOf(v), 1); }
+  }
+  let k = 0; for (const v of villagers) if (v.role === 'devotees') v.slot = k++;
+}
+function makeVillager(role) {
+  const v = { role, x: rand(560, 720), y: rand(650, 695), tx: 640, ty: 660, t: rand(0, 2), walk: rand(0, 9), dir: 1, moving: false, state: 'idle', hidden: false, carry: false, kneel: 0 };
+  if (role === 'hunters') { v.state = 'toEdge'; v.side = Math.random() < 0.5 ? -1 : 1; }
+  return v;
+}
+function villagerTarget(v) {
+  if (v.role === 'farmers') { const s = pick(STALKS); v.tx = s.x; v.ty = s.y + 6; }
+  else if (v.role === 'devotees') { v.tx = 640 + ((v.slot % 4) - 1.5) * 26; v.ty = 632 + Math.floor(v.slot / 4) * 20; }
+  else { v.tx = rand(440, 840); v.ty = rand(640, 705); }
+}
+function updateVillager(v, dt) {
+  v.moving = false; v.t -= dt;
+  if (G.raid && v.role !== 'hunters') {
+    if (!v.hideSpot) v.hideSpot = { x: Math.random() < 0.5 ? rand(470, 570) : rand(710, 810), y: rand(500, 512) };
+    v.kneel = Math.max(0, v.kneel - dt * 3);
+    if (dist(v.x, v.y, v.hideSpot.x, v.hideSpot.y) > 2) moveToward(v, v.hideSpot.x, v.hideSpot.y, 70, dt);
+    return;
+  }
+  v.hideSpot = null;
+  if (v.role === 'hunters') {
+    if (v.state === 'toEdge') {
+      const ex = v.side < 0 ? -30 : W + 30;
+      if (Math.abs(v.x - ex) > 3) moveToward(v, ex, 640, 55, dt); else { v.state = 'away'; v.hidden = true; v.t = rand(5, 9); }
+    } else if (v.state === 'away') {
+      if (v.t <= 0 && !G.raid) { v.state = 'toAltar'; v.hidden = false; v.carry = true; v.tx = 640 + rand(-40, 40); v.ty = 616; }
+    } else if (v.state === 'toAltar') {
+      if (dist(v.x, v.y, v.tx, v.ty) > 3) moveToward(v, v.tx, v.ty, 50, dt);
+      else { v.state = 'offer'; v.t = 1.6; }
+    } else if (v.state === 'offer') {
+      v.kneel = Math.min(1, v.kneel + dt * 4);
+      if (v.t <= 0) { v.carry = false; v.kneel = 0; v.state = 'toEdge'; v.side = Math.random() < 0.5 ? -1 : 1; spawnOrb(v.x, v.y - 20, TREE_X, TREE_Y - 60, 'rgba(255,50,70,1)'); }
+    }
+    return;
+  }
+  if (v.role === 'devotees') {
+    villagerTarget(v);
+    if (dist(v.x, v.y, v.tx, v.ty) > 2) { moveToward(v, v.tx, v.ty, 40, dt); v.kneel = 0; }
+    else { v.kneel = Math.min(1, v.kneel + dt * 3); v.dir = v.y > ALTAR.y ? 1 : 1; v.bow = -0.35 - 0.35 * Math.max(0, Math.sin(G.anim * 1.6 + v.slot)); }
+    return;
+  }
+  // farmers & idle
+  if (v.t <= 0 && v.state === 'idle') { villagerTarget(v); v.state = 'walk'; }
+  if (v.state === 'walk') {
+    if (dist(v.x, v.y, v.tx, v.ty) > 3) moveToward(v, v.tx, v.ty, v.role === 'farmers' ? 36 : 28, dt);
+    else { v.state = 'idle'; v.t = rand(2, 5); }
+  }
+  v.kneel = (v.role === 'farmers' && v.state === 'idle') ? 0.35 + 0.15 * Math.sin(G.anim * 4 + v.walk) : 0;
+}
+function moveToward(u, tx, ty, sp, dt) {
+  const dx = tx - u.x, dy = ty - u.y, d = Math.hypot(dx, dy) || 1;
+  const s = Math.min(d, sp * dt); u.x += dx / d * s; u.y += dy / d * s;
+  if (s > 0.05) { u.moving = true; u.walk += dt; }
+  if (Math.abs(dx) > 1) u.dir = dx > 0 ? 1 : -1;
+}
+
+/* ================= DEFENDERS ================= */
+function makeGuard(kind) {
+  const g = { kind, x: 640 + rand(-30, 30), y: 565 + rand(0, 10), hp: 1, maxHp: 1, dmg: 1, cd: 0.9, atkT: 0, speed: 55, walk: rand(0, 9), dir: 1, atkAnim: 0, post: { x: 640, y: 650 }, down: false, life: 0, hitT: 0, moving: false };
+  setStats(g); g.hp = g.maxHp; return g;
+}
+function setStats(g) {
+  const old = g.maxHp;
+  if (g.kind === 'hero') { g.maxHp = 160 + 30 * (G.heroRealm - 1); g.dmg = (18 + 5 * (G.heroRealm - 1)) * (1 + 0.15 * G.heroArt); g.cd = 0.7; g.speed = 78; }
+  else if (g.kind === 'warrior') { const m = 1 + 0.12 * G.rank; g.maxHp = 70 * m; g.dmg = 9 * m; g.cd = 0.9; g.speed = 55; }
+  else { const m = artMul(); g.maxHp = 120 * m; g.dmg = 16 * m; g.cd = 0.8; g.speed = 72; }
+  if (old > 1 && !g.down) g.hp = Math.min(g.maxHp, g.hp + Math.max(0, g.maxHp - old));
+}
+function syncGuards() {
+  if (!guards.some(g => g.kind === 'hero')) guards.push(makeGuard('hero'));
+  const ws = guards.filter(g => g.kind === 'warrior');
+  while (ws.length < G.roles.warriors) { const g = makeGuard('warrior'); guards.push(g); ws.push(g); }
+  while (ws.length > G.roles.warriors) { const g = ws.pop(); g.gone = true; guards.splice(guards.indexOf(g), 1); }
+  assignPosts();
+}
+function assignPosts() {
+  let i = 0;
+  for (const g of guards) {
+    if (g.kind === 'hero') { g.post = { x: 640, y: 690 }; continue; }
+    if (g.kind === 'spirit') continue;
+    const side = i % 2 ? 1 : -1, k = Math.floor(i / 2);
+    g.post = { x: 640 + side * (100 + (k % 4) * 40), y: 618 + (k % 3) * 24 + Math.floor(k / 4) * 10 }; i++;
+  }
+}
+function updateGuards(dt) {
+  const alive = enemies.filter(e => !e.dead);
+  const inf = G.buffs.infuse > 0 ? 1.3 : 1;
+  for (let i = guards.length - 1; i >= 0; i--) {
+    const g = guards[i]; g.moving = false;
+    g.atkAnim = Math.max(0, g.atkAnim - dt * 4); g.hitT = Math.max(0, g.hitT - dt);
+    if (g.kind === 'spirit') { g.life -= dt; if (g.life <= 0) { burst(g.x, g.y - 16, 'rgba(120,240,190,1)', 14, 80); g.gone = true; guards.splice(i, 1); continue; } }
+    if (g.down) continue;
+    if (g.stun > 0) { g.stun -= dt; continue; }
+    g.atkT -= dt * inf;
+    let tgt = null, td = 1e9;
+    for (const e of alive) { const d = dist(g.x, g.y, e.x, e.y); if (d < td) { td = d; tgt = e; } }
+    if (tgt) {
+      const reach = 18 + ETYPES[tgt.type].r;
+      if (td > reach) moveToward(g, tgt.x, tgt.y, g.speed * inf, dt);
+      else {
+        g.dir = tgt.x >= g.x ? 1 : -1;
+        if (g.atkT <= 0) {
+          g.atkT = g.cd; g.atkAnim = 1;
+          const dmg = g.dmg * inf * rand(0.85, 1.15) * (G.raid && G.raid.prepared ? 1.25 : 1);
+          damageEnemy(tgt, dmg);
+          if (g.kind === 'hero' && G.heroArt > 0) for (const o of alive) if (o !== tgt && !o.dead && dist(o.x, o.y, tgt.x, tgt.y) < 48) damageEnemy(o, dmg * 0.35 * G.heroArt);
+          if (g.kind !== 'warrior') fx.push({ type: 'slash', x: g.x + g.dir * 10, y: g.y - 16, dir: g.dir, t: 0, dur: 0.22, col: g.kind === 'hero' ? '220,255,240' : '120,240,190' });
+        }
+      }
+    } else {
+      if (dist(g.x, g.y, g.post.x, g.post.y) > 3) moveToward(g, g.post.x, g.post.y, g.speed * 0.7, dt);
+      else g.dir = g.x < 640 ? -1 : 1;
+      if (!G.raid) g.hp = Math.min(g.maxHp, g.hp + 5 * dt);
+    }
+  }
+  separate(guards); separate(enemies);
+}
+function separate(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    const a = arr[i]; if (a.dead || a.down) continue;
+    for (let j = i + 1; j < arr.length; j++) {
+      const b = arr[j]; if (b.dead || b.down) continue;
+      const dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy);
+      if (d < 13 && d > 0.01) { const p = (13 - d) * 0.5, nx = dx / d, ny = dy / d; a.x -= nx * p; a.y -= ny * p; b.x += nx * p; b.y += ny * p; }
+    }
+    a.y = clamp(a.y, 562, 705);
+  }
+}
+function damageGuard(g, amt) {
+  if (g.down || g.gone) return;
+  if (G.buffs.armor > 0) amt *= 0.5;
+  g.hp -= amt; g.hitT = 0.15; sparks(g.x, g.y - 16, '#ff7a60', 3);
+  if (g.hp > 0) return;
+  if (g.kind === 'hero') { g.down = true; g.hp = 0; log('<b>Chen Qingyu</b> is struck down! He will recover once the raid ends.', 'bad'); }
+  else if (g.kind === 'warrior') {
+    g.gone = true; guards.splice(guards.indexOf(g), 1); G.roles.warriors--; assignPosts();
+    burst(g.x, g.y - 12, 'rgba(255,80,60,1)', 10, 60);
+    log('A Chen warrior has fallen defending the shrine.', 'bad'); checkPop();
+  } else { g.gone = true; guards.splice(guards.indexOf(g), 1); burst(g.x, g.y - 16, 'rgba(120,240,190,1)', 14, 80); }
+}
+
+/* ================= INVADERS ================= */
+function raidComposition(r) {
+  const q = []; const add = (t, n) => { for (let i = 0; i < n; i++) q.push(t); };
+  let boss = null;
+  switch (r) {
+    case 1: add('raider', 5); break;
+    case 2: add('raider', 8); add('archer', 3); break;
+    case 3: add('raider', 10); add('archer', 4); add('cultivator', 2); boss = 'elder'; break;
+    case 4: add('retainer', 6); add('crossbow', 4); add('cultivator', 1); break;
+    case 5: add('retainer', 8); add('crossbow', 5); add('cultivator', 2); boss = 'champion'; break;
+    case 6: add('thrall', 12); add('raider', 4); boss = 'totemBlood'; break;
+    case 7: add('thrall', 12); add('cultivator', 3); add('crossbow', 3); boss = 'totemQi'; break;
+    case 8: add('thrall', 16); add('retainer', 4); add('cultivator', 3); boss = 'totemSpirit'; break;
+    default: add('thrall', 8 + r); add('retainer', r - 3); add('crossbow', r - 4); add('cultivator', r - 6); boss = pick(['totemBlood', 'totemQi', 'totemSpirit']);
+  }
+  for (let i = q.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [q[i], q[j]] = [q[j], q[i]]; }
+  if (boss) q.splice(Math.floor(q.length * (ETYPES[boss].totem ? 0.35 : 0.85)), 0, boss);
+  return q;
+}
+function spawnEnemy(type) {
+  const d = ETYPES[type], r = G.raid.r;
+  const side = Math.random() < 0.5 ? -1 : 1;
+  const hpM = d.boss ? 1 + 0.25 * Math.max(0, r - FINAL_RAID) : 1 + 0.22 * (r - 1), dmM = 1 + 0.15 * (r - 1);
+  const e = { type, x: side < 0 ? -30 : W + 30, y: rand(578, 695), hp: d.hp * hpM, maxHp: d.hp * hpM, dmg: d.dmg * dmM, tdmg: d.tdmg * dmM, cd: d.cd,
+    atkT: rand(0.2, d.cd), range: d.range, speed: d.speed * rand(0.9, 1.1), stun: 0, dir: -side, walk: rand(0, 9), atkAnim: 0, special: 5, hitT: 0, dead: false, moving: false };
+  enemies.push(e);
+  if (type === 'retainer' || type === 'crossbow') e.clan = pick(['Shi', 'Xie', 'Gan', 'Shen']);
+  if (type === 'champion') e.clan = 'Shen';
+  if (d.boss) { banner(d.en, 'has come to Luanzang Mountain!', d.totem ? `rgb(${TOTEM_COL[d.totem]})` : '#ff7a60'); log(BOSS_LINES[type] || `The <b>${d.en}</b> appears.`, 'bad'); Sfx.playDrum(); }
+}
+function updateEnemies(dt) {
+  const slowM = G.buffs.mistRaid > 0 ? 0.45 : 1;
+  const live = guards.filter(g => !g.down);
+  for (let i = enemies.length - 1; i >= 0; i--) {
+    const e = enemies[i]; e.moving = false;
+    if (e.dead) { e.deadT -= dt; if (e.deadT <= 0) enemies.splice(i, 1); continue; }
+    e.atkAnim = Math.max(0, e.atkAnim - dt * 4); e.hitT = Math.max(0, e.hitT - dt); e.atkT -= dt;
+    if (e.stun > 0) { e.stun -= dt; continue; }
+    const T = ETYPES[e.type];
+    let tg = null, td = 1e9;
+    for (const g of live) { const d = dist(e.x, e.y, g.x, g.y); if (d < td) { td = d; tg = g; } }
+    const aggro = T.ranged ? e.range : 90;
+    const treeReach = T.ranged ? e.range * 0.85 : 56 + T.r;
+    const treeDist = Math.abs(e.x - TREE_X);
+    if (tg && td < aggro) {
+      if (td > (T.ranged ? e.range : 16 + T.r)) moveToward(e, tg.x, tg.y, e.speed * slowM, dt);
+      else { e.dir = tg.x >= e.x ? 1 : -1; if (e.atkT <= 0) { e.atkT = e.cd; e.atkAnim = 1; enemyAttack(e, tg); } }
+    } else if (treeDist > treeReach) {
+      const tx = TREE_X + (e.x < TREE_X ? -1 : 1) * (treeReach - 4);
+      moveToward(e, tx, clamp(e.y, 590, 695), e.speed * slowM, dt);
+    } else {
+      e.dir = e.x < TREE_X ? 1 : -1;
+      if (e.atkT <= 0) { e.atkT = e.cd; e.atkAnim = 1; enemyAttack(e, 'tree'); }
+    }
+    if (T.totem) totemSpecial(e, T, dt);
+    else if (T.boss) {
+      e.special -= dt;
+      if (e.special <= 0 && treeDist < 520) {
+        e.special = 6; floater(e.x, e.y - 60, 'Sword Qi!', '#ff9a80', 1.4);
+        projs.push({ kind: 'wave', from: 'enemy', x: e.x, y: e.y - 30, vx: 0, vy: 0, speed: 380, turn: 30, target: 'tree', tx: TREE_X, ty: TREE_Y - 80, dmg: 24 * (1 + 0.15 * (G.raid ? G.raid.r - 1 : 0)), t: 0 });
+        Sfx.playWoosh();
+      }
+    }
+  }
+}
+function totemSpecial(e, T, dt) {
+  const dmM = 1 + 0.15 * ((G.raid ? G.raid.r : 6) - 1);
+  e.special -= dt;
+  if (T.totem === 'qi') { G.faith = Math.max(0, G.faith - 1.5 * dt); G.qi = Math.max(0, G.qi - 0.5 * dt); }
+  if (T.totem === 'spirit') {
+    G.vit = Math.max(0, G.vit - 0.8 * dt);
+    for (const g of guards.slice()) if (g.kind === 'spirit' && dist(g.x, g.y, e.x, e.y) < 260) { g.hp -= 10 * dt; if (g.hp <= 0) damageGuard(g, 1); }
+  }
+  if (e.special > 0) return;
+  if (T.totem === 'blood') {
+    e.special = 4.5; let tot = 0;
+    for (const g of guards.slice()) if (!g.down && dist(g.x, g.y, e.x, e.y) < 230) {
+      fx.push({ type: 'tether', x: g.x, y: g.y - 14, x2: e.x, y2: e.y - 80, t: 0, dur: 0.6, col: '208,0,0' });
+      tot += 14 * dmM; damageGuard(g, 14 * dmM);
+    }
+    if (tot) { e.hp = Math.min(e.maxHp, e.hp + tot * 1.5); floater(e.x, e.y - 150, 'Blood Siphon', '#ff6a6a', 1.2); Sfx.playWoosh(); }
+  } else if (T.totem === 'qi') {
+    e.special = 6;
+    if (G.buffs.barrier > 0) { G.barrierHp *= 0.4; floater(TREE_X, 300, 'Barrier devoured!', '#9fe6ff', 1.2); }
+    projs.push({ kind: 'qiwave', from: 'enemy', x: e.x, y: e.y - 80, vx: 0, vy: 0, speed: 320, turn: 30, target: 'tree', tx: TREE_X, ty: TREE_Y - 90, dmg: 30 * dmM, t: 0 });
+    floater(e.x, e.y - 150, 'Qi Devour', '#9fe6ff', 1.2); Sfx.playZap();
+  } else {
+    e.special = 5; let hit = false;
+    for (const g of guards.slice()) if (!g.down && dist(g.x, g.y, e.x, e.y) < 210) {
+      hit = true; g.stun = 1.2;
+      fx.push({ type: 'tether', x: g.x, y: g.y - 14, x2: e.x, y2: e.y - 80, t: 0, dur: 0.6, col: '180,120,255' });
+      damageGuard(g, 20 * dmM);
+    }
+    if (hit) { floater(e.x, e.y - 150, 'Soul Rend', '#d0a8ff', 1.2); Sfx.playZap(); }
+  }
+}
+function enemyAttack(e, tg) {
+  const T = ETYPES[e.type];
+  if (G.buffs.mistRaid > 0 && Math.random() < 0.4) { floater(e.x, e.y - 40, 'miss', '#a8c8c0', 0.8); return; }
+  if (T.ranged) {
+    const isTree = tg === 'tree';
+    projs.push({ kind: T.ranged, from: 'enemy', x: e.x + e.dir * 8, y: e.y - 20, vx: 0, vy: 0, speed: T.ranged === 'arrow' ? 420 : 240, turn: 40,
+      target: tg, tx: isTree ? TREE_X + rand(-30, 30) : tg.x, ty: isTree ? TREE_Y - rand(40, 160) : tg.y - 14, dmg: isTree ? e.tdmg : e.dmg, t: 0 });
+  } else if (tg === 'tree') { treeDamage(e.tdmg); if (T.totem === 'blood') G.vit = Math.max(0, G.vit - 4); sparks(TREE_X + (e.x < TREE_X ? -14 : 14), TREE_Y - 20, '#c8a070', 4); Sfx.playHit(); }
+  else { damageGuard(tg, e.dmg); Sfx.playHit(); }
+}
+function damageEnemy(e, amt) {
+  if (e.dead) return;
+  e.hp -= amt; e.hitT = 0.15; sparks(e.x, e.y - 16, '#ffd27a', 4);
+  if (amt >= 12) floater(e.x + rand(-6, 6), e.y - 36, Math.round(amt), '#ffe6a8', 0.7);
+  Sfx.playHit();
+  if (e.hp <= 0) killEnemy(e);
+}
+function killEnemy(e) {
+  const T = ETYPES[e.type];
+  e.dead = true; e.deadT = 0.7; G.kills++;
+  G.vit += T.vit; G.faith += T.fai;
+  spawnOrb(e.x, e.y - 14, TREE_X, TREE_Y - 40, 'rgba(255,50,70,1)');
+  burst(e.x, e.y - 14, 'rgba(200,30,40,1)', 8, 70);
+  if (T.boss) { log(`The <b>${T.en}</b> ${T.totem ? 'shatters! Its stolen essence flows back into your roots' : 'is slain! The blood soaks into the ancestral roots'}.`, 'gold'); G.shake = 14; Sfx.playGong(); }
+}
+function treeDamage(d) {
+  if (G.over) return;
+  if (G.raid && G.raid.prepared) d *= 0.8;
+  if (G.buffs.barrier > 0 && G.barrierHp > 0) {
+    const a = Math.min(G.barrierHp, d); G.barrierHp -= a; d -= a;
+    if (G.barrierHp <= 0) { G.buffs.barrier = 0; floater(TREE_X, 300, 'Barrier shattered', '#f0d080', 1.2); }
+  }
+  if (d <= 0) return;
+  G.treeHp -= d; G.treeHit = Math.min(1, G.treeHit + 0.5);
+  if (G.treeHp <= 0) { G.treeHp = 0; gameOver('tree'); }
+}
+function nearestEnemy(x, y, maxD = 1e9) {
+  let b = null, bd = maxD;
+  for (const e of enemies) { if (e.dead) continue; const d = dist(x, y, e.x, e.y); if (d < bd) { bd = d; b = e; } }
+  return b;
+}
+
+/* ================= PROJECTILES & PARTICLES ================= */
+function fireLeaf(e, dmg, sx, sy) {
+  const x = sx != null ? sx : TREE_X + rand(-120, 120), y = sy != null ? sy : TREE_Y - rand(120, 280);
+  const a = rand(0, TAU);
+  projs.push({ kind: 'leaf', from: 'tree', x, y, vx: Math.cos(a) * 200, vy: Math.sin(a) * 200, speed: 460, turn: 5, target: e, tx: e.x, ty: e.y - 14, dmg, t: 0, rot: rand(0, TAU) });
+}
+function updateProjs(dt) {
+  for (let i = projs.length - 1; i >= 0; i--) {
+    const p = projs[i]; p.t += dt;
+    if (p.target && p.target !== 'tree') {
+      const tg = p.target;
+      if (tg.dead || tg.gone || tg.down) {
+        if (p.from === 'tree') { const n = nearestEnemy(p.x, p.y); if (n) p.target = n; else { projs.splice(i, 1); continue; } }
+        else p.target = null;
+      } else { p.tx = tg.x; p.ty = tg.y - 14; }
+    }
+    const dx = p.tx - p.x, dy = p.ty - p.y, d = Math.hypot(dx, dy) || 1;
+    if (d < 10) {
+      if (p.target === 'tree') { treeDamage(p.dmg); sparks(p.x, p.y, p.kind === 'fire' ? '#c080ff' : '#ffb080', 5); }
+      else if (p.target) { if (p.from === 'enemy') damageGuard(p.target, p.dmg); else damageEnemy(p.target, p.dmg); }
+      projs.splice(i, 1); continue;
+    }
+    const k = Math.min(1, p.turn * dt);
+    p.vx = lerp(p.vx, dx / d * p.speed, k); p.vy = lerp(p.vy, dy / d * p.speed, k);
+    p.x += p.vx * dt; p.y += p.vy * dt;
+    if (p.kind === 'leaf') p.rot += dt * 14;
+    if (p.kind === 'fire' && Math.random() < 0.5) parts.push({ x: p.x, y: p.y, vx: rand(-15, 15), vy: rand(-15, 15), life: 0.35, max: 0.35, size: 3, color: 'rgba(190,110,255,1)', add: true });
+    if (p.t > 5) projs.splice(i, 1);
+  }
+}
+function drawProjs() {
+  for (const p of projs) {
+    const a = Math.atan2(p.vy, p.vx);
+    ctx.save(); ctx.translate(p.x, p.y);
+    if (p.kind === 'arrow') { ctx.rotate(a); ctx.strokeStyle = '#d8c8a0'; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.moveTo(-10, 0); ctx.lineTo(6, 0); ctx.stroke(); ctx.fillStyle = '#ddd'; ctx.beginPath(); ctx.moveTo(8, 0); ctx.lineTo(4, -2); ctx.lineTo(4, 2); ctx.fill(); }
+    else if (p.kind === 'fire') { ctx.globalCompositeOperation = 'lighter'; const g = ctx.createRadialGradient(0, 0, 0, 0, 0, 10); g.addColorStop(0, 'rgba(255,220,255,1)'); g.addColorStop(1, 'rgba(150,60,255,0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, 10, 0, TAU); ctx.fill(); }
+    else if (p.kind === 'qiwave') { ctx.rotate(a); ctx.globalCompositeOperation = 'lighter'; ctx.strokeStyle = 'rgba(120,220,255,0.9)'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(-8, 0, 20, -1.2, 1.2); ctx.stroke(); ctx.fillStyle = 'rgba(200,240,255,0.6)'; ctx.beginPath(); ctx.arc(0, 0, 5, 0, TAU); ctx.fill(); }
+    else if (p.kind === 'wave') { ctx.rotate(a); ctx.globalCompositeOperation = 'lighter'; ctx.strokeStyle = 'rgba(255,120,90,0.9)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(-8, 0, 18, -1.1, 1.1); ctx.stroke(); ctx.strokeStyle = 'rgba(255,220,200,0.8)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(-8, 0, 18, -1, 1); ctx.stroke(); }
+    else if (p.kind === 'leaf') { ctx.rotate(p.rot); ctx.fillStyle = G.treeLvl >= 5 ? '#f0d070' : '#7fe0a0'; ctx.beginPath(); ctx.ellipse(0, 0, 7, 2.6, 0, 0, TAU); ctx.fill(); ctx.strokeStyle = 'rgba(20,60,30,0.6)'; ctx.lineWidth = 0.6; ctx.beginPath(); ctx.moveTo(-6, 0); ctx.lineTo(6, 0); ctx.stroke(); }
+    ctx.restore();
+  }
+}
+function sparks(x, y, color, n) { for (let i = 0; i < n; i++) parts.push({ x, y, vx: rand(-90, 90), vy: rand(-110, 20), g: 220, life: rand(0.25, 0.5), max: 0.5, size: rand(1.2, 2.4), color, add: true }); }
+function burst(x, y, color, n, sp) { for (let i = 0; i < n; i++) { const a = rand(0, TAU), s = rand(sp * 0.3, sp); parts.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s, drag: 2, life: rand(0.4, 0.9), max: 0.9, size: rand(1.5, 3.5), color, add: true }); } }
+function leafBurst(x, y, n, col) { for (let i = 0; i < n; i++) parts.push({ type: 'leaf', x: x + rand(-20, 20), y: y + rand(-20, 20), vx: rand(-60, 60), vy: rand(-80, -10), g: 40, drag: 1, life: rand(0.8, 1.6), max: 1.6, size: rand(4, 7), color: col || '#7fe0a0', rot: rand(0, TAU), vr: rand(-6, 6) }); }
+function spawnOrb(x, y, tx, ty, color) { parts.push({ type: 'orb', x, y, vx: rand(-60, 60), vy: rand(-140, -60), tx, ty, life: 3, max: 3, size: 3.5, color, add: true }); }
+function floater(x, y, text, color, dur = 1) { if (floaters.length > 40) floaters.shift(); floaters.push({ x, y, text: String(text), color, t: 0, dur }); }
+function updateParts(dt) {
+  for (let i = parts.length - 1; i >= 0; i--) {
+    const p = parts[i]; p.life -= dt;
+    if (p.type === 'orb') {
+      const dx = p.tx - p.x, dy = p.ty - p.y, d = Math.hypot(dx, dy) || 1;
+      p.vx = lerp(p.vx, dx / d * 420, Math.min(1, dt * 3)); p.vy = lerp(p.vy, dy / d * 420, Math.min(1, dt * 3));
+      if (d < 12) { p.life = 0; G.treePulse = Math.min(1, G.treePulse + 0.25); }
+      if (Math.random() < 0.6) parts.push({ x: p.x, y: p.y, vx: 0, vy: 0, life: 0.3, max: 0.3, size: 2, color: p.color, add: true });
+    }
+    if (p.life <= 0) { parts.splice(i, 1); continue; }
+    if (p.drag) { p.vx *= 1 - Math.min(1, p.drag * dt); p.vy *= 1 - Math.min(1, p.drag * dt); }
+    if (p.g) p.vy += p.g * dt;
+    p.x += p.vx * dt; p.y += p.vy * dt;
+    if (p.vr) p.rot += p.vr * dt;
+  }
+  for (let i = floaters.length - 1; i >= 0; i--) { const f = floaters[i]; f.t += dt; f.y -= 28 * dt; if (f.t >= f.dur) floaters.splice(i, 1); }
+}
+function drawParts() {
+  for (const p of parts) {
+    const a = clamp(p.life / p.max, 0, 1);
+    if (p.type === 'leaf') {
+      ctx.save(); ctx.globalAlpha = a; ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.fillStyle = p.color;
+      ctx.beginPath(); ctx.ellipse(0, 0, p.size, p.size * 0.4, 0, 0, TAU); ctx.fill(); ctx.restore(); continue;
+    }
+    ctx.globalCompositeOperation = p.add ? 'lighter' : 'source-over';
+    ctx.globalAlpha = a; ctx.fillStyle = p.color;
+    ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(0.3, p.size * (0.5 + a * 0.5)), 0, TAU); ctx.fill();
+  }
+  ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+}
+function drawFloaters() {
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  for (const f of floaters) {
+    const a = 1 - f.t / f.dur;
+    ctx.globalAlpha = a; ctx.font = '600 15px "Songti SC","STSong",serif';
+    ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.7)'; ctx.strokeText(f.text, f.x, f.y);
+    ctx.fillStyle = f.color; ctx.fillText(f.text, f.x, f.y);
+  }
+  ctx.globalAlpha = 1;
+}
+function updateSmoke(dt) {
+  for (const b of BURNERS) {
+    b.st = (b.st || 0) - dt;
+    if (b.st <= 0) { b.st = b.big ? 0.07 : 0.12; smoke.push({ x: b.x + rand(-3, 3), y: b.y - (b.big ? 40 : 34), vx: rand(-4, 4), vy: rand(-28, -18), life: b.big ? 4.2 : 3.2, max: b.big ? 4.2 : 3.2, s: rand(2, 4), ph: rand(0, TAU) }); }
+  }
+  for (let i = smoke.length - 1; i >= 0; i--) {
+    const s = smoke[i]; s.life -= dt; if (s.life <= 0) { smoke.splice(i, 1); continue; }
+    s.x += (s.vx + Math.sin(G.anim * 0.9 + s.ph) * 9) * dt; s.y += s.vy * dt; s.s += 3 * dt;
+  }
+}
+function drawSmoke() {
+  for (const s of smoke) {
+    const k = s.life / s.max, a = k * (1 - k) * 4 * 0.125;
+    ctx.fillStyle = `rgba(240,235,224,${a})`; ctx.beginPath(); ctx.arc(s.x, s.y, s.s, 0, TAU); ctx.fill();
+  }
+}
+
+/* ================= DIVINE ARTS ================= */
+const canAfford = c => (!c.vit || G.vit >= c.vit) && (!c.faith || G.faith >= c.faith);
+function costText(c) { const s = []; if (c.vit) s.push(`${c.vit} Vitality`); if (c.faith) s.push(`${c.faith} Faith`); if (c.rice) s.push(`${c.rice} Rice`); return s.join(' + '); }
+function artBlock(id) {
+  const a = ARTS[id];
+  if (G.mode !== 'village' || G.over) return 'Unavailable right now.';
+  if (!G.arts[id]) return `${a.en} is sealed. Unlock it through World Deduction.`;
+  if ((G.cds[id] || 0) > 0) return `${a.en} is recovering (${Math.ceil(G.cds[id])}s).`;
+  if (a.raidOnly && !G.raid) return `${a.en} can only be used during a raid.`;
+  if (id === 'golden' && G.golden) return 'The Golden Body is already manifest.';
+  if ((id === 'barrage' || id === 'golden') && !enemies.some(e => !e.dead)) return 'No invaders in sight yet.';
+  if (!canAfford(a.cost)) return `Not enough ${a.cost.faith && G.faith < a.cost.faith ? 'Incense Faith' : 'Vitality'} for ${a.en}.`;
+  return null;
+}
+function tryArt(id) {
+  const b = artBlock(id); if (b) { toast(b); return; }
+  if (ARTS[id].target) { G.targeting = G.targeting === id ? null : id; if (G.targeting) toast('Click the battlefield to raise Root Spikes. Right-click or Esc to cancel.'); return; }
+  performArt(id);
+}
+function performArt(id, x, y) {
+  if (artBlock(id)) return false;
+  const a = ARTS[id];
+  if (a.cost.vit) G.vit -= a.cost.vit; if (a.cost.faith) G.faith -= a.cost.faith;
+  G.cds[id] = artCd(id);
+  const M = artMul(), L = G.treeLvl;
+  switch (id) {
+    case 'root': {
+      const dmg = (35 + 10 * (L - 1)) * M * (1 + 0.35 * up('root')), RS = 1 + 0.2 * up('root');
+      const spikes = []; for (let i = 0; i < 9; i++) spikes.push({ dx: rand(-62, 62) * RS, dy: rand(-26, 26) * RS, h: rand(22, 42), w: rand(5, 9) });
+      fx.push({ type: 'spikes', x, y, t: 0, dur: 0.9, spikes });
+      for (const e of enemies) {
+        if (e.dead) continue;
+        const k = ((e.x - x) / (80 * RS)) ** 2 + ((e.y - y) / (45 * RS)) ** 2;
+        if (k <= 1) { damageEnemy(e, dmg); if (!e.dead) e.stun = Math.max(e.stun, ETYPES[e.type].totem ? 0.25 : ETYPES[e.type].boss ? 0.5 : 1.4); }
+      }
+      G.shake = Math.max(G.shake, 5); Sfx.playThud(); break;
+    }
+    case 'infuse': {
+      G.buffs.infuse = 15 + 6 * up('infuse');
+      for (const g of guards) if (!g.down) { g.hp = Math.min(g.maxHp, g.hp + g.maxHp * (0.35 + 0.2 * up('infuse'))); leafBurst(g.x, g.y - 20, 4); }
+      const cured = [];
+      if (G.plague > 0) { G.plague = 0; cured.push('the plague'); }
+      if (G.poison > 0) { G.poison = 0; cured.push('the hunters\' beast poison'); }
+      leafBurst(TREE_X, TREE_Y - 200, 26);
+      log(`<b>Vitality Infusion</b>: locust leaves shower the clan with life${cured.length ? ', curing ' + cured.join(' and ') : ''}.`, 'good');
+      Sfx.playChime(); Sfx.playWoosh(); break;
+    }
+    case 'barrier':
+      G.buffs.barrier = 20; G.barrierHp = (120 + 40 * L) * M * (1 + 0.5 * up('barrier'));
+      log('<b>Incense Barrier</b>: the smoke of a thousand prayers hardens into a golden dome.', 'gold');
+      Sfx.playChime(); break;
+    case 'barrage': {
+      const live = enemies.filter(e => !e.dead).sort((p, q) => Math.abs(p.x - TREE_X) - Math.abs(q.x - TREE_X));
+      const n = 10 + 2 * G.artLvl + 5 * up('barrage');
+      for (let i = 0; i < n; i++) fireLeaf(live[i % live.length], 18 * M);
+      leafBurst(TREE_X, TREE_Y - 220, 16); Sfx.playWoosh(); break;
+    }
+    case 'mist':
+      if (G.raid) { G.buffs.mistRaid = 10 + 5 * up('mist'); log('<b>One Leaf Obscuring Sight</b>: the invaders stagger blindly through spirit mist.', 'good'); }
+      else { G.mistPause = 30 + 5 * up('mist'); G.raidMeter = Math.max(0, G.raidMeter - 20 - 10 * up('mist')); log('<b>One Leaf Obscuring Sight</b>: a veil of mist hides the village. The Li clan\'s scouts lose their way.', 'good'); }
+      Sfx.playWoosh(); Sfx.playChime(); break;
+    case 'reverse': {
+      const rv = 45 + 20 * up('reverse'); G.vit += rv; G.treeHp = Math.min(treeMax(), G.treeHp + treeMax() * (0.2 + 0.1 * up('reverse')));
+      let drained = 0;
+      if (G.raid) for (const e of enemies) if (!e.dead) {
+        const d = e.hp * (ETYPES[e.type].boss ? 0.04 : 0.12) * M; drained += d;
+        spawnOrb(e.x, e.y - 20, TREE_X, TREE_Y - 60, 'rgba(255,209,102,1)'); damageEnemy(e, d);
+      }
+      G.treeHp = Math.min(treeMax(), G.treeHp + drained * 0.5);
+      fx.push({ type: 'ring', x: TREE_X, y: TREE_Y - 150, t: 0, dur: 0.9, r0: 200, r1: 10, col: '255,209,102' });
+      floater(TREE_X, TREE_Y - 230, `+${rv} Vitality`, '#ffd166', 1.3);
+      log(`<b>Reversed Pill Circulation</b>: incense turns back into raw vitality${drained ? `, and ${Math.round(drained)} life is siphoned from the invaders` : ''}.`, 'gold');
+      Sfx.playPrayerChime(); Sfx.playWoosh(); break;
+    }
+    case 'soul': {
+      const n = 3 + Math.min(2, G.artLvl) + up('soul');
+      for (let i = 0; i < n; i++) {
+        const g = makeGuard('spirit'); g.x = TREE_X + rand(-50, 50); g.y = TREE_Y + rand(20, 50); g.life = 25 + 5 * up('soul'); g.post = { x: g.x, y: g.y + 60 };
+        guards.push(g); burst(g.x, g.y - 16, 'rgba(120,240,190,1)', 16, 90);
+      }
+      G.buffs.armor = 15;
+      for (const g of guards) if (!g.down) leafBurst(g.x, g.y - 16, 3);
+      log('<b>Soul Gathering &amp; Leaf Armor</b>: ancestral spirits of the Chen clan answer the call, clad in divine leaves.', 'good');
+      Sfx.playWoosh(); Sfx.playChime(); break;
+    }
+    case 'golden':
+      G.golden = { t: 0, struck: false };
+      for (const e of enemies) if (!e.dead) e.stun = Math.max(e.stun, 1.4);
+      banner('Incense Golden Body', 'A colossal avatar rises from the smoke', '#ffe08a');
+      log('<b>INCENSE GOLDEN BODY</b>: a colossal golden avatar rises from the incense smoke!', 'gold');
+      Sfx.playGong(); break;
+  }
+  return true;
+}
+function goldenStrike() {
+  const dmg = 450 * artMul() * (1 + 0.3 * up('golden'));
+  for (const e of enemies) if (!e.dead) { fx.push({ type: 'beam', x: e.x, y: e.y, t: 0, dur: 0.6 }); damageEnemy(e, dmg); }
+  G.treeHp = Math.min(treeMax(), G.treeHp + treeMax() * 0.3);
+  G.flash = 1; G.shake = 18;
+  fx.push({ type: 'ring', x: TREE_X, y: 620, t: 0, dur: 1, r0: 20, r1: 800, col: '255,220,130' });
+  Sfx.playThud(); Sfx.playDrum();
+}
+
+/* ================= SHRINE ACTIONS ================= */
+function doHunt(silent) {
+  if (G.raid) return toast('The hunters will not leave while the shrine is under attack.');
+  if (G.exp) return toast('A hunting party is already in the mountains.');
+  if (G.roles.hunters < 1) return toast('Assign at least one Hunter first (Clan Duties).');
+  if (G.rice < 10) return toast('A hunt needs 10 Blood Rice in provisions.');
+  G.rice -= 10; G.exp = { t: 0, dur: 8 };
+  for (const v of villagers) if (v.role === 'hunters' && v.state !== 'away') { v.state = 'toEdge'; v.carry = false; v.kneel = 0; }
+  if (!silent) log(`${G.roles.hunters} hunters head into the beast-infested ravines of Luanzang.`, 'info');
+  Sfx.playPluck();
+}
+function doTend(silent) {
+  if (G.tendCd > 0) return;
+  if (G.vit < 5) return toast('Tending the fields needs 5 Vitality to stir the Blood Spring.');
+  G.vit -= 5; G.tendCd = 1.5; G.fieldGrowth = Math.min(1, G.fieldGrowth + 0.3);
+  for (let i = 0; i < 14; i++) { const s = pick(STALKS); parts.push({ x: s.x, y: s.y - 6, vx: rand(-10, 10), vy: rand(-50, -20), life: 0.8, max: 0.8, size: 2, color: 'rgba(255,60,80,1)', add: true }); }
+  Sfx.playHarvest();
+}
+const blessCost = () => ({ faith: 15 + 10 * G.blessCount, vit: 10 + 5 * G.blessCount });
+function doBless() {
+  if (G.blessCount >= 12) return toast('Chen Qingyu has reached the limit of what blessings can grant.');
+  const c = blessCost(); if (!canAfford(c)) return toast(`Blessing needs ${costText(c)}.`);
+  G.faith -= c.faith; G.vit -= c.vit; G.blessCount++; G.rank++; G.heroRealm++;
+  for (const g of guards) setStats(g);
+  for (const g of guards) leafBurst(g.x, g.y - 20, 4, '#f0d070');
+  const nm = realmName(G.heroRealm);
+  log(`You enter <b>Chen Qingyu</b>'s dream as an ancient locust spirit and guide his breathing. He breaks through to <b>${nm}</b>, and the clan's warriors share the insight (rank ${G.rank}).`, 'gold');
+  if (G.heroRealm === 10) { banner('Foundation Established', 'Chen Qingyu breaks through!', '#9be8c3'); Sfx.playGong(); }
+  Sfx.playChime();
+}
+function doGrow() {
+  if (G.treeLvl >= 5) return toast('You are already the Incense Tree God.');
+  const c = GROW_COST[G.treeLvl]; if (G.vit < c) return toast(`Growth needs ${c} Vitality.`);
+  G.vit -= c; G.treeLvl++; TREE = buildTree(G.treeLvl); G.treeHp = Math.min(treeMax(), G.treeHp + 130);
+  const st = STAGES[G.treeLvl];
+  banner(st.en, 'The locust tree grows', '#9be8c3'); G.flash = 0.6; leafBurst(TREE_X, TREE_Y - 200, 40, G.treeLvl >= 5 ? '#f0d070' : '#7fe0a0');
+  log(`The locust tree grows! It is now a <b>${st.en}</b>. Faith and Qi flow more strongly${G.treeLvl === 2 ? ', and its leaves now strike at invaders' : ''}.`, 'good');
+  Sfx.playGrow(); if (G.treeLvl >= 4) Sfx.playGong();
+}
+function doHeal() {
+  if (G.treeHp >= treeMax()) return toast('The tree is already whole.');
+  if (G.healCd > 0) return;
+  if (G.vit < 10) return toast('Healing needs 10 Vitality.');
+  G.vit -= 10; G.healCd = 0.6; G.treeHp = Math.min(treeMax(), G.treeHp + 60);
+  leafBurst(TREE_X, TREE_Y - 80, 8); floater(TREE_X, TREE_Y - 120, '+60', '#9be8c3'); Sfx.playChime();
+}
+const expandCost = () => 60 * G.housingLvl;
+function doExpand() {
+  if (G.raid) return toast('Not while the village is under attack.');
+  const c = expandCost(); if (G.rice < c) return toast(`Expansion needs ${c} Blood Rice.`);
+  G.rice -= c; G.housingLvl++; G.springLvl++;
+  log(`The village expands: housing for ${housing()}, and new channels deepen the Blood Spring (+25% harvest).`, 'good');
+  Sfx.playHarvest();
+}
+const marketPrice = () => G.market * (G.buffs.marketUp > 0 ? 1.5 : 1) * (G.buffs.marketDown > 0 ? 0.6 : 1);
+function tradeYield() { const p = marketPrice(); return { vit: Math.round(14 * p), faith: Math.round(9 * p) }; }
+function doTrade() {
+  if (G.raid) return toast("The Yong'an caravans will not come while the shrine is under attack.");
+  if (G.rice < 30) return toast('Trading needs 30 Blood Rice.');
+  const y = tradeYield(); G.rice -= 30; G.vit += y.vit; G.faith += y.faith; G.market = Math.max(0.4, G.market - 0.12);
+  floater(ALTAR.x, ALTAR.y - 60, `+${y.vit} Vitality  +${y.faith} Faith`, '#ffd166', 1.3);
+  log(`Blood Rice sold in Yong'an City for beast cores and temple incense: <b>+${y.vit} Vitality, +${y.faith} Faith</b>. The market cools.`, 'info');
+  Sfx.playHarvest();
+}
+function doRecruit() {
+  if (popTotal() >= housing()) return toast('No housing for a new warrior. Expand the village first.');
+  if (G.rice < 25) return toast('Recruiting a warrior needs 25 Blood Rice.');
+  G.rice -= 25; G.roles.warriors++; syncGuards();
+  log('A wandering martial artist is paid in Blood Rice and swears loyalty to the Chen clan (+1 warrior).', 'good'); Sfx.playPluck();
+}
+function roleAdd(role) {
+  if (G.idle < 1) return toast('No idle clansmen. Use − on another duty to free someone first.');
+  G.idle--; G.roles[role]++; syncVillagers(); if (role === 'warriors') syncGuards();
+}
+function roleRemove(role) {
+  if (G.roles[role] < 1) return;
+  if (role === 'warriors' && G.raid) return toast('Warriors cannot abandon their posts during a raid.');
+  G.roles[role]--; G.idle++; syncVillagers(); if (role === 'warriors') syncGuards();
+}
+function removePerson(reason) {
+  const order = ['idle', 'farmers', 'devotees', 'hunters', 'warriors'];
+  for (const r of order) {
+    if (r === 'idle' ? G.idle > 0 : G.roles[r] > 0) {
+      if (r === 'idle') G.idle--; else G.roles[r]--;
+      syncVillagers(); if (r === 'warriors') syncGuards();
+      log(`A clansman has died of ${reason}.`, 'bad'); break;
+    }
+  }
+  checkPop();
+}
+function checkPop() { if (popTotal() <= 0 && !G.over) gameOver('pop'); }
+function gatherQi(x, y) {
+  if (G.qi < 1) { floater(x, y, 'Qi depleted…', '#8e9a92', 0.8); return; }
+  const n = G.auto.qiAll ? Math.floor(G.qi) : 1;
+  G.qi -= n; const amt = Math.round(n * (1 + 0.5 * (G.treeLvl - 1)) * 10) / 10;
+  G.vit += amt; floater(x, y - 10, `+${amt} Vitality${n > 1 ? ` (${n} Qi)` : ''}`, '#9be8a0', n > 1 ? 1.3 : 0.9);
+  for (let i = 0; i < Math.min(14, 2 + n); i++) spawnOrb(x + rand(-20, 20), y + rand(-20, 20), TREE_X, TREE_Y - 60, 'rgba(120,255,180,1)');
+  G.treePulse = Math.min(1, G.treePulse + 0.3); Sfx.playPluck();
+}
+
+/* ================= RAIDS ================= */
+function startRaid() {
+  const r = G.raidCount + 1; const q = raidComposition(r);
+  G.raid = { r, queue: q, spawnT: 1.5, interval: Math.max(0.7, 1.7 - r * 0.15), total: q.length, drumT: 0, prepared: G.prepared }; G.prepared = false;
+  G.raidMeter = 100; G.targeting = null;
+  for (const v of villagers) if (v.role === 'hunters' && v.state === 'toAltar') { v.state = 'toEdge'; }
+  const info = raidInfo(r);
+  banner(`Raid ${r}`, info.en, '#ff7a60');
+  log(`<b>RAID ${r} · ${info.en}</b>: ${q.length} foes march on Luanzang Mountain. Click the ground for Root Spikes!`, 'bad');
+  Sfx.playDrum(); setTimeout(() => Sfx.playDrum(), 260);
+}
+function updateRaid(dt) {
+  const R = G.raid;
+  if (R.queue.length) { R.spawnT -= dt; if (R.spawnT <= 0) { R.spawnT = R.interval; spawnEnemy(R.queue.shift()); } }
+  R.drumT -= dt; if (R.drumT <= 0) { R.drumT = 3.2; Sfx.playDrum(); }
+  if (G.treeLvl >= 2) {
+    G.treeAtkT -= dt;
+    if (G.treeAtkT <= 0) { G.treeAtkT = Math.max(0.8, 2.4 - 0.3 * G.treeLvl); const e = nearestEnemy(TREE_X, TREE_Y, 330); if (e) fireLeaf(e, (4 + 5 * G.treeLvl) * artMul()); }
+  }
+  if (!R.queue.length && !enemies.some(e => !e.dead)) endRaid();
+}
+function endRaid() {
+  const r = G.raid.r; G.raid = null; G.raidCount++; G.raidMeter = 0; G.scoutWarned = false; G.buffs.mistRaid = 0; G.targeting = null;
+  const fr = 20 + 10 * r, rr = 15 + 8 * r; G.faith += fr; G.rice += rr;
+  for (const g of guards) if (g.kind === 'hero' && g.down) { g.down = false; g.hp = g.maxHp * 0.5; }
+  banner(`Raid ${r} Repelled`, 'The shrine still stands', '#9be8c3');
+  log(`Raid ${r} repelled! The grateful clan offers <b>+${fr} Faith</b>, and plunder yields <b>+${rr} Blood Rice</b>.`, 'good');
+  Sfx.playSuccess(); Sfx.playChime();
+  const g0 = G;
+  if (r === 2) log('Scouts report that the Li and Liu clans are joining forces for a <b>Grand Assault</b>.', 'bad');
+  if (r === 3) setTimeout(() => { if (G !== g0) return; banner('Tier II', "The Four Great Clans of Yong'an", '#ffd166'); dream("Elder Chen dreams of four banners over Yong'an City, marked Shi, Xie, Gan and Shen. The Li clan is broken, but richer wolves now covet the Blood Spring. <b>Trade and rivalry begin.</b>"); }, 2600);
+  if (r === 5) setTimeout(() => { if (G !== g0) return; banner('Tier III', 'The Totems Awaken', '#d0a8ff'); dream("In Chen Qingyu's dream, three totems open their eyes in the deep mountains: the <b>Blood-eating</b>, the <b>Qi-eating</b> and the <b>Spirit-eating</b>. They hunger for a god-tree."); }, 2600);
+  if (r >= FINAL_RAID && !G.won) { G.won = true; setTimeout(() => { if (G === g0 && !G.over) showEnd(true); }, 1600); }
+}
+
+/* ================= EVENTS ================= */
+function dream(msg) { log(`<i>Spirit Dream</i> · ${msg}`, 'gold'); Sfx.playPrayerChime(); }
+function randomEvent() {
+  const opts = [['beast', 3], ['spring', 3], ['wanderer', 2], ['provoke', 2], ['epiphany', 2]];
+  if (G.plague <= 0 && popTotal() > 5 && G.day > 3) opts.push(['plague', 2]);
+  if (G.roles.hunters > 0 && G.poison <= 0) opts.push(['poison', 2]);
+  if (popTotal() < housing()) opts.push(['refugee', 2]);
+  if (G.raidCount >= 3) opts.push(['shi', 2], ['xie', 2], ['gan', 2], ['shen', 2]);
+  if (G.raidCount >= 5) opts.push(['bloodmoon', 2], ['famine', 2]);
+  let tot = opts.reduce((s, o) => s + o[1], 0), r = Math.random() * tot, ev = opts[0][0];
+  for (const o of opts) { r -= o[1]; if (r <= 0) { ev = o[0]; break; } }
+  switch (ev) {
+    case 'beast': G.buffs.beast = 30; log('A <b>beast tide</b> sweeps down from the deep mountains. Hunters will bring back double blood for 30s.', 'good'); break;
+    case 'spring': G.buffs.spring = 25; log('The <b>Blood Spring surges</b>! The rice fields ripen twice as fast for 25s.', 'good'); break;
+    case 'wanderer': G.rice += 25; G.faith += 10; log('A wandering cultivator bows before the ancient locust and leaves <b>25 Blood Rice</b> and <b>10 Faith</b>.', 'good'); Sfx.playChime(); break;
+    case 'provoke': if (!G.raid) G.raidMeter = Math.min(99, G.raidMeter + 12); log('Li clan disciples desecrate the Chen boundary stones. <b>Raid Danger +12%</b>.', 'bad'); Sfx.playDrum(); break;
+    case 'epiphany': G.faith += 15; G.vit += 10; log('Chen Qingyu meditates under your branches and gains insight. <b>+15 Faith, +10 Vitality</b>.', 'gold'); Sfx.playChime(); break;
+    case 'plague': G.plague = 60; G.plagueDeathT = 14; log('<b>PLAGUE</b> spreads through the village! Production falls, and the sick will die unless you cast <b>Vitality Infusion</b>.', 'bad'); Sfx.playFail(); break;
+    case 'poison': G.poison = 60; log('Hunters return <b>poisoned</b> by a venom-fanged beast. Hunts yield half until cured with <b>Vitality Infusion</b>.', 'bad'); break;
+    case 'shi': G.buffs.marketDown = 40; log("The <b>Shi clan</b> corners Yong'an's markets. Trade prices fall 40% for 40s.", 'bad'); break;
+    case 'xie': { const s = Math.floor(G.rice * 0.2); G.rice -= s; log(`<b>Xie clan</b> tax collectors seize ${s} Blood Rice as a "road tariff".`, 'bad'); break; }
+    case 'gan': G.buffs.marketUp = 40; log("The <b>Gan clan</b> offers a trade pact. Yong'an prices rise 50% for 40s.", 'good'); break;
+    case 'shen': G.buffs.blight = 30; log('<b>Shen clan</b> agents poison the Blood Spring channels. Rice grows at half speed for 30s.', 'bad'); break;
+    case 'bloodmoon': G.buffs.beast = 30; if (!G.raid) G.raidMeter = Math.min(99, G.raidMeter + 10); log('A <b>blood moon</b> rises. Beasts swarm (double blood), and the totems stir (Raid Danger +10%).', 'bad'); break;
+    case 'famine': G.buffs.famine = 30; log('A <b>Qi famine</b> spreads as the totems feed on the land. Faith gain is halved for 30s.', 'bad'); break;
+    case 'refugee': G.idle++; syncVillagers(); log('A distant Chen relative, fleeing the Liu clan, arrives seeking shelter (+1 idle clansman).', 'info'); break;
+  }
+}
+function onNewDay() {
+  if (G.day >= G.festivalDay) {
+    G.festivalDay += 7;
+    const f = Math.round(25 + 4 * G.roles.devotees + 2 * popTotal());
+    G.faith += f;
+    banner('Ancestral Festival', 'The whole clan burns incense in your honor', '#f0d080');
+    log(`<b>Ancestral Festival</b>: the whole clan kneels and burns incense before you. <b>+${f} Faith</b>.`, 'gold');
+    for (let i = 0; i < 30; i++) parts.push({ x: rand(300, 980), y: rand(480, 700), vx: rand(-10, 10), vy: rand(-60, -30), life: rand(1.5, 3), max: 3, size: rand(1.5, 3), color: 'rgba(255,170,80,1)', add: true });
+    Sfx.playPrayerChime(); setTimeout(() => Sfx.playChime(), 400);
+  }
+}
+
+/* ================= VILLAGE SIMULATION ================= */
+function updateVillage(dt) {
+  G.time += dt;
+  G.dayT += dt; if (G.dayT >= 12) { G.dayT -= 12; G.day++; onNewDay(); }
+  const pop = popTotal(), plagueM = G.plague > 0 ? 0.6 : 1, raidM = G.raid ? 0.5 : 1;
+  // faith
+  const fm = (1 + 0.15 * (G.treeLvl - 1)) * (1 + 0.2 * boon('resonance')) * (G.buffs.devotion > 0 ? 1.5 : 1);
+  G.faith += (G.roles.devotees * 0.35 + G.idle * 0.06 + 0.1) * fm * plagueM * (G.buffs.famine > 0 ? 0.5 : 1) * dt;
+  // passive vitality + periodic blood offerings
+  G.vit += 0.08 * G.treeLvl * dt;
+  G.huntT += dt;
+  if (G.huntT >= 10) {
+    G.huntT = 0;
+    if (G.roles.hunters > 0 && !G.raid) {
+      const amt = Math.round((3 + boon('bloodPact')) * G.roles.hunters * (G.poison > 0 ? 0.5 : 1) * (G.buffs.beast > 0 ? 2 : 1) * plagueM);
+      G.vit += amt; floater(ALTAR.x, ALTAR.y - 40, `+${amt} Vitality (beast blood)`, '#ff8a90', 1.4);
+      spawnOrb(ALTAR.x, ALTAR.y - 20, TREE_X, TREE_Y - 60, 'rgba(255,50,70,1)');
+    }
+  }
+  // hunting expedition
+  if (G.exp) {
+    G.exp.t += dt;
+    if (G.exp.t >= G.exp.dur) {
+      const amt = Math.round((12 + 6 * G.roles.hunters) * (1 + 0.2 * boon('bloodPact')) * (G.poison > 0 ? 0.6 : 1) * (G.buffs.beast > 0 ? 1.6 : 1));
+      G.vit += amt; G.exp = null;
+      for (let i = 0; i < 6; i++) spawnOrb(i % 2 ? W - 20 : 20, rand(560, 660), TREE_X, TREE_Y - 60, 'rgba(255,50,70,1)');
+      if (G.auto.hunt) floater(ALTAR.x, ALTAR.y - 70, `+${amt} Vitality (hunt)`, '#ff8a90', 1.4);
+      else log(`The hunters return with ferocious beast blood: <b>+${amt} Vitality</b>.`, 'good');
+      if (Math.random() < 0.2 && G.poison <= 0) { G.poison = 60; log('A hunter was bitten by a venomous beast. The hunters are <b>poisoned</b>.', 'bad'); }
+      Sfx.playChime();
+    }
+  }
+  // blood rice
+  const farmRate = (0.025 + 0.011 * G.roles.farmers) * (G.buffs.spring > 0 ? 2 : 1) * (G.buffs.blight > 0 ? 0.5 : 1) * plagueM * raidM;
+  G.fieldGrowth += farmRate * dt;
+  if (G.fieldGrowth >= 1) {
+    G.fieldGrowth = 0;
+    const amt = Math.round((10 + 3.2 * G.roles.farmers) * (1 + 0.25 * (G.springLvl - 1) + 0.25 * boon('springVein')));
+    G.rice += amt; floater(200, 470, `+${amt} Blood Rice`, '#ff8a9a', 1.4); floater(1080, 470, 'Harvest!', '#ff8a9a', 1.4);
+    for (let i = 0; i < 20; i++) { const s = pick(STALKS); parts.push({ x: s.x, y: s.y - 12, vx: rand(-20, 20), vy: rand(-70, -30), g: 80, life: 0.9, max: 0.9, size: 2, color: 'rgba(230,60,80,1)', add: true }); }
+    Sfx.playHarvest();
+  }
+  // upkeep
+  G.rice -= pop * 0.04 * dt;
+  if (G.rice < 0) {
+    G.rice = 0; G.starveT += dt;
+    if (G.starveT > 15) { G.starveT = 0; removePerson('starvation'); }
+    else if (G.starveT < dt * 1.5) log('The granary is empty! The clan is <b>starving</b>. Assign more farmers.', 'bad');
+  } else G.starveT = 0;
+  // births
+  G.birthT += dt;
+  if (G.birthT >= 18) {
+    G.birthT = 0;
+    if (G.rice >= 30 && pop < housing() && !G.raid && G.plague <= 0) { G.rice -= 20; G.idle++; syncVillagers(); log('A child is born to the Chen clan (+1 idle clansman). Assign them a duty.', 'info'); }
+  }
+  // afflictions
+  if (G.plague > 0) {
+    G.plague -= dt; G.plagueDeathT -= dt;
+    if (G.plagueDeathT <= 0) { G.plagueDeathT = 14; removePerson('plague'); }
+    if (G.plague <= 0) log('The plague has burned itself out.', 'info');
+  }
+  if (G.poison > 0) { G.poison -= dt; if (G.poison <= 0) log('The hunters have recovered from the poison.', 'info'); }
+  // tree
+  if (!G.raid) G.treeHp = Math.min(treeMax(), G.treeHp + 0.6 * dt);
+  G.qi = Math.min(qiMax(), G.qi + (0.5 + 0.15 * G.treeLvl) * (1 + 0.3 * boon('qiWell')) * dt);
+  // raid meter
+  if (!G.raid) {
+    if (G.mistPause > 0) G.mistPause -= dt;
+    else G.raidMeter += 100 / raidTime() * dt;
+    if (G.raidMeter >= 80 && !G.scoutWarned) { G.scoutWarned = true; log('Li clan scouts have been spotted on the ridges. <b>A raid is imminent!</b>', 'bad'); Sfx.playDrum(); }
+    if (G.raidMeter >= 100) startRaid();
+  }
+  // timers
+  for (const k in G.buffs) if (G.buffs[k] > 0) G.buffs[k] = Math.max(0, G.buffs[k] - dt);
+  if (G.buffs.barrier <= 0) G.barrierHp = 0;
+  for (const k in G.cds) if (G.cds[k] > 0) G.cds[k] = Math.max(0, G.cds[k] - dt);
+  G.tendCd = Math.max(0, G.tendCd - dt); G.dreamCd = Math.max(0, G.dreamCd - dt); G.market = Math.min(1, G.market + 0.012 * dt); G.healCd = Math.max(0, G.healCd - dt);
+  if (!G.raid) { G.eventT -= dt; if (G.eventT <= 0) { G.eventT = rand(28, 45); randomEvent(); } }
+  // golden body
+  if (G.golden) {
+    G.golden.t += dt;
+    if (!G.golden.struck && G.golden.t >= 1.3) { G.golden.struck = true; goldenStrike(); }
+    if (G.golden.t >= 3.2) G.golden = null;
+  }
+  // automation
+  G.autoT -= dt; G.autoTendT -= dt;
+  if (G.autoT <= 0) {
+    G.autoT = 0.5;
+    if (G.auto.hunt && !G.raid && !G.exp && G.roles.hunters > 0 && G.rice >= 10 + AUTO_RICE_RESERVE) doHunt(true);
+    if (G.auto.tend && G.autoTendT <= 0 && G.tendCd <= 0 && G.fieldGrowth < 0.9 && G.vit >= 5 + AUTO_VIT_RESERVE) { G.autoTendT = 4; doTend(true); }
+  }
+  if (G.raid) updateRaid(dt);
+  for (const v of villagers) updateVillager(v, dt);
+  updateGuards(dt); updateEnemies(dt); updateProjs(dt); updateParts(dt);
+  for (let i = fx.length - 1; i >= 0; i--) { fx[i].t += dt; if (fx[i].t >= fx[i].dur) fx.splice(i, 1); }
+  G.treePulse = Math.max(0, G.treePulse - dt * 1.5); G.treeHit = Math.max(0, G.treeHit - dt * 2);
+}
+
+/* ================= WORLD DEDUCTION (roguelite) ================= */
+function enterDeduction() {
+  if (G.mode !== 'village' || G.over) return;
+  if (G.raid) return toast('You cannot withdraw into Deduction while the shrine is under attack!');
+  if (G.vit < 25) return toast('World Deduction costs 25 Vitality.');
+  G.vit -= 25;
+  const realm = REALMS[G.dedRuns % REALMS.length]; G.dedRuns++;
+  G.ded = { realm, phase: 'intro', t: 0, dur: 30, tip: { x: 640, y: 372 }, origin: { x: 640, y: 410 },
+    trail: [{ x: 640, y: 400 }, { x: 640, y: 372 }], frozen: 0, rootlets: [], vigor: 100, essence: 0, nodes: [], hz: [], pests: [],
+    hzT: 1.4, nodeT: 0.2, pestT: 2.5, inv: 0, count: 3, resT: 0, result: null, mouseSteer: true, lastTick: 3 };
+  G.mode = 'deduction'; G.targeting = null; parts = []; floaters = []; mouse.x = 640; mouse.y = 372;
+  renderBackground(); Sfx.playWoosh(); Sfx.playChime();
+  log(`Ji Yang's consciousness sinks into <b>World Deduction</b>: ${realm.en}.`, 'gold');
+}
+function startDeductionPlay() { const D = G.ded; if (D && D.phase === 'intro') { D.phase = 'count'; D.count = 3; Sfx.playPluck(); } }
+function exitDeduction() {
+  if (!G.ded || G.ded.phase !== 'result') return;
+  if (G.ded.result && G.ded.result.success && !G.ded.chosen) { openPick(); return; }
+  G.mode = 'village'; G.ded = null; parts = []; floaters = []; renderBackground();
+}
+function dedHurt(amt) {
+  const D = G.ded; if (D.inv > 0 || D.phase !== 'play') return;
+  D.vigor -= amt; D.inv = 0.6; G.shake = 9;
+  floater(D.tip.x, D.tip.y - 24, `-${amt}`, '#ff8070', 0.8); Sfx.playHit();
+  burst(D.tip.x, D.tip.y, 'rgba(255,120,80,1)', 10, 120);
+}
+function spawnHazard(kind) {
+  const D = G.ded, diff = D.t / D.dur;
+  const near = Math.random() < 0.55;
+  const x = near ? clamp(D.tip.x + rand(-110, 110), 40, W - 40) : rand(40, W - 40);
+  const y = near ? clamp(D.tip.y + rand(-90, 90), 110, H - 40) : rand(110, H - 40);
+  if (kind === 'rock') D.hz.push({ type: 'rock', x, y, r: 44, warn: lerp(1.1, 0.75, diff), life: 0.6, t: 0, hit: false, rot: rand(0, TAU) });
+  else if (kind === 'bolt') {
+    const n = Math.random() < 0.3 ? 3 : 1, a = rand(0, TAU);
+    for (let i = 0; i < n; i++) {
+      const bx = clamp(x + Math.cos(a) * (i - 1) * 95 * (n > 1 ? 1 : 0), 40, W - 40), by = clamp(y + Math.sin(a) * (i - 1) * 95 * (n > 1 ? 1 : 0), 110, H - 40);
+      const pts = []; let px = bx + rand(-60, 60); for (let yy = -20; yy < by; yy += 40) { pts.push([px, yy]); px += rand(-25, 25); } pts.push([bx, by]);
+      D.hz.push({ type: 'bolt', x: bx, y: by, r: 52, warn: lerp(0.95, 0.6, diff) + i * 0.15, life: 0.35, t: 0, hit: false, pts });
+    }
+  } else if (kind === 'frost') D.hz.push({ type: 'frost', x, y, r: 70, warn: 0.9, active: 4.5, t: 0, hit: false, shards: Array.from({ length: 7 }, () => [rand(-50, 50), rand(-30, 30), rand(6, 14)]) });
+}
+function updateDeduction(dt) {
+  const D = G.ded; updateParts(dt);
+  if (D.phase === 'intro') return;
+  if (D.phase === 'count') { const before = Math.ceil(D.count); D.count -= dt; if (Math.ceil(D.count) !== before && D.count > 0) Sfx.playPluck(); if (D.count <= 0) { D.phase = 'play'; Sfx.playChime(); } return; }
+  if (D.phase === 'result') { D.resT += dt; return; }
+  D.t += dt; D.inv = Math.max(0, D.inv - dt);
+  const diff = D.t / D.dur;
+  // steering
+  let kx = 0, ky = 0;
+  if (keys.ArrowLeft || keys.a) kx--; if (keys.ArrowRight || keys.d) kx++;
+  if (keys.ArrowUp || keys.w) ky--; if (keys.ArrowDown || keys.s) ky++;
+  const SP = D.frozen > 0 ? 150 : 300; D.frozen = Math.max(0, D.frozen - dt);
+  if (kx || ky) { D.mouseSteer = false; const l = Math.hypot(kx, ky); D.tip.x += kx / l * SP * dt; D.tip.y += ky / l * SP * dt; }
+  else if (D.mouseSteer) { const dx = mouse.x - D.tip.x, dy = mouse.y - D.tip.y, d = Math.hypot(dx, dy); if (d > 1) { const s = Math.min(SP * dt, d, d * 8 * dt + 0.5); D.tip.x += dx / d * s; D.tip.y += dy / d * s; } }
+  D.tip.x = clamp(D.tip.x, 20, W - 20); D.tip.y = clamp(D.tip.y, 90, H - 20);
+  const last = D.trail[D.trail.length - 1];
+  if (dist(last.x, last.y, D.tip.x, D.tip.y) > 9) {
+    D.trail.push({ x: D.tip.x, y: D.tip.y });
+    if (D.trail.length % 5 === 0) D.rootlets.push({ x: D.tip.x, y: D.tip.y, a: Math.atan2(D.tip.y - last.y, D.tip.x - last.x) + (Math.random() < 0.5 ? 1 : -1) * rand(0.6, 1.3), l: rand(10, 24) });
+    if (D.trail.length > 700) { D.trail.shift(); }
+    if (D.rootlets.length > 140) D.rootlets.shift();
+  }
+  // nutrients
+  D.nodeT -= dt;
+  if (D.nodeT <= 0 && D.nodes.length < 7) { D.nodeT = 0.9; const a = rand(0, TAU), sp = rand(25, 60); D.nodes.push({ x: rand(60, W - 60), y: rand(120, H - 50), vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, water: Math.random() < 0.3, life: 9, ph: rand(0, TAU) }); }
+  for (let i = D.nodes.length - 1; i >= 0; i--) {
+    const n = D.nodes[i]; n.life -= dt; n.x += n.vx * dt; n.y += n.vy * dt;
+    if (n.x < 40 || n.x > W - 40) n.vx *= -1; if (n.y < 100 || n.y > H - 30) n.vy *= -1;
+    if (dist(n.x, n.y, D.tip.x, D.tip.y) < 24) {
+      if (n.water) { D.vigor = Math.min(100, D.vigor + 12); floater(n.x, n.y - 14, '+12 vigor', '#8ad0ff', 0.8); burst(n.x, n.y, 'rgba(120,190,255,1)', 10, 80); }
+      else { D.essence++; D.vigor = Math.min(100, D.vigor + 5); floater(n.x, n.y - 14, '+1 essence', '#f0d080', 0.8); burst(n.x, n.y, 'rgba(255,220,120,1)', 10, 80); }
+      Sfx.playPluck(); D.nodes.splice(i, 1); continue;
+    }
+    if (n.life <= 0) D.nodes.splice(i, 1);
+  }
+  // hazards
+  D.hzT -= dt;
+  if (D.hzT <= 0) { D.hzT = lerp(1.0, 0.42, diff) * rand(0.8, 1.2); spawnHazard(pick(D.realm.hz)); }
+  for (let i = D.hz.length - 1; i >= 0; i--) {
+    const h = D.hz[i]; h.t += dt;
+    const inR = dist(h.x, h.y, D.tip.x, D.tip.y) < h.r;
+    if (h.type === 'frost') {
+      if (h.t >= h.warn && h.t < h.warn + h.active && dist(h.x, h.y, D.tip.x, D.tip.y) < h.r * 0.85) {
+        D.vigor -= 18 * dt; D.frozen = 0.15; if (Math.random() < 0.3) parts.push({ x: D.tip.x, y: D.tip.y, vx: rand(-20, 20), vy: rand(-40, -10), life: 0.5, max: 0.5, size: 2.5, color: 'rgba(190,230,255,1)', add: true });
+      }
+      if (h.t > h.warn + h.active + 0.5) D.hz.splice(i, 1);
+      continue;
+    }
+    if (!h.hit && h.t >= h.warn) {
+      h.hit = true;
+      if (h.type === 'rock') { Sfx.playThud(); burst(h.x, h.y, 'rgba(200,150,90,1)', 14, 140); G.shake = Math.max(G.shake, 4); if (inR) dedHurt(20); }
+      else { Sfx.playZap(); burst(h.x, h.y, 'rgba(190,255,90,1)', 16, 180); G.flash = Math.max(G.flash, 0.35); if (inR) dedHurt(24); }
+    }
+    if (h.t >= h.warn + h.life) D.hz.splice(i, 1);
+  }
+  // pests
+  if (D.realm.pests) {
+    D.pestT -= dt;
+    if (D.pestT <= 0 && D.pests.length < 7) {
+      D.pestT = lerp(2.6, 1.1, diff);
+      const e = randi(0, 3); const x = e === 0 ? -10 : e === 1 ? W + 10 : rand(0, W), y = e < 2 ? rand(120, H) : (e === 2 ? 90 : H + 10);
+      D.pests.push({ x, y, ang: Math.atan2(D.tip.y - y, D.tip.x - x), speed: lerp(70, 120, diff) * rand(0.9, 1.1), life: 10, walk: 0 });
+    }
+  }
+  for (let i = D.pests.length - 1; i >= 0; i--) {
+    const p = D.pests[i]; p.life -= dt; p.walk += dt;
+    const want = Math.atan2(D.tip.y - p.y, D.tip.x - p.x);
+    let da = want - p.ang; while (da > Math.PI) da -= TAU; while (da < -Math.PI) da += TAU;
+    p.ang += clamp(da, -2.2 * dt, 2.2 * dt);
+    p.x += Math.cos(p.ang) * p.speed * dt; p.y += Math.sin(p.ang) * p.speed * dt;
+    if (dist(p.x, p.y, D.tip.x, D.tip.y) < 19) { dedHurt(12); burst(p.x, p.y, 'rgba(120,200,60,1)', 10, 90); D.pests.splice(i, 1); continue; }
+    if (p.life <= 0) { burst(p.x, p.y, 'rgba(120,100,60,1)', 6, 40); D.pests.splice(i, 1); }
+  }
+  // the realm saps strength
+  D.vigor -= 1.6 * dt;
+  const tick = Math.ceil(D.dur - D.t);
+  if (tick <= 3 && tick !== D.lastTick && tick > 0) { D.lastTick = tick; Sfx.playPluck(); }
+  if (D.vigor <= 0) finishDeduction(false);
+  else if (D.t >= D.dur) finishDeduction(true);
+}
+function genChoices() {
+  const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const opts = [];
+  const unlockedCount = UNLOCK_ORDER.filter(id => G.arts[id]).length;
+  const locked = shuffle(UNLOCK_ORDER.filter(id => !G.arts[id] && (id !== 'golden' || unlockedCount >= 2)));
+  if (locked.length) { opts.push({ kind: 'art', id: locked[0] }); if (locked.length > 1 && Math.random() < 0.35) opts.push({ kind: 'art', id: locked[1] }); }
+  const pool = [];
+  for (const id of ART_ORDER) if (G.arts[id] && up(id) < 3) pool.push({ kind: 'up', id });
+  for (const id in BOONS) if (id !== 'essence' && boon(id) < 3) pool.push({ kind: 'boon', id });
+  shuffle(pool);
+  // prefer one upgrade and one blessing for variety
+  const firstUp = pool.findIndex(c => c.kind === 'up'); if (firstUp >= 0 && opts.length < 3) opts.push(pool.splice(firstUp, 1)[0]);
+  const firstBoon = pool.findIndex(c => c.kind === 'boon'); if (firstBoon >= 0 && opts.length < 3) opts.push(pool.splice(firstBoon, 1)[0]);
+  while (opts.length < 3 && pool.length) opts.push(pool.pop());
+  while (opts.length < 3) opts.push({ kind: 'boon', id: 'essence' });
+  return shuffle(opts);
+}
+let pickMode = null;
+function choiceCard(c, i) {
+  let tag, gl, title, desc, col;
+  if (c.kind === 'art') { const a = ARTS[c.id]; col = catCol(c.id); tag = `New Art · ${CATS[CAT[c.id]].en}`; gl = a.g; title = a.en; desc = a.desc; }
+  else if (c.kind === 'up') { const a = ARTS[c.id]; col = catCol(c.id); tag = `Upgrade · Lv ${up(c.id) + 1}/3`; gl = a.g; title = a.en; desc = UPG[c.id] + '.'; }
+  else { const b = BOONS[c.id]; col = '#ffd166'; tag = c.id === 'essence' ? 'Essence' : `Blessing · ${boon(c.id) + 1}/3`; gl = b.g; title = b.en; desc = b.desc; }
+  return `<button class="pick" style="--cat:${col}" data-pick="${i}"><span class="key">${i + 1}</span><span class="tag">${tag}</span><span class="gl">${gl}</span><b>${title}</b><p>${desc}</p></button>`;
+}
+function openPick() {
+  const D = G.ded; if (!D || !D.choices || D.chosen) return;
+  pickMode = 'boon';
+  $('pickTitle').textContent = 'Deduction Complete';
+  $('pickSub').textContent = 'Choose one insight to carry back to the mortal world (keys 1–3)';
+  $('pickList').innerHTML = D.choices.map(choiceCard).join('');
+  $('pickRow').innerHTML = '';
+  openModal('mPick');
+}
+function applyChoice(i) {
+  const D = G.ded; if (!D || D.chosen || !D.choices) return; const c = D.choices[i]; if (!c) return;
+  D.chosen = true; closeModal();
+  if (c.kind === 'art') { G.arts[c.id] = true; log(`New Divine Art: <b>${ARTS[c.id].en}</b> (key ${ART_ORDER.indexOf(c.id) + 1}).`, 'gold'); }
+  else if (c.kind === 'up') { G.artUp[c.id] = up(c.id) + 1; log(`<b>${ARTS[c.id].en}</b> deepens to Lv ${up(c.id)}: ${UPG[c.id]}.`, 'gold'); }
+  else {
+    G.boons[c.id] = boon(c.id) + 1;
+    if (c.id === 'deepRoots') G.treeHp += Math.round((250 + 130 * (G.treeLvl - 1)) * 0.15);
+    if (c.id === 'vigil') { G.rank++; for (const g of guards) setStats(g); }
+    if (c.id === 'dao') { G.artLvl++; for (const g of guards) setStats(g); }
+    if (c.id === 'essence') G.vit += 40;
+    log(`Blessing received: <b>${BOONS[c.id].en}</b>. ${BOONS[c.id].desc}`, 'gold');
+  }
+  G.treeHp = Math.min(treeMax(), G.treeHp);
+  Sfx.playGrow();
+  exitDeduction();
+}
+
+/* ================= SPIRIT DREAMS ================= */
+function dreamBlock(id) {
+  const d = DREAMS[id];
+  if (G.dreamCd > 0) return `Dream energy recovering (${Math.ceil(G.dreamCd)}s)`;
+  if (id === 'omen' && G.raid) return 'The raid is already here';
+  if (id === 'omen' && G.prepared) return 'The clan is already prepared';
+  if (id === 'sword' && G.heroArt >= 3) return 'Qingyu has mastered the Locust Sword';
+  if (!canAfford(d.cost)) return `Needs ${costText(d.cost)}`;
+  return null;
+}
+function openDream() {
+  if (G.mode !== 'village' || G.over) return;
+  pickMode = 'dream';
+  $('pickTitle').textContent = 'Send a Spirit Dream';
+  $('pickSub').textContent = 'The tree cannot speak. It can only visit the clan in their dreams.';
+  $('pickList').innerHTML = Object.keys(DREAMS).map(id => {
+    const d = DREAMS[id], b = dreamBlock(id);
+    return `<button class="pick ${b ? 'dis' : ''}" style="--cat:${d.col}" data-dream="${id}"><span class="tag">Dream ${d.who}</span><span class="gl">${d.g}</span><b>${d.en}</b><p>${d.desc.replace('{lv}', Math.min(3, G.heroArt + 1))}</p><span class="cost">${b || costText(d.cost)}</span></button>`;
+  }).join('');
+  $('pickRow').innerHTML = '<button class="big alt" id="btnPickClose">Not now</button>';
+  openModal('mPick');
+}
+function sendDream(id) {
+  const b = dreamBlock(id); if (b) { toast(b); return; }
+  const d = DREAMS[id];
+  if (d.cost.faith) G.faith -= d.cost.faith; if (d.cost.vit) G.vit -= d.cost.vit;
+  G.dreamCd = 30; closeModal();
+  const hero = guards.find(g => g.kind === 'hero');
+  const tgt = id === 'sword' && hero ? { x: hero.x, y: hero.y - 20 } : id === 'omen' ? { x: 640, y: 470 } : { x: ALTAR.x, y: ALTAR.y + 40 };
+  for (let i = 0; i < 12; i++) spawnOrb(TREE_X + rand(-90, 90), TREE_Y - rand(150, 280), tgt.x + rand(-30, 30), tgt.y + rand(-10, 10), 'rgba(190,150,255,1)');
+  floater(TREE_X, TREE_Y - 270, 'Spirit Dream', '#d0b0ff', 1.4);
+  if (id === 'omen') {
+    G.prepared = true; G.raidMeter = Math.max(0, G.raidMeter - 15);
+    const r = G.raidCount + 1, cnt = {};
+    for (const t of raidComposition(r)) cnt[t] = (cnt[t] || 0) + 1;
+    const list = Object.entries(cnt).map(([t, n]) => `${n}× ${ETYPES[t].en}`).join(', ');
+    dream(`The elders dream of raid ${r}, <b>${raidInfo(r).en}</b>: ${list}. The clan sharpens its spears (next raid: defenders +25% damage, tree takes −20% damage).`);
+  } else if (id === 'sword') {
+    G.heroArt++; for (const g of guards) setStats(g);
+    dream(`Qingyu dreams of a locust tree whose falling leaves become sword light. <b>Locust Sword Art Lv ${G.heroArt}</b>: +15% damage, and his strikes cleave nearby foes.`);
+  } else {
+    G.plague = 0; G.poison = 0; G.rice += 20; G.buffs.devotion = 40;
+    dream('Every Chen household dreams of its ancestors smiling beneath the locust. Sickness lifts, a forgotten grain cache is found (+20 Blood Rice), and devotion swells (Faith +50% for 40s).');
+  }
+}
+function finishDeduction(success) {
+  const D = G.ded; D.phase = 'result'; D.resT = 0; D.vigor = Math.max(0, D.vigor);
+  const res = { success, lines: [] };
+  if (success) {
+    G.deductions++;
+    const v = D.essence * 2 + 10; G.vit += v;
+    res.title = 'The trial realm yields its secrets'; res.sub = 'Deduction Complete';
+    res.lines.push(`+${v} Vitality from ${D.essence} absorbed essence`);
+    res.lines.push('Choose one insight to carry back…');
+    D.choices = genChoices(); D.chosen = false;
+    log(`Deduction complete! <b>+${v} Vitality</b>. An insight awaits your choice.`, 'gold');
+    Sfx.playSuccess(); Sfx.playChime();
+    setTimeout(() => { if (G.ded === D && !D.chosen) openPick(); }, 900);
+  } else {
+    const v = D.essence; G.vit += v;
+    res.title = 'Your root withers in the trial realm'; res.sub = 'Deduction Collapsed';
+    res.lines.push('The trial realm shattered your root. No art was gained.');
+    res.lines.push(`+${v} Vitality salvaged from absorbed essence`);
+    log(`The Deduction collapsed. Only ${v} Vitality was salvaged.`, 'bad');
+    Sfx.playFail();
+  }
+  D.result = res;
+}
+function drawDeduction() {
+  const D = G.ded, t = G.anim;
+  // ambient realm motion
+  if (D.realm.id === 'desert') {
+    ctx.strokeStyle = 'rgba(255,210,150,0.12)'; ctx.lineWidth = 1;
+    for (let i = 0; i < 40; i++) { const x = ((i * 137 + t * 220) % (W + 200)) - 100, y = (i * 53) % H; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 40, y + 4); ctx.stroke(); }
+  } else if (D.realm.id === 'cliffs') {
+    ctx.strokeStyle = 'rgba(160,160,220,0.18)'; ctx.lineWidth = 1;
+    for (let i = 0; i < 70; i++) { const x = (i * 97 + t * 60) % W, y = (i * 61 + t * 700) % H; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 4, y + 16); ctx.stroke(); }
+  } else {
+    for (let i = 0; i < 18; i++) { const x = (i * 211) % W, y = H - ((i * 89 + t * 30) % (H - 150)); ctx.strokeStyle = D.realm.id === 'underworld' ? 'rgba(120,230,220,0.35)' : 'rgba(180,230,120,0.3)'; ctx.beginPath(); ctx.arc(x, y, 2 + (i % 3), 0, TAU); ctx.stroke(); }
+  }
+  // pools & warnings (ground layer)
+  for (const h of D.hz) {
+    const k = clamp(h.t / h.warn, 0, 1);
+    if (h.type === 'frost') {
+      const on = h.t >= h.warn && h.t < h.warn + h.active; const fade = h.t > h.warn + h.active ? 1 - (h.t - h.warn - h.active) / 0.5 : 1;
+      ctx.globalAlpha = Math.max(0, fade);
+      if (h.t < h.warn) { ctx.fillStyle = `rgba(200,20,20,${0.12 + 0.22 * k})`; ctx.beginPath(); ctx.ellipse(h.x, h.y, h.r * k, h.r * 0.7 * k, 0, 0, TAU); ctx.fill(); }
+      else {
+        ctx.fillStyle = 'rgba(190,225,255,0.32)'; ctx.beginPath(); ctx.ellipse(h.x, h.y, h.r, h.r * 0.7, 0, 0, TAU); ctx.fill();
+        ctx.fillStyle = 'rgba(235,248,255,0.75)';
+        for (const [sx, sy, sl] of h.shards) { ctx.beginPath(); ctx.moveTo(h.x + sx, h.y + sy - sl); ctx.lineTo(h.x + sx + 3, h.y + sy); ctx.lineTo(h.x + sx - 3, h.y + sy); ctx.fill(); }
+      }
+      ctx.strokeStyle = `rgba(255,60,50,${0.5 + 0.4 * Math.abs(Math.sin(h.t * 8))})`; ctx.lineWidth = 2; ctx.setLineDash([6, 6]);
+      ctx.beginPath(); ctx.ellipse(h.x, h.y, h.r, h.r * 0.7, 0, 0, TAU); ctx.stroke(); ctx.setLineDash([]);
+      ctx.globalAlpha = 1; continue;
+    }
+    if (!h.hit) {
+      const col = '255,50,50';
+      ctx.fillStyle = `rgba(150,0,0,${0.12 + 0.3 * k})`; ctx.beginPath(); ctx.ellipse(h.x, h.y, h.r * k, h.r * 0.6 * k, 0, 0, TAU); ctx.fill();
+      ctx.strokeStyle = `rgba(${col},${0.4 + 0.5 * Math.abs(Math.sin(h.t * 14))})`; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.ellipse(h.x, h.y, h.r, h.r * 0.6, 0, 0, TAU); ctx.stroke();
+      if (h.type === 'rock') { const ry = h.y - (1 - k) * 500; ctx.fillStyle = '#5a4030'; ctx.beginPath(); ctx.arc(h.x, ry - 10, 8 + k * 14, 0, TAU); ctx.fill(); }
+    }
+  }
+  // nutrient nodes
+  for (const n of D.nodes) {
+    const p = 0.7 + 0.3 * Math.sin(t * 5 + n.ph), a = Math.min(1, n.life / 1.5);
+    ctx.globalAlpha = a; ctx.globalCompositeOperation = 'lighter';
+    const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, 22 * p);
+    g.addColorStop(0, n.water ? 'rgba(170,220,255,1)' : 'rgba(255,240,170,1)'); g.addColorStop(0.4, n.water ? 'rgba(80,150,255,0.6)' : 'rgba(255,190,60,0.6)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(n.x, n.y, 22 * p, 0, TAU); ctx.fill();
+    ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+  }
+  // root trail
+  const pts = [D.origin, ...D.trail], n = pts.length;
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.strokeStyle = 'rgba(70,50,30,0.8)'; ctx.lineWidth = 1.2;
+  for (const r of D.rootlets) { ctx.beginPath(); ctx.moveTo(r.x, r.y); ctx.quadraticCurveTo(r.x + Math.cos(r.a) * r.l * 0.5 + 3, r.y + Math.sin(r.a) * r.l * 0.5, r.x + Math.cos(r.a) * r.l, r.y + Math.sin(r.a) * r.l); ctx.stroke(); }
+  const passes = [[5, 'rgba(20,10,5,0.7)'], [0, '#7a5a34'], [-4.5, '#c8a868']];
+  for (const [extra, col] of passes) {
+    ctx.strokeStyle = col;
+    for (let i = 1; i < n; i++) {
+      const w = lerp(15, 5, i / n) + extra; if (w <= 0.5) continue;
+      ctx.lineWidth = w; ctx.beginPath(); ctx.moveTo(pts[i - 1].x, pts[i - 1].y); ctx.lineTo(pts[i].x, pts[i].y); ctx.stroke();
+    }
+  }
+  // central sapling
+  { const o = D.origin;
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    const gs = ctx.createRadialGradient(o.x, o.y - 14, 2, o.x, o.y - 14, 46); gs.addColorStop(0, 'rgba(116,198,157,0.55)'); gs.addColorStop(1, 'rgba(116,198,157,0)');
+    ctx.fillStyle = gs; ctx.beginPath(); ctx.arc(o.x, o.y - 14, 46, 0, TAU); ctx.fill(); ctx.restore();
+    ctx.strokeStyle = '#2c2523'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(o.x, o.y); ctx.quadraticCurveTo(o.x - 3, o.y - 14, o.x + 1, o.y - 30); ctx.stroke();
+    ctx.strokeStyle = '#40916c'; ctx.lineWidth = 1.2; ctx.stroke();
+    const sw = Math.sin(t * 2) * 0.15;
+    for (const [dx, dy, r, c] of [[-9, -26, -0.6, '#74c69d'], [9, -30, 0.6, '#74c69d'], [0, -36, 0, '#ffd166']]) { ctx.fillStyle = c; ctx.beginPath(); ctx.ellipse(o.x + dx, o.y + dy, 8, 3.4, r + sw, 0, TAU); ctx.fill(); }
+  }
+  // tip
+  const blink = D.inv > 0 && Math.floor(D.inv * 20) % 2 === 0;
+  if (!blink) {
+    ctx.globalCompositeOperation = 'lighter';
+    const g = ctx.createRadialGradient(D.tip.x, D.tip.y, 0, D.tip.x, D.tip.y, 26);
+    g.addColorStop(0, 'rgba(200,255,220,1)'); g.addColorStop(0.35, 'rgba(116,198,157,0.7)'); g.addColorStop(1, 'rgba(116,198,157,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(D.tip.x, D.tip.y, 26, 0, TAU); ctx.fill();
+    ctx.globalCompositeOperation = 'source-over';
+  }
+  // pests
+  for (const p of D.pests) {
+    if (D.realm.id === 'underworld') {
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      const tx = p.x - Math.cos(p.ang) * 18, ty = p.y - Math.sin(p.ang) * 18;
+      const gw = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 16); gw.addColorStop(0, 'rgba(200,255,250,0.9)'); gw.addColorStop(1, 'rgba(80,200,220,0)');
+      ctx.fillStyle = gw; ctx.beginPath(); ctx.arc(p.x, p.y, 16, 0, TAU); ctx.fill();
+      ctx.strokeStyle = 'rgba(120,230,230,0.5)'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.quadraticCurveTo(tx + Math.sin(p.walk * 8) * 6, ty, tx - Math.cos(p.ang) * 10, ty - Math.sin(p.ang) * 10); ctx.stroke();
+      ctx.fillStyle = 'rgba(255,40,40,1)'; ctx.beginPath(); ctx.arc(p.x + Math.cos(p.ang) * 4 - 2, p.y - 2, 1.4, 0, TAU); ctx.arc(p.x + Math.cos(p.ang) * 4 + 2, p.y - 2, 1.4, 0, TAU); ctx.fill();
+      ctx.restore(); continue;
+    }
+    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.ang);
+    ctx.strokeStyle = '#1a1208'; ctx.lineWidth = 1.4;
+    for (let i = -1; i <= 1; i++) { const w = Math.sin(p.walk * 20 + i) * 3; ctx.beginPath(); ctx.moveTo(i * 4, 0); ctx.lineTo(i * 4 + w, -9); ctx.moveTo(i * 4, 0); ctx.lineTo(i * 4 - w, 9); ctx.stroke(); }
+    ctx.fillStyle = D.realm.id === 'desert' ? '#4a3018' : '#2a3a18'; ctx.beginPath(); ctx.ellipse(0, 0, 10, 6.5, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.15)'; ctx.beginPath(); ctx.ellipse(-2, -2, 5, 2, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#ff3a2a'; ctx.beginPath(); ctx.arc(8, -2.4, 1.4, 0, TAU); ctx.arc(8, 2.4, 1.4, 0, TAU); ctx.fill();
+    ctx.restore();
+  }
+  // impacts
+  for (const h of D.hz) {
+    if (!h.hit || h.type === 'pool') continue;
+    const k = 1 - (h.t - h.warn) / h.life;
+    if (h.type === 'rock') {
+      ctx.globalAlpha = clamp(k * 1.5, 0, 1); ctx.fillStyle = '#5a4030';
+      ctx.save(); ctx.translate(h.x, h.y - 6); ctx.rotate(h.rot); ctx.beginPath();
+      for (let i = 0; i < 7; i++) { const a = i / 7 * TAU, r = 20 + ((i * 37) % 9); ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r * 0.8); }
+      ctx.closePath(); ctx.fill(); ctx.strokeStyle = '#2a1a10'; ctx.lineWidth = 2; ctx.stroke(); ctx.restore(); ctx.globalAlpha = 1;
+    } else {
+      ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = clamp(k, 0, 1);
+      ctx.strokeStyle = 'rgba(190,255,100,1)'; ctx.lineWidth = 4; ctx.beginPath(); h.pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.stroke();
+      ctx.strokeStyle = 'rgba(255,255,255,1)'; ctx.lineWidth = 1.5; ctx.stroke();
+      const g = ctx.createRadialGradient(h.x, h.y, 0, h.x, h.y, h.r * 1.4); g.addColorStop(0, 'rgba(170,255,90,0.7)'); g.addColorStop(1, 'rgba(80,200,40,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(h.x, h.y, h.r * 1.4, 0, TAU); ctx.fill();
+      ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+    }
+  }
+  drawParts(); drawFloaters();
+  // HUD
+  ctx.fillStyle = 'rgba(5,8,7,0.55)'; ctx.fillRect(0, 0, W, 74);
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#f0d080'; ctx.font = '600 24px "Songti SC","STSong",serif'; ctx.fillText(`World Deduction · ${D.realm.en}`, W / 2, 22);
+  ctx.fillStyle = '#b9c3bd'; ctx.font = '13px "Songti SC",serif'; ctx.fillText(`Trial ${G.dedRuns} · survive ${D.dur} seconds`, W / 2, 44);
+  const tl = clamp(1 - D.t / D.dur, 0, 1);
+  bar(W / 2 - 200, 56, 400, 9, tl, '#e0b85a'); ctx.fillStyle = '#ddd'; ctx.font = '12px serif'; ctx.fillText(`${Math.max(0, Math.ceil(D.dur - D.t))}s`, W / 2 + 220, 61);
+  ctx.textAlign = 'left'; ctx.fillStyle = '#9be8c3'; ctx.font = '600 14px "Songti SC",serif'; ctx.fillText('Root Vigor', 24, 24);
+  bar(24, 38, 220, 12, D.vigor / 100, D.vigor < 30 ? '#e05040' : '#74c69d');
+  ctx.textAlign = 'right'; ctx.fillStyle = '#f0d080'; ctx.fillText(`Essence: ${D.essence}`, W - 24, 24);
+  ctx.fillStyle = '#b9c3bd'; ctx.font = '12px serif'; ctx.fillText('Reward: choose 1 of 3 insights', W - 24, 46);
+  if (D.phase === 'intro' || D.phase === 'count' || D.phase === 'result') {
+    ctx.fillStyle = 'rgba(3,5,4,0.72)'; ctx.fillRect(0, 0, W, H);
+    ctx.textAlign = 'center';
+    if (D.phase === 'intro') {
+      ctx.fillStyle = '#f0d080'; ctx.font = '600 52px "Songti SC","STSong",serif'; ctx.fillText(D.realm.en, W / 2, 220);
+      ctx.fillStyle = '#ebe4d0'; ctx.font = '22px "Songti SC",serif'; ctx.fillText('World Deduction', W / 2, 270);
+      ctx.fillStyle = '#b9c3bd'; ctx.font = '17px "Songti SC",serif'; ctx.fillText(D.realm.desc, W / 2, 330);
+      ctx.fillText(`Steer the root tip with the mouse or arrow keys / WASD. Survive ${D.dur} seconds.`, W / 2, 370);
+      ctx.fillText('Drifting gold orbs give essence, blue orbs restore vigor. Stay out of the red hazard zones.', W / 2, 400);
+      ctx.fillStyle = `rgba(224,184,90,${0.6 + 0.4 * Math.sin(t * 4)})`; ctx.font = '600 22px "Songti SC",serif'; ctx.fillText('Click or press Enter to begin', W / 2, 480);
+    } else if (D.phase === 'count') {
+      ctx.fillStyle = '#f0d080'; ctx.font = '600 120px "Songti SC",serif'; ctx.fillText(Math.ceil(D.count), W / 2, H / 2);
+    } else {
+      const r = D.result;
+      ctx.fillStyle = r.success ? '#f0d080' : '#f0907c'; ctx.font = '600 56px "Songti SC","STSong",serif'; ctx.fillText(r.sub, W / 2, 230);
+      ctx.fillStyle = '#ebe4d0'; ctx.font = '22px "Songti SC",serif'; ctx.fillText(r.title, W / 2, 280);
+      ctx.font = '18px "Songti SC",serif'; ctx.fillStyle = '#c8f5df';
+      r.lines.forEach((l, i) => ctx.fillText(l, W / 2, 340 + i * 34));
+      if (D.resT > 0.6) { ctx.fillStyle = `rgba(224,184,90,${0.6 + 0.4 * Math.sin(t * 4)})`; ctx.font = '600 20px "Songti SC",serif'; ctx.fillText('Click or press Enter to return to the shrine', W / 2, 500); }
+    }
+  }
+}
+function bar(x, y, w, h, k, col) {
+  ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(x, y, w, h);
+  ctx.fillStyle = col; ctx.fillRect(x + 1, y + 1, Math.max(0, (w - 2) * clamp(k, 0, 1)), h - 2);
+  ctx.strokeStyle = 'rgba(255,255,255,0.15)'; ctx.lineWidth = 1; ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
+}
+
+/* ================= VILLAGE RENDER ================= */
+const STYLE_G = {
+  hero: { robe: '#d9e6dc', trim: '#3fae8a', hat: 'crown', weapon: 'sword', glow: 'rgba(116,198,157,0.35)' },
+  warrior: { robe: '#2f3d48', trim: '#c8463a', hat: 'band', weapon: 'spear' },
+  spirit: { robe: '#7fe0b8', trim: '#e0fff0', hat: 'crown', weapon: 'sword', glow: 'rgba(120,240,190,0.5)', alpha: 0.7, armor: true }
+};
+const STYLE_E = {
+  raider: { robe: '#5e1c1c', trim: '#111', hat: 'band', bandCol: '#111', weapon: 'saber', outline: '#e63946' },
+  archer: { robe: '#4a1a22', trim: '#1a0a0a', hat: 'hood', weapon: 'bow', outline: '#e63946' },
+  cultivator: { robe: '#3d2a5e', trim: '#b08ae0', hat: 'crown', weapon: 'orb', glow: 'rgba(160,90,255,0.35)', outline: '#e63946' },
+  elder: { robe: '#2a0e12', trim: '#d8b45a', hat: 'crown', hair: '#e8e8e0', beard: true, weapon: 'bigsword', s: 1.7, glow: 'rgba(255,60,40,0.4)', outline: '#e63946' },
+  retainer: { robe: '#2b4a7a', trim: '#d8d0b0', hat: 'band', bandCol: '#d8d0b0', weapon: 'spear', outline: '#e63946' },
+  crossbow: { robe: '#2b4a7a', trim: '#111', hat: 'hood', weapon: 'bow', outline: '#e63946' },
+  champion: { robe: '#55555f', trim: '#ffd166', hat: 'crown', hair: '#bbbbbb', beard: true, weapon: 'bigsword', s: 1.6, glow: 'rgba(230,57,70,0.4)', outline: '#e63946' }
+};
+function hpBar(x, y, k, col) { ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(x - 13, y, 26, 4); ctx.fillStyle = col; ctx.fillRect(x - 12, y + 1, 24 * clamp(k, 0, 1), 2); }
+
+function drawMist(t) {
+  const m = Math.max(G.mistPause > 0 ? Math.min(1, G.mistPause / 2) : 0, G.buffs.mistRaid > 0 ? Math.min(1, G.buffs.mistRaid / 1.5) : 0);
+  if (m <= 0) return;
+  ctx.save(); ctx.globalAlpha = m;
+  for (let i = 0; i < 9; i++) {
+    const x = ((i * 190 + t * (14 + i * 3)) % (W + 400)) - 200, y = 470 + (i % 4) * 55;
+    const g = ctx.createRadialGradient(x, y, 10, x, y, 220); g.addColorStop(0, 'rgba(200,230,215,0.22)'); g.addColorStop(1, 'rgba(200,230,215,0)');
+    ctx.fillStyle = g; ctx.fillRect(x - 220, y - 220, 440, 440);
+  }
+  ctx.fillStyle = 'rgba(120,200,160,0.08)'; ctx.save(); ctx.translate(TREE_X, 380); ctx.rotate(Math.sin(t * 0.3) * 0.1);
+  ctx.beginPath(); ctx.ellipse(0, 0, 520, 150, 0, 0, TAU); ctx.fill(); ctx.restore();
+  ctx.restore();
+}
+function drawBarrier(t) {
+  if (!(G.buffs.barrier > 0 && G.barrierHp > 0)) return;
+  const a = Math.min(1, G.buffs.barrier / 1.5);
+  ctx.save(); ctx.globalAlpha = a; ctx.globalCompositeOperation = 'lighter';
+  const g = ctx.createRadialGradient(TREE_X, 440, 120, TREE_X, 440, 270); g.addColorStop(0, 'rgba(255,210,120,0)'); g.addColorStop(0.85, 'rgba(255,200,100,0.12)'); g.addColorStop(1, 'rgba(255,220,140,0.35)');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(TREE_X, 470, 270, 300, 0, Math.PI, 0); ctx.ellipse(TREE_X, 470, 270, 70, 0, 0, Math.PI); ctx.fill();
+  ctx.strokeStyle = 'rgba(255,220,140,0.55)'; ctx.lineWidth = 1.5; ctx.setLineDash([3, 9]); ctx.lineDashOffset = -t * 30;
+  ctx.beginPath(); ctx.ellipse(TREE_X, 470, 270, 300, 0, Math.PI, 0); ctx.stroke(); ctx.setLineDash([]);
+  ctx.restore();
+}
+function drawGolden(t) {
+  if (!G.golden) return;
+  const gt = G.golden.t, a = gt < 0.8 ? gt / 0.8 : gt > 2.4 ? Math.max(0, 1 - (gt - 2.4) / 0.8) : 1;
+  ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = a;
+  const cx = 640, rise = (1 - Math.min(1, gt / 0.8)) * 120;
+  ctx.translate(0, rise);
+  let g = ctx.createRadialGradient(cx, 180, 20, cx, 180, 420); g.addColorStop(0, 'rgba(255,230,150,0.55)'); g.addColorStop(1, 'rgba(255,180,60,0)');
+  ctx.fillStyle = g; ctx.fillRect(cx - 420, -240, 840, 840);
+  ctx.strokeStyle = 'rgba(255,220,130,0.35)'; ctx.lineWidth = 2;
+  for (let i = 0; i < 24; i++) { const an = i / 24 * TAU + t * 0.2; ctx.beginPath(); ctx.moveTo(cx + Math.cos(an) * 90, 170 + Math.sin(an) * 90); ctx.lineTo(cx + Math.cos(an) * 260, 170 + Math.sin(an) * 260); ctx.stroke(); }
+  ctx.strokeStyle = 'rgba(255,230,160,0.6)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(cx, 170, 80, 0, TAU); ctx.stroke();
+  // body
+  g = ctx.createLinearGradient(0, 120, 0, 720); g.addColorStop(0, 'rgba(255,215,120,0.55)'); g.addColorStop(1, 'rgba(255,170,60,0.08)');
+  ctx.fillStyle = g; ctx.beginPath();
+  ctx.moveTo(cx - 40, 215); ctx.quadraticCurveTo(cx - 120, 220, cx - 150, 260);
+  ctx.quadraticCurveTo(cx - 260, 200, cx - 330, 90); ctx.lineTo(cx - 300, 80); ctx.quadraticCurveTo(cx - 230, 190, cx - 140, 300);
+  ctx.quadraticCurveTo(cx - 200, 520, cx - 320, 720); ctx.lineTo(cx + 320, 720); ctx.quadraticCurveTo(cx + 200, 520, cx + 140, 300);
+  ctx.quadraticCurveTo(cx + 230, 190, cx + 300, 80); ctx.lineTo(cx + 330, 90); ctx.quadraticCurveTo(cx + 260, 200, cx + 150, 260);
+  ctx.quadraticCurveTo(cx + 120, 220, cx + 40, 215); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = 'rgba(255,240,190,0.7)'; ctx.lineWidth = 2; ctx.stroke();
+  // branch-fingers
+  ctx.strokeStyle = 'rgba(255,230,150,0.6)'; ctx.lineWidth = 3;
+  for (const s of [-1, 1]) for (let i = 0; i < 4; i++) { const bx = cx + s * 315, by = 85; ctx.beginPath(); ctx.moveTo(bx, by); ctx.quadraticCurveTo(bx + s * (10 + i * 12), by - 30, bx + s * (i * 22 - 20), by - 60 - i * 8); ctx.stroke(); }
+  // head
+  g = ctx.createRadialGradient(cx, 165, 5, cx, 165, 52); g.addColorStop(0, 'rgba(255,250,220,0.9)'); g.addColorStop(1, 'rgba(255,200,90,0.2)');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(cx, 168, 42, 50, 0, 0, TAU); ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,1)'; ctx.beginPath(); ctx.ellipse(cx - 15, 162, 7, 2.5, 0, 0, TAU); ctx.ellipse(cx + 15, 162, 7, 2.5, 0, 0, TAU); ctx.fill();
+  ctx.restore();
+}
+function drawFx(t) {
+  for (const f of fx) {
+    const k = f.t / f.dur;
+    if (f.type === 'spikes') {
+      const grow = k < 0.25 ? k / 0.25 : k > 0.7 ? Math.max(0, 1 - (k - 0.7) / 0.3) : 1;
+      ctx.fillStyle = `rgba(60,30,10,${0.4 * (1 - k)})`; ctx.beginPath(); ctx.ellipse(f.x, f.y, 80, 45, 0, 0, TAU); ctx.fill();
+      for (const s of f.spikes) {
+        const x = f.x + s.dx, y = f.y + s.dy, h = s.h * grow;
+        ctx.fillStyle = '#5a3a20'; ctx.beginPath(); ctx.moveTo(x - s.w, y); ctx.quadraticCurveTo(x - 2, y - h * 0.5, x + 1, y - h); ctx.quadraticCurveTo(x + 2, y - h * 0.5, x + s.w, y); ctx.fill();
+        ctx.strokeStyle = 'rgba(140,230,150,0.6)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x, y - 2); ctx.lineTo(x + 1, y - h * 0.9); ctx.stroke();
+      }
+    } else if (f.type === 'slash') {
+      ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.strokeStyle = `rgba(${f.col},${1 - k})`; ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.arc(f.x, f.y, 14, f.dir > 0 ? -1.4 + k : Math.PI + 1.4 - k, f.dir > 0 ? 0.6 + k : Math.PI - 0.6 - k, f.dir < 0); ctx.stroke(); ctx.restore();
+    } else if (f.type === 'ring') {
+      ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.strokeStyle = `rgba(${f.col},${1 - k})`; ctx.lineWidth = 6 * (1 - k) + 1;
+      const r = lerp(f.r0, f.r1, k); ctx.beginPath(); ctx.ellipse(f.x, f.y, r, r * 0.3, 0, 0, TAU); ctx.stroke(); ctx.restore();
+    } else if (f.type === 'tether') {
+      ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.strokeStyle = `rgba(${f.col},${1 - k})`; ctx.lineWidth = 3 * (1 - k) + 1;
+      ctx.beginPath(); ctx.moveTo(f.x, f.y); ctx.quadraticCurveTo((f.x + f.x2) / 2, Math.min(f.y, f.y2) - 40, f.x2, f.y2); ctx.stroke(); ctx.restore();
+    } else if (f.type === 'beam') {
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      const g = ctx.createLinearGradient(f.x - 18, 0, f.x + 18, 0); g.addColorStop(0, 'rgba(255,220,120,0)'); g.addColorStop(0.5, `rgba(255,240,190,${1 - k})`); g.addColorStop(1, 'rgba(255,220,120,0)');
+      ctx.fillStyle = g; ctx.fillRect(f.x - 18, 0, 36, f.y); ctx.restore();
+    }
+  }
+}
+function drawQiMotes(t) {
+  const n = Math.floor(G.qi); if (!n) return;
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  for (let i = 0; i < n; i++) {
+    const a = t * 0.35 + i * TAU / n, r = 150 + 30 * Math.sin(t * 0.8 + i * 1.7);
+    const x = TREE_X + Math.cos(a) * r, y = 360 + Math.sin(a) * r * 0.55 + Math.sin(t * 2 + i) * 6;
+    const g = ctx.createRadialGradient(x, y, 0, x, y, 7); g.addColorStop(0, 'rgba(200,255,225,0.9)'); g.addColorStop(1, 'rgba(116,198,157,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, 7, 0, TAU); ctx.fill();
+  }
+  ctx.restore();
+}
+function banner(title, sub, col) { if (G) G.banner = { title, sub: sub || '', col, t: 0, dur: 3 }; }
+function drawBanner(dt) {
+  const b = G.banner; if (!b) return;
+  b.t += dt; if (b.t >= b.dur) { G.banner = null; return; }
+  const a = b.t < 0.3 ? b.t / 0.3 : b.t > b.dur - 0.6 ? (b.dur - b.t) / 0.6 : 1;
+  ctx.save(); ctx.globalAlpha = a;
+  const g = ctx.createLinearGradient(0, 0, W, 0); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(0.5, 'rgba(0,0,0,0.65)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = g; ctx.fillRect(0, 120, W, 100);
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.font = '600 38px "Songti SC","STSong",serif'; ctx.fillStyle = b.col; ctx.shadowColor = b.col; ctx.shadowBlur = 18;
+  ctx.fillText(b.title, W / 2, 158); ctx.shadowBlur = 0;
+  ctx.font = '18px "Songti SC",serif'; ctx.fillStyle = '#ebe4d0'; ctx.fillText(b.sub, W / 2, 198);
+  ctx.restore();
+}
+function onTree(x, y) { return dist(x, y, TREE_X, 360) < 185 || (Math.abs(x - TREE_X) < 36 && y > 340 && y < TREE_Y + 8); }
+
+function drawVillage(dt) {
+  const t = G.anim;
+  drawLanterns(t);
+  drawFields(t);
+  drawTree(t);
+  drawQiMotes(t);
+  drawAltar(t);
+  drawSmoke();
+  // units sorted by depth
+  const list = [];
+  for (const v of villagers) if (!v.hidden) list.push(['v', v]);
+  for (const g of guards) list.push(['g', g]);
+  for (const e of enemies) list.push(['e', e]);
+  list.sort((a, b) => a[1].y - b[1].y);
+  const armor = G.buffs.armor > 0, inf = G.buffs.infuse > 0;
+  for (const [k, u] of list) {
+    if (k === 'v') { const st = VSTYLE[u.role]; drawFigure(u.x, u.y, { ...st, dir: u.dir, walk: u.walk, moving: u.moving, kneel: u.kneel, bow: u.role === 'devotees' ? u.bow : 0, carry: u.carry }); }
+    else if (k === 'g') {
+      const st = STYLE_G[u.kind];
+      drawFigure(u.x, u.y, { ...st, dir: u.dir, walk: u.walk, moving: u.moving, atk: u.atkAnim, flash: u.hitT > 0.08, armor: st.armor || armor, lying: u.down, alpha: u.down ? 0.6 : (st.alpha != null ? st.alpha * (u.kind === 'spirit' ? Math.min(1, u.life / 1.5) : 1) : null),
+        glow: inf && !u.down ? 'rgba(120,255,150,0.45)' : st.glow });
+      if (!u.down && u.hp < u.maxHp) hpBar(u.x, u.y - 40, u.hp / u.maxHp, u.kind === 'spirit' ? '#9ef0c8' : '#74c69d');
+      if (u.kind === 'hero' && !u.down) { ctx.fillStyle = 'rgba(200,240,220,0.75)'; ctx.font = '11px "Songti SC",serif'; ctx.textAlign = 'center'; ctx.fillText('Qingyu', u.x, u.y - 46); }
+    } else {
+      const T = ETYPES[u.type];
+      if (T.totem) drawTotem(u, t);
+      else if (T.beast) drawThrall(u, t);
+      else {
+        const st = u.clan ? { ...STYLE_E[u.type], robe: CLAN_COL[u.clan], flag: CLAN_CHAR[u.clan] } : STYLE_E[u.type];
+        const fl = u.type === 'cultivator' ? -4 + Math.sin(t * 3 + u.walk) * 2 : 0;
+        drawFigure(u.x, u.y, { ...st, dir: u.dir, walk: u.walk, moving: u.moving, atk: u.atkAnim, flash: u.hitT > 0.08, float: fl, alpha: u.dead ? Math.max(0, u.deadT / 0.7) : null });
+      }
+      if (u.stun > 0 && !u.dead) { ctx.strokeStyle = 'rgba(140,230,150,0.8)'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.ellipse(u.x, u.y - 2, T.totem ? 30 : 12, T.totem ? 8 : 4, 0, 0, TAU); ctx.stroke(); }
+      if (!u.dead && u.hp < u.maxHp) {
+        if (T.boss) { const by = u.y - (T.totem ? 172 : 72); ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(u.x - 36, by, 72, 6); ctx.fillStyle = '#e63946'; ctx.fillRect(u.x - 35, by + 1, 70 * u.hp / u.maxHp, 4); }
+        else hpBar(u.x, u.y - 40, u.hp / u.maxHp, '#e05040');
+      }
+    }
+  }
+  drawProjs(); drawFx(t); drawBarrier(t); drawMist(t); drawParts(); drawGolden(t); drawFloaters();
+  // raid HUD
+  if (G.raid) {
+    const left = G.raid.queue.length + enemies.filter(e => !e.dead).length;
+    ctx.textAlign = 'center'; ctx.font = '600 16px "Songti SC",serif'; ctx.fillStyle = '#ff9a80';
+    ctx.fillText(`Raid ${G.raid.r}: ${raidInfo(G.raid.r).en} · Foes remaining: ${left}`, W / 2, 24);
+  }
+  // targeting & hover hints
+  if (G.mode === 'village' && mouse.inside && modalOpen === null) {
+    if (G.targeting === 'root' || (G.raid && !onTree(mouse.x, mouse.y) && mouse.y > 540)) {
+      const ready = !artBlock('root');
+      ctx.strokeStyle = ready ? 'rgba(140,230,150,0.85)' : 'rgba(200,100,90,0.6)'; ctx.lineWidth = 1.5; ctx.setLineDash([5, 5]);
+      ctx.beginPath(); ctx.ellipse(mouse.x, mouse.y, 80 * (1 + 0.2 * up('root')), 45 * (1 + 0.2 * up('root')), 0, 0, TAU); ctx.stroke(); ctx.setLineDash([]);
+    } else if (onTree(mouse.x, mouse.y)) {
+      ctx.textAlign = 'center'; ctx.font = '13px "Songti SC",serif'; ctx.fillStyle = 'rgba(200,255,225,0.8)';
+      ctx.fillText(`Click to gather ${G.auto.qiAll ? 'all ' : ''}Qi (${Math.floor(G.qi)}/${qiMax()})`, mouse.x, mouse.y - 18);
+    }
+  }
+  drawBanner(dt);
+}
+
+function render(dt) {
+  ctx.setTransform(cvs.width / W, 0, 0, cvs.height / H, 0, 0);
+  ctx.save();
+  if (G.shake > 0.2) ctx.translate(rand(-G.shake, G.shake), rand(-G.shake, G.shake));
+  ctx.drawImage(bg, 0, 0, W, H);
+  if (G.mode === 'deduction' && G.ded) drawDeduction(); else drawVillage(dt);
+  ctx.restore();
+  if (G.flash > 0) { ctx.fillStyle = `rgba(255,245,215,${G.flash * 0.6})`; ctx.fillRect(0, 0, W, H); }
+  if (G.over) { ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.fillRect(0, 0, W, H); }
+}
+
+/* ================= UI ================= */
+let toastT = 0;
+function toast(msg) { const el = $('toast'); el.textContent = msg; el.classList.add('show'); toastT = 2.4; }
+function log(msg, type = 'info') {
+  const el = document.createElement('div'); el.className = 'e ' + type;
+  el.innerHTML = `<span class="d">${G ? 'D' + G.day : ''}</span>${msg}`;
+  const L = $('log'); L.prepend(el); while (L.children.length > 80) L.lastChild.remove();
+}
+const ACTS = [
+  { id: 'hunt', en: 'Assign Hunters', fn: () => doHunt(), auto: `Auto-hunt: send the hunters out whenever they are idle, keeping ${AUTO_RICE_RESERVE} Blood Rice in reserve.` },
+  { id: 'tend', en: 'Tend Blood Rice', fn: () => doTend(), auto: `Auto-tend: stir the Blood Spring every 4s while Vitality stays above ${AUTO_VIT_RESERVE + 5}.` },
+  { id: 'bless', en: 'Bless Disciples', fn: () => doBless() },
+  { id: 'dream', en: 'Send Dream', fn: () => openDream() },
+  { id: 'deduce', en: 'World Deduction', fn: () => enterDeduction() },
+  { id: 'miracle', en: 'Cast Miracles', fn: () => openCodex() },
+  { id: 'grow', en: 'Grow the Tree', fn: () => doGrow() },
+  { id: 'heal', en: 'Heal the Tree', fn: () => doHeal() },
+  { id: 'expand', en: 'Expand Village', fn: () => doExpand() },
+  { id: 'trade', en: "Trade at Yong'an", fn: () => doTrade() },
+  { id: 'recruit', en: 'Recruit Warrior', fn: () => doRecruit() }
+];
+const ROLES = [
+  ['farmers', 'Farmers', 'Raise Blood Rice'], ['hunters', 'Hunters', 'Beast blood → Vitality'],
+  ['devotees', 'Devotees', 'Prayers → Faith'], ['warriors', 'Warriors', 'Defend the shrine']
+];
+const SHORT = { root: 'Root Spikes', infuse: 'Infusion', barrier: 'Barrier', barrage: 'Leaf Barrage', mist: 'Obscuring Sight', reverse: 'Reverse Pill', soul: 'Soul & Armor', golden: 'Golden Body' };
+function buildUI() {
+  const A = $('acts');
+  for (const a of ACTS) {
+    const b = document.createElement('button'); b.className = 'act'; b.id = 'act-' + a.id;
+    b.innerHTML = `<b>${a.en}</b><em id="ac-${a.id}"></em>` + (a.auto ? `<i class="auto" id="auto-${a.id}" aria-label="Toggle automation">AUTO</i>` : '');
+    b.addEventListener('mouseenter', () => showTip('ac:' + a.id, b)); b.addEventListener('mouseleave', hideTip);
+    b.addEventListener('focus', () => showTip('ac:' + a.id, b)); b.addEventListener('blur', hideTip);
+    b.onclick = e => {
+      Sfx.init();
+      if (a.auto && e.target.closest('.auto')) { G.auto[a.id] = !G.auto[a.id]; toast(`Auto-${a.id === 'hunt' ? 'hunt' : 'tend'} ${G.auto[a.id] ? 'ON' : 'OFF'}: ${a.auto}`); updateUI(); return; }
+      if (G.mode !== 'village' || G.over) return; a.fn(); updateUI();
+    };
+    A.appendChild(b);
+  }
+  const R = $('roles');
+  for (const [id, nm, d] of ROLES) {
+    const row = document.createElement('div'); row.className = 'role';
+    row.innerHTML = `<div>${nm}<small>${d}</small></div><span class="n" id="rn-${id}">0</span><button data-r="${id}" data-op="-" title="Unassign">−</button><button data-r="${id}" data-op="+" title="Assign an idle clansman">+</button>`;
+    R.appendChild(row);
+  }
+  R.addEventListener('click', e => { const b = e.target.closest('button'); if (!b || G.mode !== 'village' || G.over) return; Sfx.init(); if (b.dataset.op === '+') roleAdd(b.dataset.r); else roleRemove(b.dataset.r); updateUI(); });
+  const S = $('skills');
+  ART_ORDER.forEach((id, i) => {
+    const a = ARTS[id], b = document.createElement('button'); b.className = 'sk'; b.id = 'sk-' + id; b.style.setProperty('--cat', catCol(id));
+    b.setAttribute('aria-label', `${a.en}: ${a.desc}`);
+    b.addEventListener('mouseenter', () => showTip('sk:' + id, b)); b.addEventListener('mouseleave', hideTip);
+    b.addEventListener('focus', () => showTip('sk:' + id, b)); b.addEventListener('blur', hideTip);
+    b.innerHTML = `<span class="g">${a.g}</span><span class="n">${SHORT[id]}</span><span class="c" id="skc-${id}">${costText(a.cost)}</span><span class="k">${i + 1}</span><span class="lv" id="sklv-${id}"></span><span class="cd" id="skcd-${id}"></span>`;
+    b.onclick = () => { Sfx.init(); tryArt(id); updateUI(); };
+    S.appendChild(b);
+  });
+  $('legend').innerHTML = Object.values(CATS).map(c => `<span><i style="background:${c.col}"></i>${c.en}</span>`).join('');
+}
+let tipKey = null, tipBtn = null;
+function actBlock(id) {
+  if (G.mode !== 'village' || G.over) return 'Unavailable right now.';
+  switch (id) {
+    case 'hunt': if (G.raid) return 'The hunters stay home during a raid.'; if (G.exp) return `Hunt in progress: back in ${Math.ceil(G.exp.dur - G.exp.t)}s.`; if (G.roles.hunters < 1) return 'Assign at least one Hunter in Clan Duties.'; if (G.rice < 10) return 'Needs 10 Blood Rice.'; break;
+    case 'tend': if (G.tendCd > 0) return 'Recovering…'; if (G.vit < 5) return 'Needs 5 Vitality.'; break;
+    case 'bless': if (G.blessCount >= 12) return 'Chen Qingyu has received every blessing.'; if (!canAfford(blessCost())) return `Needs ${costText(blessCost())}.`; break;
+    case 'dream': if (G.dreamCd > 0) return `Dream energy recovering: ${Math.ceil(G.dreamCd)}s.`; if (G.faith < 20) return 'Needs at least 20 Faith.'; break;
+    case 'deduce': if (G.raid) return 'You cannot withdraw into Deduction during a raid.'; if (G.vit < 25) return 'Needs 25 Vitality.'; break;
+    case 'grow': if (G.treeLvl >= 5) return 'The tree has reached its final stage.'; if (G.vit < GROW_COST[G.treeLvl]) return `Needs ${GROW_COST[G.treeLvl]} Vitality.`; break;
+    case 'heal': if (G.treeHp >= treeMax()) return 'The tree is already whole.'; if (G.vit < 10) return 'Needs 10 Vitality.'; break;
+    case 'expand': if (G.raid) return 'Not while the village is under attack.'; if (G.rice < expandCost()) return `Needs ${expandCost()} Blood Rice.`; break;
+    case 'trade': if (G.raid) return "Yong'an caravans avoid the shrine during raids."; if (G.rice < 30) return 'Needs 30 Blood Rice.'; break;
+    case 'recruit': if (popTotal() >= housing()) return 'No free housing. Expand the village first.'; if (G.rice < 25) return 'Needs 25 Blood Rice.'; break;
+  }
+  return null;
+}
+function actTip(id) {
+  const h = G.roles.hunters, bc = blessCost(), ty = tradeYield();
+  const huntYield = Math.round((12 + 6 * h) * (1 + 0.2 * boon('bloodPact')) * (G.poison > 0 ? 0.6 : 1) * (G.buffs.beast > 0 ? 1.6 : 1));
+  const harvest = Math.round((10 + 3.2 * G.roles.farmers) * (1 + 0.25 * (G.springLvl - 1) + 0.25 * boon('springVein')));
+  const next = STAGES[Math.min(5, G.treeLvl + 1)];
+  const T = {
+    hunt: ['Economy · Vitality', '#ff8a90', '10 Blood Rice',
+      "Send the clan's hunters into the beast-infested ravines of Luanzang. After 8 seconds they return with ferocious beast blood for the altar. There is a 20% chance a venomous beast poisons them.",
+      `Expected haul: +${huntYield} Vitality (${h} hunter${h === 1 ? '' : 's'}).`],
+    tend: ['Economy · Blood Rice', '#e0607a', '5 Vitality',
+      'Stir the Blood Spring and push its crimson water through the terraces: the rice gains +30% growth toward the next harvest.',
+      `Fields ${Math.floor(G.fieldGrowth * 100)}% grown · next harvest ≈ ${harvest} Blood Rice.`],
+    bless: ['Cultivation', '#74c69d', G.blessCount >= 12 ? 'Maxed' : costText(bc),
+      "Enter Chen Qingyu's dream and guide his breathing. He advances one cultivation realm (+30 HP, +5 damage), and every Chen warrior gains +1 rank (+12% HP and damage). Each blessing costs more.",
+      `Qingyu: ${realmName(G.heroRealm)}${G.blessCount < 12 ? ' → ' + realmName(G.heroRealm + 1) : ''} · Blessings ${G.blessCount}/12.`],
+    dream: ['Spirit Dream', '#b388eb', '20–35 Faith',
+      'A tree cannot speak, but it can visit dreams. Choose Omen of War (reveal and prepare for the next raid), Locust Sword Dream (teach Qingyu a sword art) or Ancestral Solace (cure sickness, boost Faith).',
+      'All dreams share a 30-second cooldown.'],
+    deduce: ['Cultivation', '#ffd166', '25 Vitality',
+      'Send your consciousness into a 30-second trial realm. Steer your roots toward drifting orbs and dodge the red hazard zones. Survive to choose 1 of 3 insights: a new art, an art upgrade or a permanent blessing.',
+      `Next realm: ${REALMS[G.dedRuns % REALMS.length].en} · Deductions completed: ${G.deductions}.`],
+    miracle: ['Codex', '#b9c3bd', 'Free',
+      "Open the Divine Arts codex: every art's description, type, level, cost and cooldown, with a Cast button for each.", ''],
+    grow: ['The Tree', '#74c69d', G.treeLvl >= 5 ? 'Final stage' : `${GROW_COST[G.treeLvl]} Vitality`,
+      'Pour Vitality into the ancestral locust. Each stage adds +130 max HP, +15% Faith from prayers, more ambient Qi, stronger Root Spikes, and leaf strikes against invaders.',
+      G.treeLvl >= 5 ? 'You are the Incense Tree God.' : `Stage ${G.treeLvl}/5: ${STAGES[G.treeLvl].en} → ${next.en}.`],
+    heal: ['The Tree', '#74c69d', '10 Vitality',
+      'Mend the ancient trunk with raw vitality: +60 HP. Outside raids, the tree also slowly heals on its own.',
+      `Tree HP: ${Math.ceil(G.treeHp)}/${treeMax()}.`],
+    expand: ['Village', '#e0607a', `${expandCost()} Blood Rice`,
+      'Build new homes and dig deeper Blood Spring channels: +4 housing (more births and recruits) and +25% Blood Rice from every harvest.',
+      `Housing ${popTotal()}/${housing()} → ${housing() + 4} · village level ${G.housingLvl}.`],
+    trade: ['Trade', '#ffd166', '30 Blood Rice',
+      "Sell Blood Rice to Yong'an City's merchants for beast cores (Vitality) and temple incense (Faith). Each sale cools the market for a while, and the Four Clans push prices up or down.",
+      `Current price ${Math.round(marketPrice() * 100)}% → +${ty.vit} Vitality, +${ty.faith} Faith.`],
+    recruit: ['Defense', '#5aa9e6', '25 Blood Rice',
+      'Pay a wandering martial artist in Blood Rice to swear loyalty to the Chen clan. They join as a warrior right away, even mid-raid.',
+      `Warriors: ${G.roles.warriors} · housing ${popTotal()}/${housing()}.`]
+  }[id];
+  const blk = actBlock(id), a = ACTS.find(x => x.id === id);
+  const auto = a.auto ? `<div class="note upg">AUTO is ${G.auto[id] ? 'ON' : 'OFF'}: ${a.auto} Click the AUTO pill to toggle.</div>` : '';
+  const html = `<div class="t"><b>${a.en}</b><span class="cat">${T[0]}</span></div><div class="meta"><span>Cost: ${T[2]}</span></div><div>${T[3]}</div>${T[4] ? `<div class="note">${T[4]}</div>` : ''}${auto}<div class="note ${blk ? 'lock' : 'ok'}">${blk || 'Ready. Click to use.'}</div>`;
+  return { html, col: T[1] };
+}
+function tipContent(key) {
+  const [k, id] = key.split(':');
+  return k === 'sk' ? { html: tipHTML(id), col: catCol(id) } : actTip(id);
+}
+function tipHTML(id) {
+  const a = ARTS[id], i = ART_ORDER.indexOf(id), lv = up(id), un = G.arts[id], cd = G.cds[id] || 0, blk = un ? artBlock(id) : null;
+  const meta = [`Cost: ${costText(a.cost)}`, `Cooldown: ${artCd(id)}s`, `Key: ${i + 1}`];
+  if (a.raidOnly) meta.push('Raids only');
+  let status, cls;
+  if (!un) { status = 'Sealed: unlock it through World Deduction.'; cls = 'lock'; }
+  else if (cd > 0) { status = `Recovering: ${Math.ceil(cd)}s`; cls = ''; }
+  else if (blk) { status = blk; cls = 'lock'; }
+  else { status = `Ready. Click or press ${i + 1}${a.target ? ', then click the battlefield (or just click the ground during a raid).' : '.'}`; cls = 'ok'; }
+  const upg = un ? `<div class="note upg">${lv ? `Upgrade Lv ${lv}/3 · ${UPG[id]} per level` : `Upgradable via Deduction: ${UPG[id]} per level`}</div>` : '';
+  return `<div class="t"><b>${a.en}</b><span class="cat">${CATS[CAT[id]].en}</span></div><div class="meta">${meta.map(m => `<span>${m}</span>`).join('')}</div><div>${a.desc}</div>${upg}<div class="note ${cls}">${status}</div>`;
+}
+function placeTip() {
+  if (!tipBtn) return;
+  const t = $('tip'), r = tipBtn.getBoundingClientRect(), tw = t.offsetWidth, th = t.offsetHeight;
+  const x = clamp(r.left + r.width / 2 - tw / 2, 8, window.innerWidth - tw - 8);
+  let y = r.top - th - 8; if (y < 8) y = r.bottom + 8;
+  t.style.left = x + 'px'; t.style.top = y + 'px';
+}
+function showTip(key, btn) {
+  tipKey = key; tipBtn = btn; const t = $('tip'), c = tipContent(key);
+  t.style.setProperty('--cat', c.col); t.dataset.h = c.html; t.innerHTML = c.html; placeTip(); t.classList.add('show');
+}
+function hideTip() { tipKey = null; tipBtn = null; $('tip').classList.remove('show'); }
+window.addEventListener('scroll', hideTip, { passive: true });
+function setT(id, v) { const el = $(id); if (el && el.textContent !== String(v)) el.textContent = v; }
+function updateUI() {
+  setT('vVit', Math.floor(G.vit)); setT('vFai', Math.floor(G.faith)); setT('vRic', Math.floor(G.rice)); setT('vPop', `${popTotal()}/${housing()}`);
+  setT('vTreeName', STAGES[G.treeLvl].en); setT('vTreeHp', `${Math.ceil(G.treeHp)}/${treeMax()}`);
+  $('bTree').style.width = (G.treeHp / treeMax() * 100) + '%';
+  const rm = G.raid ? 100 : G.raidMeter; $('bRaid').style.width = rm + '%';
+  setT('vRaid', G.raid ? `RAID ${G.raid.r}!` : G.mistPause > 0 ? `${Math.floor(rm)}% (veiled ${Math.ceil(G.mistPause)}s)` : `${Math.floor(rm)}% · raids repelled ${G.raidCount}/${FINAL_RAID}`);
+  $('mRaid').classList.toggle('hot', !!G.raid || G.raidMeter >= 80);
+  setT('vDay', `Day ${G.day}`); setT('vTier', TIER_NAMES[tierOf(Math.min(G.raidCount + 1, FINAL_RAID))]);
+  // actions
+  const bc = blessCost(), ty = tradeYield();
+  const info = {
+    hunt: [G.exp ? `Hunting… ${Math.ceil(G.exp.dur - G.exp.t)}s` : '10 Rice', !G.raid && !G.exp && G.roles.hunters > 0 && G.rice >= 10],
+    tend: ['5 Vitality · +30% growth', G.vit >= 5 && G.tendCd <= 0],
+    bless: [G.blessCount >= 12 ? 'Maxed' : costText(bc), G.blessCount < 12 && canAfford(bc)],
+    deduce: ['25 Vitality', !G.raid && G.vit >= 25],
+    miracle: ['Divine Arts codex', true],
+    grow: [G.treeLvl >= 5 ? 'Final stage' : `${GROW_COST[G.treeLvl]} Vitality`, G.treeLvl < 5 && G.vit >= GROW_COST[G.treeLvl]],
+    heal: ['10 Vitality · +60 HP', G.vit >= 10 && G.treeHp < treeMax()],
+    expand: [`${expandCost()} Rice · +4 housing`, !G.raid && G.rice >= expandCost()],
+    trade: [`30 Rice → ${ty.vit} Vit + ${ty.faith} Faith`, !G.raid && G.rice >= 30],
+    recruit: ['25 Rice · +1 warrior', G.rice >= 25 && popTotal() < housing()],
+    dream: [G.dreamCd > 0 ? `Recovering ${Math.ceil(G.dreamCd)}s` : '20–35 Faith · 3 dreams', G.dreamCd <= 0 && G.faith >= 20]
+  };
+  for (const id in info) { setT('ac-' + id, info[id][0]); const b = $('act-' + id); b.classList.toggle('off', !info[id][1]); b.classList.toggle('hl', id === 'deduce' && info[id][1] && UNLOCK_ORDER.some(a => !G.arts[a]) || id === 'grow' && info[id][1]); }
+  for (const id of ['hunt', 'tend']) $('auto-' + id).classList.toggle('on', !!G.auto[id]);
+  $('btnQiAll').classList.toggle('on', !!G.auto.qiAll); setT('btnQiAll', G.auto.qiAll ? 'Tree click: all Qi' : 'Tree click: 1 Qi');
+  for (const [id] of ROLES) setT('rn-' + id, G.roles[id]);
+  setT('vIdle', `idle: ${G.idle}`);
+  const hero = guards.find(g => g.kind === 'hero');
+  const hh = `<b>Chen Qingyu</b>, clan prodigy · ${realmName(G.heroRealm)} · ${hero ? (hero.down ? 'wounded' : Math.ceil(hero.hp) + '/' + Math.ceil(hero.maxHp) + ' HP') : ''} · warrior rank ${G.rank}`;
+  if ($('hero').innerHTML !== hh) $('hero').innerHTML = hh;
+  // skills
+  for (const id of ART_ORDER) {
+    const b = $('sk-' + id), a = ARTS[id];
+    b.classList.toggle('locked', !G.arts[id]);
+    b.classList.toggle('off', G.arts[id] && !!artBlock(id));
+    b.classList.toggle('armed', G.targeting === id);
+    const cd = G.cds[id] || 0; $('skcd-' + id).style.height = (cd > 0 ? cd / artCd(id) * 100 : 0) + '%';
+    setT('sklv-' + id, up(id) ? '◆'.repeat(up(id)) : '');
+    setT('skc-' + id, G.arts[id] ? costText(a.cost) : 'Sealed · Deduce');
+  }
+  if (tipKey) { const c = tipContent(tipKey); if ($('tip').dataset.h !== c.html) { $('tip').dataset.h = c.html; $('tip').innerHTML = c.html; placeTip(); } }
+  // status chips
+  const st = [];
+  if (G.plague > 0) st.push(['bad', `Plague ${Math.ceil(G.plague)}s`]);
+  if (G.poison > 0) st.push(['bad', `Hunters poisoned ${Math.ceil(G.poison)}s`]);
+  if (G.starveT > 0) st.push(['bad', 'Starving']);
+  if (G.buffs.infuse > 0) st.push(['good', `Infusion ${Math.ceil(G.buffs.infuse)}s`]);
+  if (G.buffs.armor > 0) st.push(['good', `Leaf Armor ${Math.ceil(G.buffs.armor)}s`]);
+  if (G.buffs.barrier > 0) st.push(['gold', `Barrier ${Math.ceil(G.barrierHp)}`]);
+  if (G.buffs.mistRaid > 0 || G.mistPause > 0) st.push(['good', `Mist ${Math.ceil(Math.max(G.buffs.mistRaid, G.mistPause))}s`]);
+  if (G.buffs.spring > 0) st.push(['good', `Spring surge ${Math.ceil(G.buffs.spring)}s`]);
+  if (G.buffs.beast > 0) st.push(['good', `Beast tide ${Math.ceil(G.buffs.beast)}s`]);
+  if (G.buffs.blight > 0) st.push(['bad', `Spring poisoned ${Math.ceil(G.buffs.blight)}s`]);
+  if (G.buffs.famine > 0) st.push(['bad', `Qi famine ${Math.ceil(G.buffs.famine)}s`]);
+  if (G.buffs.marketUp > 0) st.push(['good', `Gan trade pact ${Math.ceil(G.buffs.marketUp)}s`]);
+  if (G.buffs.marketDown > 0) st.push(['bad', `Shi monopoly ${Math.ceil(G.buffs.marketDown)}s`]);
+  const tot = enemies.find(e => !e.dead && ETYPES[e.type].totem);
+  if (tot) st.push(['bad', `${ETYPES[tot.type].en} aura`]);
+  if (G.buffs.devotion > 0) st.push(['good', `Devotion ${Math.ceil(G.buffs.devotion)}s`]);
+  if (G.prepared || (G.raid && G.raid.prepared)) st.push(['gold', 'Prepared (Omen of War)']);
+  if (G.exp) st.push(['gold', `Hunt ${Math.ceil(G.exp.dur - G.exp.t)}s`]);
+  if (G.userPause) st.push(['gold', 'Paused (P)']);
+  const html = G.mode === 'deduction' ? '' : st.map(([c, s]) => `<span class="${c}">${s}</span>`).join('');
+  if ($('status').innerHTML !== html) $('status').innerHTML = html;
+  $('btnPause').textContent = G.userPause ? '▶' : '❚❚';
+  $('btnMute').style.opacity = Sfx.muted ? 0.4 : 1;
+}
+function openModal(id) { closeModal(); $(id).classList.add('open'); modalOpen = id; }
+function closeModal() { if (modalOpen) $(modalOpen).classList.remove('open'); modalOpen = null; }
+function openCodex() {
+  const next = UNLOCK_ORDER.find(id => !G.arts[id]);
+  $('codexSub').textContent = next ? 'Sealed arts are revealed by World Deduction, where each success lets you choose 1 of 3 insights.' : 'All arts revealed. Deductions now deepen them with upgrades and blessings.';
+  $('codexList').innerHTML = ART_ORDER.map((id, i) => {
+    const a = ARTS[id], un = G.arts[id], blk = artBlock(id);
+    return `<div class="art ${un ? '' : 'lk'}"><div class="g" style="border-color:${catCol(id)};color:${catCol(id)}">${a.g}</div><div><b>${a.en}</b> <kbd>${i + 1}</kbd> <span style="color:${catCol(id)};font-size:10px;letter-spacing:1px">${CATS[CAT[id]].en.toUpperCase()}${up(id) ? ' · LV ' + up(id) : ''}</span><small>${a.desc}</small><small style="color:#e0b85a">${costText(a.cost)} · cooldown ${artCd(id)}s${up(id) < 3 ? '' : ' · max level'}${a.raidOnly ? ' · raids only' : ''}</small></div>
+      <div>${un ? `<button data-cast="${id}" ${blk ? 'style="opacity:.45"' : ''}>Cast</button>` : '<small>Sealed</small>'}</div></div>`;
+  }).join('');
+  openModal('mCodex');
+}
+function showEnd(win, reason) {
+  if (win) {
+    $('endTitle').textContent = 'The Incense Tree God Ascends'; $('endSub').textContent = 'Victory';
+    $('endText').innerHTML = `The Spirit-eating Totem crumbles into ash. The Li and Liu feuds, the scheming Four Clans of Yong'an and the hungering totems have all broken against the roots of Luanzang Mountain. The incense never stops burning, and the <b>Chen clan's Locust God</b> is known across the land.<br><br>Days: ${G.day} · Invaders slain: ${G.kills} · Tree stage: ${STAGES[G.treeLvl].en} · Chen Qingyu: ${realmName(G.heroRealm)}`;
+    $('endBtns').innerHTML = '<button class="big" id="btnEndless">Continue (Endless)</button><button class="big alt" id="btnRestart">New Game</button>';
+  } else {
+    $('endTitle').textContent = 'The Incense Is Extinguished'; $('endSub').textContent = 'Defeat';
+    $('endText').innerHTML = (reason === 'tree' ? 'The invaders\' axes bite through the ancient trunk. The ancestral locust falls, and Ji Yang\'s spirit scatters into the wind of Luanzang.' : 'The last of the Chen clan is gone. No one remains to burn incense, and the tree withers into silence once more.') + `<br><br>Days survived: ${G.day} · Raids repelled: ${G.raidCount} · Invaders slain: ${G.kills}`;
+    $('endBtns').innerHTML = '<button class="big" id="btnRestart">Reincarnate</button>';
+  }
+  openModal('mEnd');
+}
+function gameOver(reason) { if (G.over) return; G.over = true; Sfx.playFail(); Sfx.playGong(); const g0 = G; setTimeout(() => { if (G === g0) showEnd(false, reason); }, 1200); }
+
+/* ================= INPUT ================= */
+function toLogical(e) { const r = cvs.getBoundingClientRect(); return { x: (e.clientX - r.left) / r.width * W, y: (e.clientY - r.top) / r.height * H }; }
+cvs.addEventListener('pointermove', e => { const p = toLogical(e); mouse.x = p.x; mouse.y = p.y; mouse.inside = true; if (G.ded) G.ded.mouseSteer = true; });
+cvs.addEventListener('pointerleave', () => { mouse.inside = false; });
+cvs.addEventListener('contextmenu', e => { e.preventDefault(); if (G) G.targeting = null; });
+cvs.addEventListener('pointerdown', e => {
+  Sfx.init(); if (e.button === 2) return;
+  const p = toLogical(e); mouse.x = p.x; mouse.y = p.y; mouse.inside = true;
+  if (modalOpen || G.over) return;
+  if (G.mode === 'deduction') {
+    const D = G.ded; if (!D) return;
+    if (D.phase === 'intro') startDeductionPlay();
+    else if (D.phase === 'result' && D.resT > 0.6) exitDeduction();
+    else D.mouseSteer = true;
+    return;
+  }
+  if (G.userPause) return;
+  if (G.targeting === 'root') { if (performArt('root', p.x, p.y)) G.targeting = null; else toast(artBlock('root') || ''); return; }
+  if (onTree(p.x, p.y)) { gatherQi(p.x, p.y); return; }
+  if (G.raid && p.y > 540) { const b = artBlock('root'); if (!b) performArt('root', p.x, p.y); else toast(b); }
+});
+window.addEventListener('keydown', e => {
+  const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key) && G && G.mode === 'deduction') e.preventDefault();
+  keys[k] = true;
+  if (!G) return;
+  if (k === 'Escape') { if (modalOpen === 'mCodex' || (modalOpen === 'mPick' && pickMode === 'dream')) closeModal(); G.targeting = null; return; }
+  if (modalOpen) { if (k === 'Enter' && modalOpen === 'mTitle') $('btnStart').click(); if (modalOpen === 'mPick' && pickMode === 'boon' && ['1', '2', '3'].includes(k)) applyChoice(+k - 1); return; }
+  if (k === 'm') { Sfx.setMuted(!Sfx.muted); return; }
+  if (k === 'p') { G.userPause = !G.userPause; return; }
+  if (G.mode === 'deduction') {
+    Sfx.init();
+    if (k === 'Enter' || k === ' ') { if (G.ded.phase === 'intro') startDeductionPlay(); else if (G.ded.phase === 'result' && G.ded.resT > 0.6) exitDeduction(); }
+    return;
+  }
+  const n = parseInt(k, 10);
+  if (n >= 1 && n <= 8 && !G.over && !G.userPause) { Sfx.init(); tryArt(ART_ORDER[n - 1]); }
+});
+window.addEventListener('keyup', e => { const k = e.key.length === 1 ? e.key.toLowerCase() : e.key; keys[k] = false; });
+window.addEventListener('blur', () => { for (const k in keys) keys[k] = false; });
+
+document.addEventListener('click', e => {
+  const t = e.target;
+  const pk = t.closest && t.closest('[data-pick]'); if (pk) { applyChoice(+pk.dataset.pick); return; }
+  const dr = t.closest && t.closest('[data-dream]'); if (dr) { sendDream(dr.dataset.dream); return; }
+  if (t.id === 'btnPickClose') { closeModal(); return; }
+  if (t.id === 'btnQiAll') { G.auto.qiAll = !G.auto.qiAll; toast(G.auto.qiAll ? 'Clicking the tree now collects all floating Qi at once.' : 'Clicking the tree now collects one Qi orb.'); updateUI(); return; }
+  if (t.id === 'btnStart') { Sfx.init(); closeModal(); Sfx.playChime(); }
+  else if (t.id === 'btnCodexClose') closeModal();
+  else if (t.dataset && t.dataset.cast) { const id = t.dataset.cast; closeModal(); Sfx.init(); tryArt(id); }
+  else if (t.id === 'btnRestart') { closeModal(); newGame(); renderBackground(); }
+  else if (t.id === 'btnEndless') { closeModal(); log('The tale continues. The Li clan\'s grudge is endless, and so is your vigil.', 'gold'); }
+  else if (t.id === 'btnPause') { G.userPause = !G.userPause; }
+  else if (t.id === 'btnMute') { Sfx.init(); Sfx.setMuted(!Sfx.muted); }
+  else if (t.id === 'btnHelp') { openModal('mTitle'); $('btnStart').textContent = 'Resume'; }
+  else if (t.classList && t.classList.contains('modal') && t.id === 'mCodex') closeModal();
+});
+
+/* ================= LOOP ================= */
+function resize() {
+  const r = $('stage').getBoundingClientRect();
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const w = Math.max(320, Math.round(r.width * dpr)), h = Math.max(180, Math.round(r.height * dpr));
+  if (cvs.width === w && cvs.height === h) return;
+  cvs.width = w; cvs.height = h; bg.width = w; bg.height = h;
+  renderBackground();
+}
+let last = performance.now(), uiT = 0;
+function frame(now) {
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  const paused = G.userPause || modalOpen !== null || G.over;
+  G.anim += dt;
+  if (G.mode === 'village') updateSmoke(dt);
+  if (!paused) { if (G.mode === 'village') updateVillage(dt); else if (G.mode === 'deduction') updateDeduction(dt); }
+  else if (G.over) updateParts(dt);
+  G.shake = Math.max(0, G.shake - dt * 30); G.flash = Math.max(0, G.flash - dt * 1.5);
+  render(paused && G.mode === 'village' && !G.over ? 0 : dt);
+  if (toastT > 0) { toastT -= dt; if (toastT <= 0) $('toast').classList.remove('show'); }
+  uiT -= dt; if (uiT <= 0) { uiT = 0.1; updateUI(); }
+  requestAnimationFrame(frame);
+}
+newGame();
+buildUI();
+new ResizeObserver(resize).observe($('stage'));
+window.addEventListener('resize', resize);
+resize(); updateUI();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
