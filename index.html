@@ -4,15 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Incense Tree God</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Marcellus&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#141416; --panel:#17191b; --panel2:#1e2022; --line:#2e3336; --line2:#4a3f22;
   --jade:#74c69d; --jade2:#40916c; --gold:#ffd166; --gold2:#a8842f;
+  --font-body:"EB Garamond",Georgia,"Times New Roman",serif; --font-display:Marcellus,Georgia,serif;
   --cin:#e63946; --blood:#d00000; --ink:#ebe4d0; --muted:#8e9a92;
 }
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:radial-gradient(ellipse at 50% -10%,#1e2022 0%,#141416 60%) fixed;color:var(--ink);
-  font-family:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC","SimSun",Georgia,serif;overflow-x:hidden}
+  font-family:var(--font-body);font-variant-numeric:lining-nums;overflow-x:hidden}
 button{font-family:inherit;color:inherit}
 #app{display:flex;flex-direction:column;min-height:100vh}
 header{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding:8px 14px;border-bottom:1px solid var(--line);
@@ -23,10 +27,10 @@ header{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding:8px 
 .chip{min-width:92px;padding:4px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel2);line-height:1.15}
 .chip .l{display:block;font-size:10px;color:var(--muted);letter-spacing:.5px}
 .chip .v{font-size:17px;font-variant-numeric:tabular-nums}
-.chip.vit .v{color:#7fe08f}.chip.fai .v{color:var(--gold)}.chip.ric .v{color:#e0607a}.chip.pop .v{color:#cfd8e0}
+.chip.yin .v{color:#a8dcff}.chip.vit .v{color:#7fe08f}.chip.fai .v{color:var(--gold)}.chip.ric .v{color:#e0607a}.chip.pop .v{color:#cfd8e0}
 .meters{display:flex;flex-wrap:wrap;gap:8px;flex:1;min-width:260px}
 .meter{flex:1;min-width:150px}
-.meter .l{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:3px}
+.meter .l{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:var(--muted);margin-bottom:3px}
 .bar{height:10px;border-radius:6px;background:#0b0f0e;border:1px solid var(--line);overflow:hidden}
 .bar i{display:block;height:100%;width:0;transition:width .15s linear}
 #bTree{background:linear-gradient(90deg,#40916c,#74c69d)}
@@ -37,6 +41,8 @@ header{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding:8px 
 .sys .day{font-size:13px;color:var(--gold);margin-right:6px;white-space:nowrap}
 .ib{width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--panel2);cursor:pointer;font-size:14px}
 .ib:hover{border-color:var(--gold2)}
+.ib.on{border-color:var(--jade);color:var(--jade)}
+#btnSpeed{width:auto;min-width:32px;padding:0 6px;font-family:var(--font-display)}
 #main{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:12px;padding:10px 12px 12px;flex:1}
 #left{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0}
 #stageWrap{width:100%;max-width:calc((100vh - 200px) * 16 / 9);min-width:min(100%,520px)}
@@ -97,6 +103,7 @@ header{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding:8px 
 .card h1{margin:0;font-size:30px;letter-spacing:1.5px;line-height:1.2;color:var(--gold);text-align:center;text-shadow:0 0 20px rgba(224,184,90,.4)}
 .card h2{margin:4px 0 14px;font-size:14px;color:var(--muted);text-align:center;font-weight:400;letter-spacing:1px}
 .card p,.card li{font-size:13.5px;line-height:1.6;color:#d4d0c2}
+.card .quote{font-style:italic;color:#ecd2a8;border-left:2px solid var(--cin);padding:2px 0 2px 12px;margin:10px 0}
 .card ul{padding-left:18px;margin:8px 0}
 .card .row{display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap}
 .big{padding:10px 26px;border-radius:10px;border:1px solid var(--gold);background:linear-gradient(180deg,#4a3a18,#2a200c);color:#ffe9b0;font-size:16px;letter-spacing:2px;cursor:pointer}
@@ -151,6 +158,9 @@ kbd{font-family:inherit;font-size:11px;border:1px solid #3a4a42;border-radius:4p
 #tip .upg{color:var(--cat)}
 #tip .lock{color:#f0907c}
 #tip .ok{color:#9be8c3}
+/* display typeface */
+.brand .cn,.card h1,.panel h3,.big,.pick b,#tip b,.act b,.sk .n,.sk .g,.art .g,.pick .gl,.chip .v,.sys .day,.art b{font-family:var(--font-display);font-weight:400}
+.chip .v{font-variant-numeric:lining-nums tabular-nums}
 @media (max-width:1000px){
   #main{grid-template-columns:1fr}
   #side{max-height:none}
@@ -174,13 +184,15 @@ kbd{font-family:inherit;font-size:11px;border:1px solid #3a4a42;border-radius:4p
       <div class="chip fai" title="Incense Faith — from prayers, festivals and victories. Fuels miracles."><span class="l">Incense Faith</span><span class="v" id="vFai">0</span></div>
       <div class="chip ric" title="Blood Rice — harvested from the Blood Spring terraces. Feeds the clan, funds expansion."><span class="l">Blood Rice</span><span class="v" id="vRic">0</span></div>
       <div class="chip pop" title="Clan population / housing"><span class="l">Chen Clan</span><span class="v" id="vPop">0</span></div>
+      <div class="chip yin" title="Yin Soldiers: fallen clansmen bound into Ancestral Soul Tablets. They rise to fight in every raid and grow stronger at night."><span class="l">Yin Soldiers</span><span class="v" id="vYin">0</span></div>
     </div>
     <div class="meters">
       <div class="meter"><div class="l"><span>Locust Tree: <span id="vTreeName"></span></span><span id="vTreeHp"></span></div><div class="bar"><i id="bTree"></i></div></div>
       <div class="meter" id="mRaid"><div class="l"><span>Raid Danger · <span id="vTier"></span></span><span id="vRaid"></span></div><div class="bar"><i id="bRaid"></i></div></div>
     </div>
     <div class="sys">
-      <span class="day" id="vDay"></span>
+      <span class="day" id="vDay" title="Daytime: +30% Blood Rice growth, +25% beast blood, faster Qi and tree vitality. Night: +40% Faith, the Soul Tablets resonate (+Faith per Yin Soldier), and Yin Soldiers deal +35% damage."></span>
+      <button class="ib" id="btnSpeed" title="Game speed: 1× / 2× (World Deduction always runs at 1×)">1×</button>
       <button class="ib" id="btnPause" title="Pause (P)">❚❚</button>
       <button class="ib" id="btnMute" title="Mute (M)">♪</button>
       <button class="ib" id="btnHelp" title="How to play">?</button>
@@ -211,14 +223,17 @@ kbd{font-family:inherit;font-size:11px;border:1px solid #3a4a42;border-radius:4p
 <div class="modal open" id="mTitle"><div class="card">
   <h1>From Withered Wood<br>to Incense Tree God</h1>
   <h2>A Xianxia Shrine Defense</h2>
-  <p><b>Ji Yang</b> died and was reborn as the <b>withered ancestral locust tree</b> in the Chen clan's ancestral shrine on <b>Luanzang Mountain</b>. He cannot walk and he cannot speak. He can only reach the world through vitality miracles, ancestral tablets, leaf armor, and dreams sent to the clan elders and to the prodigy <b>Chen Qingyu</b>.</p>
+  \1
+  <p class="quote">“Patriarch, bad news, a clansman is injured! Rush him to the Divine Tree!”<br>“Patriarch, a clansman just died! Rush him to the Divine Tree before the corpse turns cold!”</p>
   <ul>
     <li><b>Click the tree</b> to draw in ambient Qi (Vitality). Switch the tree click to <b>collect all Qi</b> in the Shrine Actions panel. Hunters' sacrifices of ferocious beasts also feed your roots.</li>
     <li><b>Clan Duties</b>: farmers irrigate the Blood Spring terraces (Blood Rice), devotees burn incense (Faith), hunters bring beast blood (Vitality), and warriors guard the shrine. Spend Blood Rice to <b>recruit warriors</b> or <b>trade at Yong'an</b>.</li>
-    <li><b>World Deduction</b> (25 Vitality) is a 30-second trial. Grow a central sapling's roots toward drifting gold and blue orbs while avoiding red hazard zones, and survive to <b>choose 1 of 3 insights</b>: a new art (such as <i>One Leaf Obscuring Sight</i> or <i>Reversed Pill Circulation</i>), an art upgrade, or a permanent blessing.</li>
+    <li><b>World Deduction</b> (25 Vitality) is a 20-second trial. Grow a central sapling's roots toward drifting gold and blue orbs while avoiding red hazard zones, and survive to <b>choose 1 of 3 insights</b>: a new art (such as <i>One Leaf Obscuring Sight</i> or <i>Reversed Pill Circulation</i>), an art upgrade, or a permanent blessing.</li>
     <li><b>Send Dream</b>: a tree cannot speak, but it can visit dreams. Warn the elders of the next raid, teach Chen Qingyu the Locust Sword, or comfort the whole clan.</li>
+    <li><b>Casualties</b>: when a clansman falls, a countdown appears over them. Click to heal them at the Divine Tree (15 Vitality). If they die, click the body <b>before the corpse turns cold</b> to bind its soul into an Ancestral Soul Tablet (10 Faith). It then rises as a <b>Yin Soldier</b> in every raid.</li>
+    <li><b>Day and night</b>: sunlight quickens rice, beast blood and the tree's growth, while moonlight deepens Faith and empowers the Yin Soldiers. The <b>1×/2×</b> button speeds up time.</li>
     <li><b>Raids</b> begin when Raid Danger fills. <b>Click the ground</b> for Root Spikes, and use <kbd>1</kbd>–<kbd>8</kbd> for your arts.</li>
-    <li><b>Three tiers of enemies</b>: the Li &amp; Liu clans, then the Four Great Clans of Yong'an City (Shi, Xie, Gan, Shen), and finally the Blood-, Qi- and Spirit-eating Totems. Destroy the <b>Spirit-eating Totem</b> to become the Incense Tree God.</li>
+    <li><b>Three threat levels</b>: the Li &amp; Liu mountain bandits, then the Four Great Clans of Yong'an City (Shi, Xie, Gan, Shen) with their espionage shamans and totem mercenaries, and finally the Blood-, Qi- and Spirit-eating Totems. Destroy the <b>Spirit-eating Totem</b> to become the Incense Tree God.</li>
   </ul>
   <div class="row"><button class="big" id="btnStart">Awaken</button></div>
 </div></div>
@@ -251,6 +266,7 @@ const W = 1280, H = 720, TAU = Math.PI * 2;
 const $ = id => document.getElementById(id);
 const cvs = $('game'), ctx = cvs.getContext('2d');
 const bg = document.createElement('canvas'), bctx = bg.getContext('2d');
+const bgDay = document.createElement('canvas'), dctx = bgDay.getContext('2d');
 const rand = (a, b) => a + Math.random() * (b - a);
 const randi = (a, b) => Math.floor(rand(a, b + 1));
 const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
@@ -338,7 +354,21 @@ const Sfx = {
     this.tone('sine', 528, t, 0.005, 1.4, 0.16); this.tone('sine', 1056, t, 0.005, 0.9, 0.05); this.tone('sine', 792, t + 0.09, 0.005, 1.1, 0.06);
   },
   // Triangle war drum (120 → 30 Hz), alias of playDrum
-  playWarDrum() { this.playDrum(); }
+  playWarDrum() { this.playDrum(); },
+  // Ghostly ethereal harmonic for Yin Soldiers: detuned, vibrato-laden sines + breathy noise
+  playGhost() {
+    if (!this.ready('ghost', 250)) return; const t = this.ac.currentTime;
+    [[220, 0.07], [261.6, 0.05], [311.1, 0.05], [440, 0.035], [622.3, 0.02]].forEach(([f, v], i) => {
+      const o = this.ac.createOscillator(), g = this.ac.createGain(), l = this.ac.createOscillator(), lg = this.ac.createGain();
+      o.type = 'sine'; o.frequency.setValueAtTime(f * (1 + (i % 2 ? 0.004 : -0.003)), t); l.frequency.value = 3.5 + i * 0.7; lg.gain.value = f * 0.012;
+      l.connect(lg); lg.connect(o.frequency);
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v, t + 0.4 + i * 0.05); g.gain.exponentialRampToValueAtTime(0.0001, t + 2.6);
+      o.connect(g); g.connect(this.master); o.start(t); l.start(t); o.stop(t + 2.7); l.stop(t + 2.7);
+    });
+    this.hiss(t, 0.4, 1.4, 0.04, 'bandpass', 900, 1700, 6);
+  },
+  // Urgent bell for casualties
+  playAlarm() { if (!this.ready('alarm', 400)) return; const t = this.ac.currentTime; this.tone('sine', 1320, t, 0.003, 0.18, 0.12); this.tone('sine', 990, t + 0.14, 0.003, 0.3, 0.12); }
 };
 const SoundFX = Sfx;
 
@@ -354,8 +384,8 @@ const GROW_COST = [0, 45, 100, 190, 320];
 function realmName(n) { return n <= 9 ? `Qi Refining ${n}` : `Foundation Establishment ${n - 9}`; }
 
 const ETYPES = {
-  raider: { en: 'Li Clan Blade', hp: 50, dmg: 9, cd: 1.0, range: 22, speed: 38, tdmg: 6, r: 10, vit: 2, fai: 1 },
-  archer: { en: 'Li Clan Archer', hp: 34, dmg: 7, cd: 1.6, range: 210, speed: 32, tdmg: 6, r: 10, ranged: 'arrow', vit: 2, fai: 1 },
+  raider: { en: 'Li Mountain Bandit', hp: 50, dmg: 9, cd: 1.0, range: 22, speed: 38, tdmg: 6, r: 10, vit: 2, fai: 1 },
+  archer: { en: 'Liu Bandit Archer', hp: 34, dmg: 7, cd: 1.6, range: 210, speed: 32, tdmg: 6, r: 10, ranged: 'arrow', vit: 2, fai: 1 },
   cultivator: { en: 'Liu Clan Cultivator', hp: 130, dmg: 14, cd: 2.4, range: 250, speed: 26, tdmg: 12, r: 11, ranged: 'fire', vit: 6, fai: 3 },
   elder: { en: 'Li Clan Elder', hp: 1000, dmg: 28, cd: 1.3, range: 34, speed: 17, tdmg: 22, r: 16, boss: true, vit: 60, fai: 50 },
   retainer: { en: "Yong'an Retainer", hp: 90, dmg: 12, cd: 1.1, range: 22, speed: 30, tdmg: 9, r: 11, vit: 4, fai: 2 },
@@ -364,6 +394,8 @@ const ETYPES = {
   thrall: { en: 'Totem Thrall', hp: 60, dmg: 11, cd: 0.9, range: 20, speed: 52, tdmg: 8, r: 10, beast: true, vit: 3, fai: 1 },
   totemBlood: { en: 'Blood-eating Totem', hp: 2600, dmg: 20, cd: 1.6, range: 60, speed: 12, tdmg: 30, r: 24, boss: true, totem: 'blood', vit: 120, fai: 80 },
   totemQi: { en: 'Qi-eating Totem', hp: 3400, dmg: 22, cd: 1.6, range: 60, speed: 12, tdmg: 32, r: 24, boss: true, totem: 'qi', vit: 150, fai: 100 },
+  shaman: { en: 'Espionage Shaman', hp: 70, dmg: 8, cd: 2.0, range: 230, speed: 28, tdmg: 8, r: 10, ranged: 'fire', shaman: true, vit: 5, fai: 3 },
+  mercenary: { en: 'Totem Mercenary', hp: 170, dmg: 16, cd: 1.3, range: 24, speed: 26, tdmg: 12, r: 12, armored: true, vit: 6, fai: 3 },
   totemSpirit: { en: 'Spirit-eating Totem', hp: 4200, dmg: 26, cd: 1.5, range: 60, speed: 12, tdmg: 36, r: 24, boss: true, totem: 'spirit', vit: 200, fai: 150 }
 };
 
@@ -371,7 +403,7 @@ const ARTS = {
   root:    { en: 'Root Spikes', g: 'RS', cost: { vit: 6 }, cd: 1.2, raidOnly: true, target: true,
              desc: 'Roots burst from the earth at the target, damaging and binding invaders. Click the ground during a raid to cast it instantly.' },
   infuse:  { en: 'Vitality Infusion', g: 'VI', cost: { vit: 20 }, cd: 12,
-             desc: 'Warriors gain +30% attack and speed for 15s and recover 35% HP. Also cures plague and beast poison.' },
+             desc: 'Warriors gain +30% attack and speed for 15s and recover 35% HP. Also cures plague and beast poison, and revives every injured clansman awaiting the Divine Tree.' },
   barrier: { en: 'Incense Barrier', g: 'IB', cost: { faith: 20 }, cd: 15, raidOnly: true,
              desc: 'Incense smoke hardens into a golden dome that absorbs damage aimed at the tree for 20s.' },
   barrage: { en: 'Leaf Barrage', g: 'LB', cost: { faith: 15 }, cd: 5, raidOnly: true,
@@ -379,9 +411,9 @@ const ARTS = {
   mist:    { en: 'One Leaf Obscuring Sight', g: 'OS', cost: { faith: 30 }, cd: 30,
              desc: 'Veils the village in spirit mist. In peace it halts the Raid meter for 30s and lowers it by 20%. In a raid, enemies are slowed and miss 40% of their attacks for 10s.' },
   reverse: { en: 'Reversed Pill Circulation', g: 'RP', cost: { faith: 30 }, cd: 25,
-             desc: 'Reverses the flow of the inner pill. Converts 30 Faith into 45 Vitality and heals the tree by 20%. During a raid it also siphons 12% of every invader\'s HP (4% from bosses) back into the tree.' },
-  soul:    { en: 'Soul Gathering & Leaf Armor', g: 'SG', cost: { faith: 35, vit: 15 }, cd: 30, raidOnly: true,
-             desc: 'Summons ancestral spirit warriors for 25s and clads every defender in divine leaf armor (−50% damage for 15s).' },
+             desc: 'Reverses the flow of the inner pill. Instantly purifies blighted fields (+25% growth), cures poisoned disciples, converts 30 Faith into 45 Vitality and heals the tree by 20%. During a raid it also siphons 12% of every invader\'s HP (4% from bosses) back into the tree.' },
+  soul:    { en: 'Soul Gathering & Divine Leaf Armor', g: 'SG', cost: { faith: 35, vit: 15 }, cd: 30, raidOnly: true,
+             desc: 'Summons ancestral spirit warriors for 25s and clads every defender, Yin Soldiers included, in spectral leaf armor that doubles their defense (−50% damage taken) for 15s.' },
   golden:  { en: 'Incense Golden Body', g: 'GB', cost: { faith: 100 }, cd: 90, raidOnly: true, gold: true,
              desc: 'Ultimate. A colossal golden tree avatar rises and smites every invader on the field, and the tree recovers 30% HP.' }
 };
@@ -415,27 +447,30 @@ const DREAMS = {
 const up = id => (G && G.artUp && G.artUp[id]) || 0;
 const boon = id => (G && G.boons && G.boons[id]) || 0;
 const artCd = id => ARTS[id].cd - (id === 'golden' ? 20 * up('golden') : 0);
-const autoPref = { hunt: false, tend: false, qiAll: false };
+const autoPref = { hunt: false, tend: false, qiAll: false, speed: 1 };
+const DAY_LEN = 24, YIN_CAP = 24, CAS_HEAL = 15, CAS_BIND = 10, CAS_INJ = 10, CAS_COLD = 10;
+// 1 = full daylight, 0 = deep night (dawn and dusk blend over ~2.4s)
+function daylight() { if (!G) return 1; let p = G.dayT / DAY_LEN; if (p > 0.95) p -= 1; return clamp(Math.min((p + 0.05) / 0.1, (0.6 - p) / 0.1), 0, 1); }
 const AUTO_RICE_RESERVE = 25, AUTO_VIT_RESERVE = 30;
 
 const REALMS = [
-  { id: 'desert', en: 'Scorched Desert', hz: ['rock'], pests: true,
-    desc: 'Boulders fall from a burning sky while sand scarabs hunt the living root.' },
+  { id: 'desert', en: 'Scorched Desert', hz: ['rock', 'ember', 'ember'], pests: true,
+    desc: 'Burning embers and boulders rain from a scorched sky while sand scarabs hunt the living root.' },
   { id: 'cliffs', en: 'Shear Cliffs', hz: ['bolt', 'bolt', 'rock'], pests: false,
     desc: 'Corrosive lightning lashes the sheer cliff faces. Watch the red omens and slip between the strikes.' },
-  { id: 'underworld', en: 'Underworld Depths', hz: ['frost', 'frost', 'bolt'], pests: true,
-    desc: 'Frost blight creeps through the underworld depths, and hungry wraiths drift toward warmth.' },
-  { id: 'wilderness', en: 'Primeval Wilderness', hz: ['rock', 'frost', 'bolt'], pests: true,
-    desc: 'Every hazard of the primeval world at once: falling rock, frost blight, corrosive lightning and swarming vermin.' }
+  { id: 'underworld', en: 'Underworld Depths', hz: ['frost', 'acid', 'bolt'], pests: true,
+    desc: 'Frost blight and pools of corrosive acid creep through the underworld, and hungry wraiths drift toward warmth.' },
+  { id: 'wilderness', en: 'Primeval Wilderness', hz: ['rock', 'ember', 'acid', 'frost'], pests: true,
+    desc: 'Every hazard of the primeval world at once: falling rock, embers, corrosive acid, frost blight and swarming vermin.' }
 ];
 const RAIDS = [null,
-  { en: 'Li Clan Raiders' }, { en: 'Li & Liu Skirmishers' }, { en: 'Grand Assault of the Li & Liu Clans' },
-  { en: "Yong'an Clan Enforcers" }, { en: "The Four Great Clans of Yong'an" },
+  { en: 'Li Clan Mountain Bandits' }, { en: 'Li & Liu Bandit Raid' }, { en: 'Grand Assault of the Li & Liu Bandits' },
+  { en: "Yong'an Shamans & Totem Mercenaries" }, { en: "The Four Great Clans of Yong'an" },
   { en: 'The Blood-eating Totem' }, { en: 'The Qi-eating Totem' }, { en: 'The Spirit-eating Totem' }];
 const FINAL_RAID = 8;
 const raidInfo = r => RAIDS[r] || { en: 'Totem Remnants & Rival Clans' };
 const tierOf = r => r <= 3 ? 1 : r <= 5 ? 2 : 3;
-const TIER_NAMES = ['', 'Tier I · Li & Liu clans', "Tier II · Yong'an Four Clans", 'Tier III · Totems'];
+const TIER_NAMES = ['', 'Threat I · Li & Liu Bandits', "Threat II · Yong'an Four Clans", 'Threat III · Totem Beasts'];
 const CLAN_COL = { Shi: '#2b4a7a', Xie: '#226a64', Gan: '#8a6a2a', Shen: '#55555f' }, CLAN_CHAR = { Shi: 'SHI', Xie: 'XIE', Gan: 'GAN', Shen: 'SHEN' };
 const BOSS_LINES = {
   elder: 'The <b>Li Clan Elder</b> enters the field. His killing intent chills the mountain.',
@@ -447,6 +482,7 @@ const BOSS_LINES = {
 
 /* ================= STATE ================= */
 let G = null;
+let casualties = [];
 let villagers = [], guards = [], enemies = [], projs = [], parts = [], smoke = [], fx = [], floaters = [];
 let TREE = null;
 const mouse = { x: 640, y: 360, inside: false };
@@ -462,7 +498,7 @@ const artMul = () => 1 + 0.15 * G.artLvl;
 
 function newGame() {
   G = {
-    mode: 'village', userPause: false, time: 0, anim: 0, day: 1, dayT: 0,
+    mode: 'village', userPause: false, time: 0, anim: 0, day: 1, dayT: 2.5, yin: 0, lastCasQuote: -99, lastDeathQuote: -99, nightTold: false, wasNight: false,
     vit: 30, faith: 20, rice: 40,
     roles: { farmers: 4, hunters: 2, devotees: 2, warriors: 2 }, idle: 0,
     housingLvl: 1, springLvl: 1,
@@ -478,7 +514,7 @@ function newGame() {
     treeAtkT: 0, golden: null, targeting: null, shake: 0, flash: 0, banner: null,
     kills: 0, won: false, over: false, ded: null
   };
-  villagers = []; guards = []; enemies = []; projs = []; parts = []; fx = []; floaters = [];
+  casualties = []; villagers = []; guards = []; enemies = []; projs = []; parts = []; fx = []; floaters = [];
   TREE = buildTree(1);
   syncVillagers(); syncGuards();
   $('log').innerHTML = '';
@@ -512,47 +548,62 @@ function ridge(c, seed, base, amp, fill, fogTo) {
 }
 
 function renderBackground() {
-  const c = bctx; c.setTransform(bg.width / W, 0, 0, bg.height / H, 0, 0); c.clearRect(0, 0, W, H);
-  if (G && G.mode === 'deduction' && G.ded) { renderRealmBg(c, G.ded.realm); return; }
+  for (const [cv, c] of [[bg, bctx], [bgDay, dctx]]) { c.setTransform(cv.width / W, 0, 0, cv.height / H, 0, 0); c.clearRect(0, 0, W, H); }
+  if (G && G.mode === 'deduction' && G.ded) { renderRealmBg(bctx, G.ded.realm); return; }
+  paintVillage(bctx, false); paintVillage(dctx, true);
+}
+function paintVillage(c, day) {
   // sky
-  let g = c.createLinearGradient(0, 0, 0, 500); g.addColorStop(0, '#141416'); g.addColorStop(0.55, '#1e2022'); g.addColorStop(1, '#2c2a26');
+  let g = c.createLinearGradient(0, 0, 0, 500);
+  if (day) { g.addColorStop(0, '#6f7f86'); g.addColorStop(0.55, '#a3aca6'); g.addColorStop(1, '#d6cbb0'); }
+  else { g.addColorStop(0, '#141416'); g.addColorStop(0.55, '#1e2022'); g.addColorStop(1, '#2c2a26'); }
   c.fillStyle = g; c.fillRect(0, 0, W, 500);
-  const r = mulberry32(5);
-  for (let i = 0; i < 140; i++) { c.fillStyle = `rgba(230,228,205,${r() * 0.55})`; const s = r() < 0.1 ? 2 : 1.2; c.fillRect(r() * W, r() * 320, s, s); }
-  // moon
-  const mx = 1060, my = 100;
-  g = c.createRadialGradient(mx, my, 10, mx, my, 150); g.addColorStop(0, 'rgba(235,228,190,0.35)'); g.addColorStop(1, 'rgba(235,228,190,0)');
-  c.fillStyle = g; c.fillRect(mx - 150, my - 150, 300, 300);
-  c.fillStyle = '#ece5c6'; c.beginPath(); c.arc(mx, my, 30, 0, TAU); c.fill();
-  c.fillStyle = 'rgba(160,150,120,0.25)'; [[-8, -6, 7], [9, 5, 5], [-3, 12, 4]].forEach(([a, b, rr]) => { c.beginPath(); c.arc(mx + a, my + b, rr, 0, TAU); c.fill(); });
+  if (!day) {
+    const r = mulberry32(5);
+    for (let i = 0; i < 140; i++) { c.fillStyle = `rgba(230,228,205,${r() * 0.55})`; const s = r() < 0.1 ? 2 : 1.2; c.fillRect(r() * W, r() * 320, s, s); }
+    const mx = 1060, my = 100;
+    g = c.createRadialGradient(mx, my, 10, mx, my, 150); g.addColorStop(0, 'rgba(235,228,190,0.35)'); g.addColorStop(1, 'rgba(235,228,190,0)');
+    c.fillStyle = g; c.fillRect(mx - 150, my - 150, 300, 300);
+    c.fillStyle = '#ece5c6'; c.beginPath(); c.arc(mx, my, 30, 0, TAU); c.fill();
+    c.fillStyle = 'rgba(160,150,120,0.25)'; [[-8, -6, 7], [9, 5, 5], [-3, 12, 4]].forEach(([a, b, rr]) => { c.beginPath(); c.arc(mx + a, my + b, rr, 0, TAU); c.fill(); });
+  } else {
+    const sx = 220, sy = 115;
+    g = c.createRadialGradient(sx, sy, 10, sx, sy, 230); g.addColorStop(0, 'rgba(255,240,200,0.75)'); g.addColorStop(0.3, 'rgba(255,225,170,0.25)'); g.addColorStop(1, 'rgba(255,220,160,0)');
+    c.fillStyle = g; c.fillRect(sx - 230, sy - 230, 460, 460);
+    c.fillStyle = '#fff4dc'; c.beginPath(); c.arc(sx, sy, 34, 0, TAU); c.fill();
+    const r = mulberry32(9);
+    for (let i = 0; i < 7; i++) { c.fillStyle = `rgba(255,255,250,${0.12 + r() * 0.12})`; c.beginPath(); c.ellipse(r() * W, 60 + r() * 150, 90 + r() * 140, 14 + r() * 16, 0, 0, TAU); c.fill(); }
+  }
   // ink-wash mountains (Luanzang)
-  ridge(c, 11, 300, 110, 'rgba(84,90,96,0.5)', 470);
-  ridge(c, 23, 370, 90, 'rgba(40,44,48,0.92)', 500);
-  // mist band
-  g = c.createLinearGradient(0, 330, 0, 450); g.addColorStop(0, 'rgba(160,180,170,0)'); g.addColorStop(0.6, 'rgba(160,180,170,0.13)'); g.addColorStop(1, 'rgba(160,180,170,0)');
+  ridge(c, 11, 300, 110, day ? 'rgba(96,108,112,0.55)' : 'rgba(84,90,96,0.5)', 470);
+  ridge(c, 23, 370, 90, day ? 'rgba(70,80,82,0.85)' : 'rgba(40,44,48,0.92)', 500);
+  g = c.createLinearGradient(0, 330, 0, 450);
+  const mc = day ? '240,240,232' : '160,180,170';
+  g.addColorStop(0, `rgba(${mc},0)`); g.addColorStop(0.6, `rgba(${mc},${day ? 0.32 : 0.13})`); g.addColorStop(1, `rgba(${mc},0)`);
   c.fillStyle = g; c.fillRect(0, 330, W, 120);
-  ridge(c, 37, 440, 60, '#18191c', 520);
+  ridge(c, 37, 440, 60, day ? '#3b423f' : '#18191c', 520);
   // grave mounds & steles on Luanzang
   const r2 = mulberry32(77);
   for (let i = 0; i < 22; i++) {
     const x = r2() * W, y = 418 + r2() * 40; if (x > 430 && x < 850) continue;
-    c.fillStyle = '#0f1513'; c.beginPath(); c.ellipse(x, y, 9 + r2() * 6, 5, 0, Math.PI, 0); c.fill();
-    c.fillStyle = '#2a302c'; c.fillRect(x - 2, y - 11, 4, 8);
+    c.fillStyle = day ? '#2b322f' : '#0f1513'; c.beginPath(); c.ellipse(x, y, 9 + r2() * 6, 5, 0, Math.PI, 0); c.fill();
+    c.fillStyle = day ? '#56605a' : '#2a302c'; c.fillRect(x - 2, y - 11, 4, 8);
   }
   // ground
-  g = c.createLinearGradient(0, 465, 0, H); g.addColorStop(0, '#1d211a'); g.addColorStop(1, '#0c0f0c');
+  g = c.createLinearGradient(0, 465, 0, H);
+  if (day) { g.addColorStop(0, '#4a4b3c'); g.addColorStop(1, '#272a22'); } else { g.addColorStop(0, '#1d211a'); g.addColorStop(1, '#0c0f0c'); }
   c.fillStyle = g; c.fillRect(0, 465, W, H - 465);
-  // huts
-  for (const h of HUTS) drawHut(c, h.x, 486, h.s);
+  for (const h of HUTS) drawHut(c, h.x, 486, h.s, day);
   // courtyard stone
-  c.fillStyle = '#25271f'; c.beginPath(); c.moveTo(430, 492); c.lineTo(850, 492); c.lineTo(1010, H); c.lineTo(270, H); c.closePath(); c.fill();
+  c.fillStyle = day ? '#55554a' : '#25271f'; c.beginPath(); c.moveTo(430, 492); c.lineTo(850, 492); c.lineTo(1010, H); c.lineTo(270, H); c.closePath(); c.fill();
   c.strokeStyle = 'rgba(0,0,0,0.35)'; c.lineWidth = 1;
   for (let i = 0; i < 9; i++) { const t = i / 8, y = 492 + Math.pow(t, 1.4) * (H - 492); const xl = lerp(430, 270, (y - 492) / (H - 492)), xr = lerp(850, 1010, (y - 492) / (H - 492)); c.beginPath(); c.moveTo(xl, y); c.lineTo(xr, y); c.stroke(); }
   for (let i = 0; i <= 12; i++) { const t = i / 12; c.beginPath(); c.moveTo(lerp(430, 850, t), 492); c.lineTo(lerp(270, 1010, t), H); c.stroke(); }
   // terraces
   for (const b of TERRACES) {
-    c.fillStyle = '#3a2b1c'; c.beginPath(); c.roundRect(b.x0, b.y + b.h - 4, b.x1 - b.x0, 8, 3); c.fill();
-    g = c.createLinearGradient(0, b.y, 0, b.y + b.h); g.addColorStop(0, '#2a2016'); g.addColorStop(1, '#1d1610');
+    c.fillStyle = day ? '#5a432a' : '#3a2b1c'; c.beginPath(); c.roundRect(b.x0, b.y + b.h - 4, b.x1 - b.x0, 8, 3); c.fill();
+    g = c.createLinearGradient(0, b.y, 0, b.y + b.h);
+    if (day) { g.addColorStop(0, '#4a3a26'); g.addColorStop(1, '#3a2d1e'); } else { g.addColorStop(0, '#2a2016'); g.addColorStop(1, '#1d1610'); }
     c.fillStyle = g; c.beginPath(); c.roundRect(b.x0, b.y, b.x1 - b.x0, b.h, 5); c.fill();
     c.fillStyle = 'rgba(157,2,8,0.3)'; c.fillRect(b.x0 + 6, b.y + b.h * 0.55, b.x1 - b.x0 - 12, 2);
   }
@@ -560,20 +611,18 @@ function renderBackground() {
   c.strokeStyle = 'rgba(157,2,8,0.65)'; c.lineWidth = 2.5;
   c.beginPath(); c.moveTo(SPRING.x - 30, SPRING.y); c.bezierCurveTo(470, 560, 440, 540, 384, 552); c.stroke();
   c.beginPath(); c.moveTo(SPRING.x + 10, SPRING.y - 6); c.bezierCurveTo(600, 540, 820, 540, W - 384, 552); c.stroke();
-  // spring basin
-  c.fillStyle = '#3a3b35'; c.beginPath(); c.ellipse(SPRING.x, SPRING.y, 40, 13, 0, 0, TAU); c.fill();
-  // shrine hall
+  c.fillStyle = day ? '#5a5b52' : '#3a3b35'; c.beginPath(); c.ellipse(SPRING.x, SPRING.y, 40, 13, 0, 0, TAU); c.fill();
   drawShrine(c);
   // vignette
-  g = c.createRadialGradient(W / 2, H / 2, 300, W / 2, H / 2, 820); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0.55)');
+  g = c.createRadialGradient(W / 2, H / 2, 300, W / 2, H / 2, 820); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, `rgba(0,0,0,${day ? 0.3 : 0.55})`);
   c.fillStyle = g; c.fillRect(0, 0, W, H);
 }
 
-function drawHut(c, x, y, s) {
+function drawHut(c, x, y, s, day) {
   c.save(); c.translate(x, y); c.scale(s, s);
   c.fillStyle = '#2b2219'; c.fillRect(-26, -24, 52, 24);
   c.fillStyle = '#3d3020'; c.beginPath(); c.moveTo(-36, -22); c.lineTo(0, -46); c.lineTo(36, -22); c.closePath(); c.fill();
-  c.fillStyle = 'rgba(240,170,80,0.55)'; c.fillRect(-14, -16, 8, 8); c.fillRect(8, -16, 8, 8);
+  c.fillStyle = day ? 'rgba(240,200,140,0.18)' : 'rgba(240,170,80,0.55)'; c.fillRect(-14, -16, 8, 8); c.fillRect(8, -16, 8, 8);
   c.restore();
 }
 
@@ -617,7 +666,7 @@ function drawLanterns(t) {
     ctx.fillStyle = g; ctx.fillRect(x - 46, 410, 92, 92); ctx.restore();
     ctx.fillStyle = '#b02a20'; ctx.beginPath(); ctx.ellipse(x, 456, 10, 12, 0, 0, TAU); ctx.fill();
     ctx.fillStyle = `rgba(255,200,120,${0.5 * fl})`; ctx.beginPath(); ctx.ellipse(x, 456, 6, 9, 0, 0, TAU); ctx.fill();
-    ctx.fillStyle = '#2a0a06'; ctx.font = '700 10px Georgia,serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('C', x, 457);
+    ctx.fillStyle = '#2a0a06'; ctx.font = '11px Marcellus,Georgia,serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('C', x, 457);
   }
 }
 
@@ -841,7 +890,7 @@ function drawFigure(x, y, o) {
   if (o.flag) {
     ctx.strokeStyle = '#3a2a1a'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(-5, -14); ctx.lineTo(-5, -46); ctx.stroke();
     ctx.fillStyle = o.robe; ctx.fillRect(-27, -46, 22, 10); ctx.strokeStyle = '#e63946'; ctx.lineWidth = 0.8; ctx.strokeRect(-27, -46, 22, 10);
-    ctx.save(); ctx.translate(-16, -41); ctx.scale(o.dir || 1, 1); ctx.fillStyle = '#f0e6c8'; ctx.font = '700 6.5px Georgia,serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(o.flag, 0, 0.5); ctx.restore();
+    ctx.save(); ctx.translate(-16, -41); ctx.scale(o.dir || 1, 1); ctx.fillStyle = '#f0e6c8'; ctx.font = '700 6.5px "EB Garamond",Georgia,serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(o.flag, 0, 0.5); ctx.restore();
   }
   const robe = o.flash ? '#f4e4d0' : o.robe;
   ctx.fillStyle = robe; ctx.beginPath(); ctx.moveTo(-4.5, -23); ctx.lineTo(4.5, -23); ctx.lineTo(8.5, -5); ctx.quadraticCurveTo(0, -3, -8.5, -5); ctx.closePath(); ctx.fill();
@@ -950,7 +999,7 @@ function drawTotem(e, t) {
   ctx.beginPath(); ctx.moveTo(-12, top); ctx.lineTo(-38, top - 18 + fl); ctx.lineTo(-16, top - 6); ctx.lineTo(0, top - 26); ctx.lineTo(16, top - 6); ctx.lineTo(38, top - 18 + fl); ctx.lineTo(12, top); ctx.closePath(); ctx.fill(); ctx.stroke();
   ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = `rgba(${col},0.9)`; ctx.beginPath(); ctx.arc(0, top - 12, 4, 0, TAU); ctx.fill();
   ctx.restore();
-  if (!e.dead) { ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = '600 12px "Songti SC",serif'; ctx.fillStyle = `rgba(${col},0.95)`; ctx.fillText(T.en, e.x, e.y - 184); }
+  if (!e.dead) { ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = '12px Marcellus,Georgia,serif'; ctx.fillStyle = `rgba(${col},0.95)`; ctx.fillText(T.en, e.x, e.y - 184); }
 }
 
 /* ================= VILLAGERS (ambient) ================= */
@@ -1033,6 +1082,7 @@ function setStats(g) {
   const old = g.maxHp;
   if (g.kind === 'hero') { g.maxHp = 160 + 30 * (G.heroRealm - 1); g.dmg = (18 + 5 * (G.heroRealm - 1)) * (1 + 0.15 * G.heroArt); g.cd = 0.7; g.speed = 78; }
   else if (g.kind === 'warrior') { const m = 1 + 0.12 * G.rank; g.maxHp = 70 * m; g.dmg = 9 * m; g.cd = 0.9; g.speed = 55; }
+  else if (g.kind === 'yin') { const m = 1 + 0.1 * G.rank; g.maxHp = 80 * m; g.dmg = 11 * m; g.cd = 0.85; g.speed = 66; }
   else { const m = artMul(); g.maxHp = 120 * m; g.dmg = 16 * m; g.cd = 0.8; g.speed = 72; }
   if (old > 1 && !g.down) g.hp = Math.min(g.maxHp, g.hp + Math.max(0, g.maxHp - old));
 }
@@ -1047,7 +1097,7 @@ function assignPosts() {
   let i = 0;
   for (const g of guards) {
     if (g.kind === 'hero') { g.post = { x: 640, y: 690 }; continue; }
-    if (g.kind === 'spirit') continue;
+    if (g.kind === 'spirit' || g.kind === 'yin') continue;
     const side = i % 2 ? 1 : -1, k = Math.floor(i / 2);
     g.post = { x: 640 + side * (100 + (k % 4) * 40), y: 618 + (k % 3) * 24 + Math.floor(k / 4) * 10 }; i++;
   }
@@ -1060,6 +1110,7 @@ function updateGuards(dt) {
     g.atkAnim = Math.max(0, g.atkAnim - dt * 4); g.hitT = Math.max(0, g.hitT - dt);
     if (g.kind === 'spirit') { g.life -= dt; if (g.life <= 0) { burst(g.x, g.y - 16, 'rgba(120,240,190,1)', 14, 80); g.gone = true; guards.splice(i, 1); continue; } }
     if (g.down) continue;
+    if (g.kind === 'yin') g.hp = Math.min(g.maxHp, g.hp + 3 * (1 - daylight()) * dt);
     if (g.stun > 0) { g.stun -= dt; continue; }
     g.atkT -= dt * inf;
     let tgt = null, td = 1e9;
@@ -1071,10 +1122,10 @@ function updateGuards(dt) {
         g.dir = tgt.x >= g.x ? 1 : -1;
         if (g.atkT <= 0) {
           g.atkT = g.cd; g.atkAnim = 1;
-          const dmg = g.dmg * inf * rand(0.85, 1.15) * (G.raid && G.raid.prepared ? 1.25 : 1);
+          const dmg = g.dmg * inf * rand(0.85, 1.15) * (G.raid && G.raid.prepared ? 1.25 : 1) * (g.kind === 'yin' ? 1 + 0.35 * (1 - daylight()) : 1);
           damageEnemy(tgt, dmg);
           if (g.kind === 'hero' && G.heroArt > 0) for (const o of alive) if (o !== tgt && !o.dead && dist(o.x, o.y, tgt.x, tgt.y) < 48) damageEnemy(o, dmg * 0.35 * G.heroArt);
-          if (g.kind !== 'warrior') fx.push({ type: 'slash', x: g.x + g.dir * 10, y: g.y - 16, dir: g.dir, t: 0, dur: 0.22, col: g.kind === 'hero' ? '220,255,240' : '120,240,190' });
+          if (g.kind !== 'warrior') fx.push({ type: 'slash', x: g.x + g.dir * 10, y: g.y - 16, dir: g.dir, t: 0, dur: 0.22, col: g.kind === 'hero' ? '220,255,240' : g.kind === 'yin' ? '150,220,255' : '120,240,190' });
         }
       }
     } else {
@@ -1105,8 +1156,8 @@ function damageGuard(g, amt) {
   else if (g.kind === 'warrior') {
     g.gone = true; guards.splice(guards.indexOf(g), 1); G.roles.warriors--; assignPosts();
     burst(g.x, g.y - 12, 'rgba(255,80,60,1)', 10, 60);
-    log('A Chen warrior has fallen defending the shrine.', 'bad'); checkPop();
-  } else { g.gone = true; guards.splice(guards.indexOf(g), 1); burst(g.x, g.y - 16, 'rgba(120,240,190,1)', 14, 80); }
+    spawnCasualty('warriors', g.x, g.y, 'struck down in battle'); checkPop();
+  } else { g.gone = true; guards.splice(guards.indexOf(g), 1); burst(g.x, g.y - 16, g.kind === 'yin' ? 'rgba(150,220,255,1)' : 'rgba(120,240,190,1)', 14, 80); if (g.kind === 'yin') floater(g.x, g.y - 40, 'Banished until the raid ends', '#a8dcff', 1); }
 }
 
 /* ================= INVADERS ================= */
@@ -1117,12 +1168,12 @@ function raidComposition(r) {
     case 1: add('raider', 5); break;
     case 2: add('raider', 8); add('archer', 3); break;
     case 3: add('raider', 10); add('archer', 4); add('cultivator', 2); boss = 'elder'; break;
-    case 4: add('retainer', 6); add('crossbow', 4); add('cultivator', 1); break;
-    case 5: add('retainer', 8); add('crossbow', 5); add('cultivator', 2); boss = 'champion'; break;
+    case 4: add('retainer', 4); add('crossbow', 3); add('shaman', 2); add('mercenary', 3); break;
+    case 5: add('retainer', 5); add('crossbow', 4); add('shaman', 3); add('mercenary', 4); boss = 'champion'; break;
     case 6: add('thrall', 12); add('raider', 4); boss = 'totemBlood'; break;
     case 7: add('thrall', 12); add('cultivator', 3); add('crossbow', 3); boss = 'totemQi'; break;
     case 8: add('thrall', 16); add('retainer', 4); add('cultivator', 3); boss = 'totemSpirit'; break;
-    default: add('thrall', 8 + r); add('retainer', r - 3); add('crossbow', r - 4); add('cultivator', r - 6); boss = pick(['totemBlood', 'totemQi', 'totemSpirit']);
+    default: add('thrall', 8 + r); add('mercenary', r - 5); add('shaman', r - 6); add('retainer', r - 3); add('crossbow', r - 4); add('cultivator', r - 6); boss = pick(['totemBlood', 'totemQi', 'totemSpirit']);
   }
   for (let i = q.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [q[i], q[j]] = [q[j], q[i]]; }
   if (boss) q.splice(Math.floor(q.length * (ETYPES[boss].totem ? 0.35 : 0.85)), 0, boss);
@@ -1135,7 +1186,7 @@ function spawnEnemy(type) {
   const e = { type, x: side < 0 ? -30 : W + 30, y: rand(578, 695), hp: d.hp * hpM, maxHp: d.hp * hpM, dmg: d.dmg * dmM, tdmg: d.tdmg * dmM, cd: d.cd,
     atkT: rand(0.2, d.cd), range: d.range, speed: d.speed * rand(0.9, 1.1), stun: 0, dir: -side, walk: rand(0, 9), atkAnim: 0, special: 5, hitT: 0, dead: false, moving: false };
   enemies.push(e);
-  if (type === 'retainer' || type === 'crossbow') e.clan = pick(['Shi', 'Xie', 'Gan', 'Shen']);
+  if (type === 'retainer' || type === 'crossbow' || type === 'shaman' || type === 'mercenary') e.clan = pick(['Shi', 'Xie', 'Gan', 'Shen']);
   if (type === 'champion') e.clan = 'Shen';
   if (d.boss) { banner(d.en, 'has come to Luanzang Mountain!', d.totem ? `rgb(${TOTEM_COL[d.totem]})` : '#ff7a60'); log(BOSS_LINES[type] || `The <b>${d.en}</b> appears.`, 'bad'); Sfx.playDrum(); }
 }
@@ -1164,6 +1215,7 @@ function updateEnemies(dt) {
       if (e.atkT <= 0) { e.atkT = e.cd; e.atkAnim = 1; enemyAttack(e, 'tree'); }
     }
     if (T.totem) totemSpecial(e, T, dt);
+    else if (T.shaman) shamanSpecial(e, dt, tg, td);
     else if (T.boss) {
       e.special -= dt;
       if (e.special <= 0 && treeDist < 520) {
@@ -1173,6 +1225,17 @@ function updateEnemies(dt) {
       }
     }
   }
+}
+function shamanSpecial(e, dt, tg, td) {
+  e.special -= dt;
+  if (e.special > 0 || !tg || td > 320) return;
+  e.special = 5.5;
+  const dmM = 1 + 0.15 * ((G.raid ? G.raid.r : 4) - 1), stolen = Math.min(G.faith, 6);
+  tg.stun = Math.max(tg.stun || 0, 1.6); G.faith -= stolen;
+  fx.push({ type: 'tether', x: e.x, y: e.y - 20, x2: tg.x, y2: tg.y - 14, t: 0, dur: 0.6, col: '170,255,90' });
+  floater(tg.x, tg.y - 44, 'Hexed!', '#c8ff8a', 1);
+  if (stolen >= 1) floater(e.x, e.y - 44, `-${Math.round(stolen)} Faith (spied)`, '#ffd166', 1);
+  damageGuard(tg, 10 * dmM); Sfx.playZap();
 }
 function totemSpecial(e, T, dt) {
   const dmM = 1 + 0.15 * ((G.raid ? G.raid.r : 6) - 1);
@@ -1217,6 +1280,7 @@ function enemyAttack(e, tg) {
 }
 function damageEnemy(e, amt) {
   if (e.dead) return;
+  if (ETYPES[e.type].armored) amt *= 0.7;
   e.hp -= amt; e.hitT = 0.15; sparks(e.x, e.y - 16, '#ffd27a', 4);
   if (amt >= 12) floater(e.x + rand(-6, 6), e.y - 36, Math.round(amt), '#ffe6a8', 0.7);
   Sfx.playHit();
@@ -1328,7 +1392,7 @@ function drawFloaters() {
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   for (const f of floaters) {
     const a = 1 - f.t / f.dur;
-    ctx.globalAlpha = a; ctx.font = '600 15px "Songti SC","STSong",serif';
+    ctx.globalAlpha = a; ctx.font = '15px Marcellus,Georgia,serif';
     ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.7)'; ctx.strokeText(f.text, f.x, f.y);
     ctx.fillStyle = f.color; ctx.fillText(f.text, f.x, f.y);
   }
@@ -1394,6 +1458,9 @@ function performArt(id, x, y) {
       const cured = [];
       if (G.plague > 0) { G.plague = 0; cured.push('the plague'); }
       if (G.poison > 0) { G.poison = 0; cured.push('the hunters\' beast poison'); }
+      const injured = casualties.filter(c => c.state === 'injured');
+      for (const c of injured) saveCasualty(c);
+      if (injured.length) cured.push(`${injured.length} injured clansm${injured.length > 1 ? 'en' : 'an'}`);
       leafBurst(TREE_X, TREE_Y - 200, 26);
       log(`<b>Vitality Infusion</b>: locust leaves shower the clan with life${cured.length ? ', curing ' + cured.join(' and ') : ''}.`, 'good');
       Sfx.playChime(); Sfx.playWoosh(); break;
@@ -1413,6 +1480,8 @@ function performArt(id, x, y) {
       else { G.mistPause = 30 + 5 * up('mist'); G.raidMeter = Math.max(0, G.raidMeter - 20 - 10 * up('mist')); log('<b>One Leaf Obscuring Sight</b>: a veil of mist hides the village. The Li clan\'s scouts lose their way.', 'good'); }
       Sfx.playWoosh(); Sfx.playChime(); break;
     case 'reverse': {
+      const purified = []; if (G.buffs.blight > 0) { G.buffs.blight = 0; purified.push('purifying the blighted fields'); } if (G.poison > 0) { G.poison = 0; purified.push('curing the poisoned disciples'); }
+      G.fieldGrowth = Math.min(1, G.fieldGrowth + 0.25);
       const rv = 45 + 20 * up('reverse'); G.vit += rv; G.treeHp = Math.min(treeMax(), G.treeHp + treeMax() * (0.2 + 0.1 * up('reverse')));
       let drained = 0;
       if (G.raid) for (const e of enemies) if (!e.dead) {
@@ -1422,7 +1491,7 @@ function performArt(id, x, y) {
       G.treeHp = Math.min(treeMax(), G.treeHp + drained * 0.5);
       fx.push({ type: 'ring', x: TREE_X, y: TREE_Y - 150, t: 0, dur: 0.9, r0: 200, r1: 10, col: '255,209,102' });
       floater(TREE_X, TREE_Y - 230, `+${rv} Vitality`, '#ffd166', 1.3);
-      log(`<b>Reversed Pill Circulation</b>: incense turns back into raw vitality${drained ? `, and ${Math.round(drained)} life is siphoned from the invaders` : ''}.`, 'gold');
+      log(`<b>Reversed Pill Circulation</b>: incense turns back into raw vitality${purified.length ? ', ' + purified.join(' and ') : ''}${drained ? `, and ${Math.round(drained)} life is siphoned from the invaders` : ''}.`, 'gold');
       Sfx.playPrayerChime(); Sfx.playWoosh(); break;
     }
     case 'soul': {
@@ -1433,7 +1502,7 @@ function performArt(id, x, y) {
       }
       G.buffs.armor = 15;
       for (const g of guards) if (!g.down) leafBurst(g.x, g.y - 16, 3);
-      log('<b>Soul Gathering &amp; Leaf Armor</b>: ancestral spirits of the Chen clan answer the call, clad in divine leaves.', 'good');
+      log('<b>Soul Gathering &amp; Divine Leaf Armor</b>: ancestral spirits answer the call, and every defender, Yin Soldiers included, is clad in spectral leaf plate.', 'good');
       Sfx.playWoosh(); Sfx.playChime(); break;
     }
     case 'golden':
@@ -1539,13 +1608,100 @@ function removePerson(reason) {
     if (r === 'idle' ? G.idle > 0 : G.roles[r] > 0) {
       if (r === 'idle') G.idle--; else G.roles[r]--;
       syncVillagers(); if (r === 'warriors') syncGuards();
-      log(`A clansman has died of ${reason}.`, 'bad'); break;
+      spawnCasualty(r, rand(460, 820), rand(645, 700), reason === 'plague' ? 'collapsing from plague' : reason === 'starvation' ? 'collapsing from hunger' : reason);
+      break;
     }
   }
   checkPop();
 }
-function checkPop() { if (popTotal() <= 0 && !G.over) gameOver('pop'); }
-function gatherQi(x, y) {
+function checkPop() { if (popTotal() + casualties.filter(c => c.state === 'injured').length <= 0 && !G.over) gameOver('pop'); }
+
+/* ================= CASUALTY TRIAGE · "Don't let the corpse get cold!" ================= */
+function spawnCasualty(role, x, y, cause) {
+  casualties.push({ role, x, y, cause, state: 'injured', t: CAS_INJ, max: CAS_INJ });
+  if (G.time - G.lastCasQuote > 25) { G.lastCasQuote = G.time; log(`<i>“Patriarch, bad news, a clansman is injured! Rush him to the Divine Tree!”</i> A clansman is ${cause}. Click them to heal (${CAS_HEAL} Vitality).`, 'bad'); }
+  else log(`A clansman is ${cause}! Heal them within ${CAS_INJ}s.`, 'bad');
+  Sfx.playAlarm();
+}
+function updateCasualties(dt) {
+  for (let i = casualties.length - 1; i >= 0; i--) {
+    const c = casualties[i]; c.t -= dt;
+    if (c.t > 0) continue;
+    if (c.state === 'injured') {
+      c.state = 'corpse'; c.t = c.max = CAS_COLD;
+      if (G.time - G.lastDeathQuote > 25) { G.lastDeathQuote = G.time; log(`<i>“Patriarch, a clansman just died! Rush him to the Divine Tree before the corpse turns cold!”</i> Click the body to bind its soul into a Soul Tablet (${CAS_BIND} Faith).`, 'bad'); }
+      else log('A clansman has died. Bind the body before it turns cold.', 'bad');
+      checkPop();
+    } else {
+      casualties.splice(i, 1); burst(c.x, c.y - 6, 'rgba(160,170,180,1)', 8, 40);
+      log('The body has gone cold. A clansman is lost forever.', 'bad'); checkPop();
+    }
+  }
+}
+function casualtyAt(x, y) {
+  let best = null, bd = 30;
+  for (const c of casualties) { const d = Math.min(dist(x, y, c.x, c.y - 6), dist(x, y, c.x, c.y - 34)); if (d < bd) { bd = d; best = c; } }
+  return best;
+}
+function saveCasualty(c) {
+  casualties.splice(casualties.indexOf(c), 1);
+  if (c.role === 'idle') G.idle++; else G.roles[c.role]++;
+  syncVillagers();
+  if (c.role === 'warriors') { syncGuards(); const g = guards.filter(x => x.kind === 'warrior').pop(); if (g) { g.x = c.x; g.y = c.y; } }
+  for (let i = 0; i < 8; i++) spawnOrb(TREE_X + rand(-60, 60), TREE_Y - rand(100, 220), c.x, c.y - 10, 'rgba(120,255,180,1)');
+  leafBurst(c.x, c.y - 10, 8); floater(c.x, c.y - 52, 'Saved by the Divine Tree!', '#9be8c3', 1.3);
+}
+function tendCasualty(c) {
+  if (c.state === 'injured') {
+    if (G.vit < CAS_HEAL) return toast(`Healing needs ${CAS_HEAL} Vitality.`);
+    G.vit -= CAS_HEAL; saveCasualty(c);
+    log('The clansman is rushed to the Divine Tree, and its leaves close every wound. <b>Saved!</b>', 'good'); Sfx.playPrayerChime();
+  } else {
+    if (G.faith < CAS_BIND) return toast(`Binding a soul needs ${CAS_BIND} Faith.`);
+    G.faith -= CAS_BIND; casualties.splice(casualties.indexOf(c), 1); G.yin++;
+    for (let i = 0; i < 8; i++) spawnOrb(c.x, c.y - 10, 640 + rand(-100, 100), 455, 'rgba(150,220,255,1)');
+    floater(c.x, c.y - 52, 'Bound to a Soul Tablet', '#a8dcff', 1.4);
+    log(`The body reaches the Divine Tree before it turns cold. Its soul is bound into an <b>Ancestral Soul Tablet</b> and rises as a <b>Yin Soldier</b> (${G.yin} in the army).`, 'gold');
+    Sfx.playGhost();
+    if (G.raid && guards.filter(g => g.kind === 'yin').length < YIN_CAP) deployYin(1, c.x, c.y);
+  }
+}
+function deployYin(n, x, y) {
+  for (let i = 0; i < n; i++) {
+    const g = makeGuard('yin'); g.x = x != null ? x : rand(560, 720); g.y = y != null ? y : rand(500, 520);
+    g.post = { x: rand(470, 810), y: rand(600, 690) }; guards.push(g); burst(g.x, g.y - 16, 'rgba(150,220,255,1)', 12, 80);
+  }
+}
+function drawCasualties(t) {
+  for (const c of casualties) {
+    const inj = c.state === 'injured', k = clamp(c.t / c.max, 0, 1), col = inj ? '230,57,70' : '150,205,255';
+    const st = c.role === 'warriors' ? STYLE_G.warrior : (VSTYLE[c.role] || VSTYLE.idle);
+    drawFigure(c.x, c.y, { ...st, lying: true, dir: 1, alpha: inj ? 1 : 0.6, robe: inj ? st.robe : '#6a7480' });
+    if (inj) { ctx.fillStyle = 'rgba(208,0,0,0.5)'; ctx.beginPath(); ctx.ellipse(c.x + 4, c.y + 1, 9, 2.5, 0, 0, TAU); ctx.fill(); }
+    const rx = c.x, ry = c.y - 36, hover = mouse.inside && casualtyAt(mouse.x, mouse.y) === c;
+    if (k < 0.4 || hover) { ctx.strokeStyle = `rgba(${col},${0.35 + 0.35 * Math.abs(Math.sin(t * 8))})`; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(rx, ry, 17 + 2 * Math.sin(t * 8), 0, TAU); ctx.stroke(); }
+    ctx.fillStyle = 'rgba(10,12,14,0.85)'; ctx.beginPath(); ctx.arc(rx, ry, 13, 0, TAU); ctx.fill();
+    ctx.lineWidth = 3; ctx.strokeStyle = `rgba(${col},0.25)`; ctx.beginPath(); ctx.arc(rx, ry, 11, 0, TAU); ctx.stroke();
+    ctx.strokeStyle = `rgb(${col})`; ctx.beginPath(); ctx.arc(rx, ry, 11, -Math.PI / 2, -Math.PI / 2 + TAU * k); ctx.stroke();
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#fff'; ctx.font = '11px Marcellus,Georgia,serif'; ctx.fillText(Math.ceil(c.t), rx, ry + 0.5);
+    ctx.font = '700 11px "EB Garamond",Georgia,serif'; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.75)';
+    const label = inj ? `HEAL · ${CAS_HEAL} Vit` : `BIND · ${CAS_BIND} Faith`;
+    ctx.strokeText(label, rx, ry - 21); ctx.fillStyle = `rgb(${col})`; ctx.fillText(label, rx, ry - 21);
+  }
+}
+function drawNightGlows(t, night) {
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  for (const x of [490, 790]) { const g = ctx.createRadialGradient(x, 456, 2, x, 456, 70); g.addColorStop(0, `rgba(255,120,60,${0.3 * night})`); g.addColorStop(1, 'rgba(255,90,40,0)'); ctx.fillStyle = g; ctx.fillRect(x - 70, 386, 140, 140); }
+  for (const [x0, x1] of [[546, 598], [682, 734]]) { const cx = (x0 + x1) / 2, g = ctx.createRadialGradient(cx, 455, 2, cx, 455, 42); g.addColorStop(0, `rgba(255,209,102,${0.12 + 0.3 * night})`); g.addColorStop(1, 'rgba(255,209,102,0)'); ctx.fillStyle = g; ctx.fillRect(cx - 42, 413, 84, 84); }
+  const n = Math.min(G.yin, 12), a = 0.35 + 0.65 * night;
+  for (let i = 0; i < n; i++) {
+    const x = 472 + (i % 6) * 67 + Math.sin(t * 0.7 + i) * 6, y = 396 - Math.floor(i / 6) * 28 + Math.sin(t * 1.3 + i * 2) * 4;
+    const g = ctx.createRadialGradient(x, y, 1, x, y, 26); g.addColorStop(0, `rgba(170,230,255,${0.7 * a})`); g.addColorStop(1, 'rgba(120,200,255,0)');
+    ctx.fillStyle = g; ctx.fillRect(x - 26, y - 26, 52, 52);
+    ctx.fillStyle = `rgba(225,245,255,${0.85 * a})`; ctx.beginPath(); ctx.ellipse(x, y, 4, 5.5, 0, 0, TAU); ctx.fill();
+  }
+  ctx.restore();
+}function gatherQi(x, y) {
   if (G.qi < 1) { floater(x, y, 'Qi depleted…', '#8e9a92', 0.8); return; }
   const n = G.auto.qiAll ? Math.floor(G.qi) : 1;
   G.qi -= n; const amt = Math.round(n * (1 + 0.5 * (G.treeLvl - 1)) * 10) / 10;
@@ -1563,6 +1719,8 @@ function startRaid() {
   const info = raidInfo(r);
   banner(`Raid ${r}`, info.en, '#ff7a60');
   log(`<b>RAID ${r} · ${info.en}</b>: ${q.length} foes march on Luanzang Mountain. Click the ground for Root Spikes!`, 'bad');
+  const ny = Math.min(G.yin, YIN_CAP);
+  if (ny) { deployYin(ny); log(`<b>${ny} Yin Soldier${ny > 1 ? 's' : ''}</b> rise from their Soul Tablets to defend the shrine.`, 'gold'); setTimeout(() => Sfx.playGhost(), 500); }
   Sfx.playDrum(); setTimeout(() => Sfx.playDrum(), 260);
 }
 function updateRaid(dt) {
@@ -1579,13 +1737,14 @@ function endRaid() {
   const r = G.raid.r; G.raid = null; G.raidCount++; G.raidMeter = 0; G.scoutWarned = false; G.buffs.mistRaid = 0; G.targeting = null;
   const fr = 20 + 10 * r, rr = 15 + 8 * r; G.faith += fr; G.rice += rr;
   for (const g of guards) if (g.kind === 'hero' && g.down) { g.down = false; g.hp = g.maxHp * 0.5; }
+  for (let i = guards.length - 1; i >= 0; i--) if (guards[i].kind === 'yin') { burst(guards[i].x, guards[i].y - 16, 'rgba(150,220,255,1)', 8, 50); guards[i].gone = true; guards.splice(i, 1); }
   banner(`Raid ${r} Repelled`, 'The shrine still stands', '#9be8c3');
   log(`Raid ${r} repelled! The grateful clan offers <b>+${fr} Faith</b>, and plunder yields <b>+${rr} Blood Rice</b>.`, 'good');
   Sfx.playSuccess(); Sfx.playChime();
   const g0 = G;
   if (r === 2) log('Scouts report that the Li and Liu clans are joining forces for a <b>Grand Assault</b>.', 'bad');
-  if (r === 3) setTimeout(() => { if (G !== g0) return; banner('Tier II', "The Four Great Clans of Yong'an", '#ffd166'); dream("Elder Chen dreams of four banners over Yong'an City, marked Shi, Xie, Gan and Shen. The Li clan is broken, but richer wolves now covet the Blood Spring. <b>Trade and rivalry begin.</b>"); }, 2600);
-  if (r === 5) setTimeout(() => { if (G !== g0) return; banner('Tier III', 'The Totems Awaken', '#d0a8ff'); dream("In Chen Qingyu's dream, three totems open their eyes in the deep mountains: the <b>Blood-eating</b>, the <b>Qi-eating</b> and the <b>Spirit-eating</b>. They hunger for a god-tree."); }, 2600);
+  if (r === 3) setTimeout(() => { if (G !== g0) return; banner('Threat Level II', "The Four Great Clans of Yong'an", '#ffd166'); dream("Elder Chen dreams of four banners over Yong'an City, marked Shi, Xie, Gan and Shen. The Li clan is broken, but richer wolves now covet the Blood Spring. <b>Trade and rivalry begin.</b>"); }, 2600);
+  if (r === 5) setTimeout(() => { if (G !== g0) return; banner('Threat Level III', 'The Totem Beasts Awaken', '#d0a8ff'); dream("In Chen Qingyu's dream, three totems open their eyes in the deep mountains: the <b>Blood-eating</b>, the <b>Qi-eating</b> and the <b>Spirit-eating</b>. They hunger for a god-tree."); }, 2600);
   if (r >= FINAL_RAID && !G.won) { G.won = true; setTimeout(() => { if (G === g0 && !G.over) showEnd(true); }, 1600); }
 }
 
@@ -1632,18 +1791,27 @@ function onNewDay() {
 /* ================= VILLAGE SIMULATION ================= */
 function updateVillage(dt) {
   G.time += dt;
-  G.dayT += dt; if (G.dayT >= 12) { G.dayT -= 12; G.day++; onNewDay(); }
+  G.dayT += dt; if (G.dayT >= DAY_LEN) { G.dayT -= DAY_LEN; G.day++; onNewDay(); }
+  const dl = daylight(), nl = 1 - dl, nightNow = dl < 0.5;
+  if (nightNow !== G.wasNight) {
+    G.wasNight = nightNow;
+    if (nightNow) {
+      floater(W / 2, 96, 'Night falls · moonlight empowers Faith and the Yin Soldiers', '#a8dcff', 2.4);
+      if (!G.nightTold) { G.nightTold = true; log('<b>Night falls.</b> Moonlight deepens prayer (+40% Faith), the Soul Tablets resonate, and Yin Soldiers grow stronger.', 'info'); }
+    } else floater(W / 2, 96, 'Dawn · sunlight quickens rice, beast blood and growth', '#ffd166', 2.4);
+  }
   const pop = popTotal(), plagueM = G.plague > 0 ? 0.6 : 1, raidM = G.raid ? 0.5 : 1;
   // faith
   const fm = (1 + 0.15 * (G.treeLvl - 1)) * (1 + 0.2 * boon('resonance')) * (G.buffs.devotion > 0 ? 1.5 : 1);
-  G.faith += (G.roles.devotees * 0.35 + G.idle * 0.06 + 0.1) * fm * plagueM * (G.buffs.famine > 0 ? 0.5 : 1) * dt;
+  G.faith += (G.roles.devotees * 0.35 + G.idle * 0.06 + 0.1) * fm * plagueM * (G.buffs.famine > 0 ? 0.5 : 1) * (1 + 0.4 * nl) * dt;
+  G.faith += G.yin * 0.04 * nl * dt; // soul tablet resonance
   // passive vitality + periodic blood offerings
-  G.vit += 0.08 * G.treeLvl * dt;
+  G.vit += 0.08 * G.treeLvl * (1 + 0.5 * dl) * dt;
   G.huntT += dt;
   if (G.huntT >= 10) {
     G.huntT = 0;
     if (G.roles.hunters > 0 && !G.raid) {
-      const amt = Math.round((3 + boon('bloodPact')) * G.roles.hunters * (G.poison > 0 ? 0.5 : 1) * (G.buffs.beast > 0 ? 2 : 1) * plagueM);
+      const amt = Math.round((3 + boon('bloodPact')) * G.roles.hunters * (G.poison > 0 ? 0.5 : 1) * (G.buffs.beast > 0 ? 2 : 1) * plagueM * (1 + 0.25 * dl));
       G.vit += amt; floater(ALTAR.x, ALTAR.y - 40, `+${amt} Vitality (beast blood)`, '#ff8a90', 1.4);
       spawnOrb(ALTAR.x, ALTAR.y - 20, TREE_X, TREE_Y - 60, 'rgba(255,50,70,1)');
     }
@@ -1652,17 +1820,18 @@ function updateVillage(dt) {
   if (G.exp) {
     G.exp.t += dt;
     if (G.exp.t >= G.exp.dur) {
-      const amt = Math.round((12 + 6 * G.roles.hunters) * (1 + 0.2 * boon('bloodPact')) * (G.poison > 0 ? 0.6 : 1) * (G.buffs.beast > 0 ? 1.6 : 1));
+      const amt = Math.round((12 + 6 * G.roles.hunters) * (1 + 0.2 * boon('bloodPact')) * (G.poison > 0 ? 0.6 : 1) * (G.buffs.beast > 0 ? 1.6 : 1) * (1 + 0.25 * dl));
       G.vit += amt; G.exp = null;
       for (let i = 0; i < 6; i++) spawnOrb(i % 2 ? W - 20 : 20, rand(560, 660), TREE_X, TREE_Y - 60, 'rgba(255,50,70,1)');
       if (G.auto.hunt) floater(ALTAR.x, ALTAR.y - 70, `+${amt} Vitality (hunt)`, '#ff8a90', 1.4);
       else log(`The hunters return with ferocious beast blood: <b>+${amt} Vitality</b>.`, 'good');
+      if (Math.random() < 0.15 && G.roles.hunters > 0) { G.roles.hunters--; syncVillagers(); spawnCasualty('hunters', Math.random() < 0.5 ? rand(60, 200) : rand(1080, 1220), rand(640, 690), 'mauled by a ferocious beast'); }
       if (Math.random() < 0.2 && G.poison <= 0) { G.poison = 60; log('A hunter was bitten by a venomous beast. The hunters are <b>poisoned</b>.', 'bad'); }
       Sfx.playChime();
     }
   }
   // blood rice
-  const farmRate = (0.025 + 0.011 * G.roles.farmers) * (G.buffs.spring > 0 ? 2 : 1) * (G.buffs.blight > 0 ? 0.5 : 1) * plagueM * raidM;
+  const farmRate = (0.025 + 0.011 * G.roles.farmers) * (G.buffs.spring > 0 ? 2 : 1) * (G.buffs.blight > 0 ? 0.5 : 1) * plagueM * raidM * (1 + 0.3 * dl);
   G.fieldGrowth += farmRate * dt;
   if (G.fieldGrowth >= 1) {
     G.fieldGrowth = 0;
@@ -1693,7 +1862,8 @@ function updateVillage(dt) {
   if (G.poison > 0) { G.poison -= dt; if (G.poison <= 0) log('The hunters have recovered from the poison.', 'info'); }
   // tree
   if (!G.raid) G.treeHp = Math.min(treeMax(), G.treeHp + 0.6 * dt);
-  G.qi = Math.min(qiMax(), G.qi + (0.5 + 0.15 * G.treeLvl) * (1 + 0.3 * boon('qiWell')) * dt);
+  G.qi = Math.min(qiMax(), G.qi + (0.5 + 0.15 * G.treeLvl) * (1 + 0.3 * boon('qiWell')) * (1 + 0.3 * dl) * dt);
+  updateCasualties(dt);
   // raid meter
   if (!G.raid) {
     if (G.mistPause > 0) G.mistPause -= dt;
@@ -1734,7 +1904,7 @@ function enterDeduction() {
   if (G.vit < 25) return toast('World Deduction costs 25 Vitality.');
   G.vit -= 25;
   const realm = REALMS[G.dedRuns % REALMS.length]; G.dedRuns++;
-  G.ded = { realm, phase: 'intro', t: 0, dur: 30, tip: { x: 640, y: 372 }, origin: { x: 640, y: 410 },
+  G.ded = { realm, phase: 'intro', t: 0, dur: 20, tip: { x: 640, y: 372 }, origin: { x: 640, y: 410 },
     trail: [{ x: 640, y: 400 }, { x: 640, y: 372 }], frozen: 0, rootlets: [], vigor: 100, essence: 0, nodes: [], hz: [], pests: [],
     hzT: 1.4, nodeT: 0.2, pestT: 2.5, inv: 0, count: 3, resT: 0, result: null, mouseSteer: true, lastTick: 3 };
   G.mode = 'deduction'; G.targeting = null; parts = []; floaters = []; mouse.x = 640; mouse.y = 372;
@@ -1766,7 +1936,11 @@ function spawnHazard(kind) {
       const pts = []; let px = bx + rand(-60, 60); for (let yy = -20; yy < by; yy += 40) { pts.push([px, yy]); px += rand(-25, 25); } pts.push([bx, by]);
       D.hz.push({ type: 'bolt', x: bx, y: by, r: 52, warn: lerp(0.95, 0.6, diff) + i * 0.15, life: 0.35, t: 0, hit: false, pts });
     }
+  } else if (kind === 'ember') {
+    const n = randi(3, 5);
+    for (let i = 0; i < n; i++) D.hz.push({ type: 'ember', x: clamp(x + rand(-80, 80), 30, W - 30), y: clamp(y + rand(-60, 60), 110, H - 30), r: 26, warn: lerp(0.85, 0.55, diff) + i * 0.09, life: 0.45, t: 0, hit: false });
   } else if (kind === 'frost') D.hz.push({ type: 'frost', x, y, r: 70, warn: 0.9, active: 4.5, t: 0, hit: false, shards: Array.from({ length: 7 }, () => [rand(-50, 50), rand(-30, 30), rand(6, 14)]) });
+  else if (kind === 'acid') D.hz.push({ type: 'acid', x, y, r: 62, warn: 0.85, active: 3.5, t: 0, hit: false, bub: Array.from({ length: 7 }, () => [rand(-42, 42), rand(-26, 26), rand(0, TAU)]) });
 }
 function updateDeduction(dt) {
   const D = G.ded; updateParts(dt);
@@ -1809,9 +1983,9 @@ function updateDeduction(dt) {
   for (let i = D.hz.length - 1; i >= 0; i--) {
     const h = D.hz[i]; h.t += dt;
     const inR = dist(h.x, h.y, D.tip.x, D.tip.y) < h.r;
-    if (h.type === 'frost') {
+    if (h.type === 'frost' || h.type === 'acid') {
       if (h.t >= h.warn && h.t < h.warn + h.active && dist(h.x, h.y, D.tip.x, D.tip.y) < h.r * 0.85) {
-        D.vigor -= 18 * dt; D.frozen = 0.15; if (Math.random() < 0.3) parts.push({ x: D.tip.x, y: D.tip.y, vx: rand(-20, 20), vy: rand(-40, -10), life: 0.5, max: 0.5, size: 2.5, color: 'rgba(190,230,255,1)', add: true });
+        const ac = h.type === 'acid'; D.vigor -= (ac ? 26 : 18) * dt; if (!ac) D.frozen = 0.15; if (Math.random() < 0.3) parts.push({ x: D.tip.x, y: D.tip.y, vx: rand(-20, 20), vy: rand(-40, -10), life: 0.5, max: 0.5, size: 2.5, color: ac ? 'rgba(190,255,90,1)' : 'rgba(190,230,255,1)', add: true });
       }
       if (h.t > h.warn + h.active + 0.5) D.hz.splice(i, 1);
       continue;
@@ -1819,6 +1993,7 @@ function updateDeduction(dt) {
     if (!h.hit && h.t >= h.warn) {
       h.hit = true;
       if (h.type === 'rock') { Sfx.playThud(); burst(h.x, h.y, 'rgba(200,150,90,1)', 14, 140); G.shake = Math.max(G.shake, 4); if (inR) dedHurt(20); }
+      else if (h.type === 'ember') { Sfx.playHit(); burst(h.x, h.y, 'rgba(255,140,40,1)', 10, 110); if (inR) dedHurt(10); }
       else { Sfx.playZap(); burst(h.x, h.y, 'rgba(190,255,90,1)', 16, 180); G.flash = Math.max(G.flash, 0.35); if (inR) dedHurt(24); }
     }
     if (h.t >= h.warn + h.life) D.hz.splice(i, 1);
@@ -1983,10 +2158,15 @@ function drawDeduction() {
   // pools & warnings (ground layer)
   for (const h of D.hz) {
     const k = clamp(h.t / h.warn, 0, 1);
-    if (h.type === 'frost') {
+    if (h.type === 'frost' || h.type === 'acid') {
       const on = h.t >= h.warn && h.t < h.warn + h.active; const fade = h.t > h.warn + h.active ? 1 - (h.t - h.warn - h.active) / 0.5 : 1;
       ctx.globalAlpha = Math.max(0, fade);
       if (h.t < h.warn) { ctx.fillStyle = `rgba(200,20,20,${0.12 + 0.22 * k})`; ctx.beginPath(); ctx.ellipse(h.x, h.y, h.r * k, h.r * 0.7 * k, 0, 0, TAU); ctx.fill(); }
+      else if (h.type === 'acid') {
+        ctx.fillStyle = 'rgba(150,230,60,0.34)'; ctx.beginPath(); ctx.ellipse(h.x, h.y, h.r, h.r * 0.7, 0, 0, TAU); ctx.fill();
+        ctx.strokeStyle = 'rgba(215,255,140,0.65)'; ctx.lineWidth = 1.2;
+        for (const [bx, by, bp] of h.bub) { ctx.beginPath(); ctx.arc(h.x + bx, h.y + by, 2 + 3 * Math.abs(Math.sin(G.anim * 3 + bp)), 0, TAU); ctx.stroke(); }
+      }
       else {
         ctx.fillStyle = 'rgba(190,225,255,0.32)'; ctx.beginPath(); ctx.ellipse(h.x, h.y, h.r, h.r * 0.7, 0, 0, TAU); ctx.fill();
         ctx.fillStyle = 'rgba(235,248,255,0.75)';
@@ -2001,6 +2181,7 @@ function drawDeduction() {
       ctx.fillStyle = `rgba(150,0,0,${0.12 + 0.3 * k})`; ctx.beginPath(); ctx.ellipse(h.x, h.y, h.r * k, h.r * 0.6 * k, 0, 0, TAU); ctx.fill();
       ctx.strokeStyle = `rgba(${col},${0.4 + 0.5 * Math.abs(Math.sin(h.t * 14))})`; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.ellipse(h.x, h.y, h.r, h.r * 0.6, 0, 0, TAU); ctx.stroke();
+      if (h.type === 'ember') { const ey = h.y - (1 - k) * 420; ctx.save(); ctx.globalCompositeOperation = 'lighter'; const eg = ctx.createRadialGradient(h.x, ey, 0, h.x, ey, 12); eg.addColorStop(0, 'rgba(255,230,150,1)'); eg.addColorStop(1, 'rgba(255,90,20,0)'); ctx.fillStyle = eg; ctx.beginPath(); ctx.arc(h.x, ey, 12, 0, TAU); ctx.fill(); ctx.restore(); }
       if (h.type === 'rock') { const ry = h.y - (1 - k) * 500; ctx.fillStyle = '#5a4030'; ctx.beginPath(); ctx.arc(h.x, ry - 10, 8 + k * 14, 0, TAU); ctx.fill(); }
     }
   }
@@ -2066,13 +2247,15 @@ function drawDeduction() {
   }
   // impacts
   for (const h of D.hz) {
-    if (!h.hit || h.type === 'pool') continue;
+    if (!h.hit || h.type === 'frost' || h.type === 'acid') continue;
     const k = 1 - (h.t - h.warn) / h.life;
     if (h.type === 'rock') {
       ctx.globalAlpha = clamp(k * 1.5, 0, 1); ctx.fillStyle = '#5a4030';
       ctx.save(); ctx.translate(h.x, h.y - 6); ctx.rotate(h.rot); ctx.beginPath();
       for (let i = 0; i < 7; i++) { const a = i / 7 * TAU, r = 20 + ((i * 37) % 9); ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r * 0.8); }
       ctx.closePath(); ctx.fill(); ctx.strokeStyle = '#2a1a10'; ctx.lineWidth = 2; ctx.stroke(); ctx.restore(); ctx.globalAlpha = 1;
+    } else if (h.type === 'ember') {
+      ctx.save(); ctx.globalCompositeOperation = 'lighter'; const eg = ctx.createRadialGradient(h.x, h.y, 0, h.x, h.y, 34); eg.addColorStop(0, `rgba(255,200,90,${clamp(k, 0, 1)})`); eg.addColorStop(1, 'rgba(255,80,20,0)'); ctx.fillStyle = eg; ctx.beginPath(); ctx.arc(h.x, h.y, 34, 0, TAU); ctx.fill(); ctx.restore();
     } else {
       ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = clamp(k, 0, 1);
       ctx.strokeStyle = 'rgba(190,255,100,1)'; ctx.lineWidth = 4; ctx.beginPath(); h.pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.stroke();
@@ -2086,33 +2269,33 @@ function drawDeduction() {
   // HUD
   ctx.fillStyle = 'rgba(5,8,7,0.55)'; ctx.fillRect(0, 0, W, 74);
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillStyle = '#f0d080'; ctx.font = '600 24px "Songti SC","STSong",serif'; ctx.fillText(`World Deduction · ${D.realm.en}`, W / 2, 22);
-  ctx.fillStyle = '#b9c3bd'; ctx.font = '13px "Songti SC",serif'; ctx.fillText(`Trial ${G.dedRuns} · survive ${D.dur} seconds`, W / 2, 44);
+  ctx.fillStyle = '#f0d080'; ctx.font = '24px Marcellus,Georgia,serif'; ctx.fillText(`World Deduction · ${D.realm.en}`, W / 2, 22);
+  ctx.fillStyle = '#b9c3bd'; ctx.font = '14px "EB Garamond",Georgia,serif'; ctx.fillText(`Trial ${G.dedRuns} · survive ${D.dur} seconds`, W / 2, 44);
   const tl = clamp(1 - D.t / D.dur, 0, 1);
-  bar(W / 2 - 200, 56, 400, 9, tl, '#e0b85a'); ctx.fillStyle = '#ddd'; ctx.font = '12px serif'; ctx.fillText(`${Math.max(0, Math.ceil(D.dur - D.t))}s`, W / 2 + 220, 61);
-  ctx.textAlign = 'left'; ctx.fillStyle = '#9be8c3'; ctx.font = '600 14px "Songti SC",serif'; ctx.fillText('Root Vigor', 24, 24);
+  bar(W / 2 - 200, 56, 400, 9, tl, '#e0b85a'); ctx.fillStyle = '#ddd'; ctx.font = '13px "EB Garamond",Georgia,serif'; ctx.fillText(`${Math.max(0, Math.ceil(D.dur - D.t))}s`, W / 2 + 220, 61);
+  ctx.textAlign = 'left'; ctx.fillStyle = '#9be8c3'; ctx.font = '14px Marcellus,Georgia,serif'; ctx.fillText('Root Vigor', 24, 24);
   bar(24, 38, 220, 12, D.vigor / 100, D.vigor < 30 ? '#e05040' : '#74c69d');
   ctx.textAlign = 'right'; ctx.fillStyle = '#f0d080'; ctx.fillText(`Essence: ${D.essence}`, W - 24, 24);
-  ctx.fillStyle = '#b9c3bd'; ctx.font = '12px serif'; ctx.fillText('Reward: choose 1 of 3 insights', W - 24, 46);
+  ctx.fillStyle = '#b9c3bd'; ctx.font = '13px "EB Garamond",Georgia,serif'; ctx.fillText('Reward: choose 1 of 3 insights', W - 24, 46);
   if (D.phase === 'intro' || D.phase === 'count' || D.phase === 'result') {
     ctx.fillStyle = 'rgba(3,5,4,0.72)'; ctx.fillRect(0, 0, W, H);
     ctx.textAlign = 'center';
     if (D.phase === 'intro') {
-      ctx.fillStyle = '#f0d080'; ctx.font = '600 52px "Songti SC","STSong",serif'; ctx.fillText(D.realm.en, W / 2, 220);
-      ctx.fillStyle = '#ebe4d0'; ctx.font = '22px "Songti SC",serif'; ctx.fillText('World Deduction', W / 2, 270);
-      ctx.fillStyle = '#b9c3bd'; ctx.font = '17px "Songti SC",serif'; ctx.fillText(D.realm.desc, W / 2, 330);
+      ctx.fillStyle = '#f0d080'; ctx.font = '52px Marcellus,Georgia,serif'; ctx.fillText(D.realm.en, W / 2, 220);
+      ctx.fillStyle = '#ebe4d0'; ctx.font = '23px "EB Garamond",Georgia,serif'; ctx.fillText('World Deduction', W / 2, 270);
+      ctx.fillStyle = '#b9c3bd'; ctx.font = '18px "EB Garamond",Georgia,serif'; ctx.fillText(D.realm.desc, W / 2, 330);
       ctx.fillText(`Steer the root tip with the mouse or arrow keys / WASD. Survive ${D.dur} seconds.`, W / 2, 370);
       ctx.fillText('Drifting gold orbs give essence, blue orbs restore vigor. Stay out of the red hazard zones.', W / 2, 400);
-      ctx.fillStyle = `rgba(224,184,90,${0.6 + 0.4 * Math.sin(t * 4)})`; ctx.font = '600 22px "Songti SC",serif'; ctx.fillText('Click or press Enter to begin', W / 2, 480);
+      ctx.fillStyle = `rgba(224,184,90,${0.6 + 0.4 * Math.sin(t * 4)})`; ctx.font = '22px Marcellus,Georgia,serif'; ctx.fillText('Click or press Enter to begin', W / 2, 480);
     } else if (D.phase === 'count') {
-      ctx.fillStyle = '#f0d080'; ctx.font = '600 120px "Songti SC",serif'; ctx.fillText(Math.ceil(D.count), W / 2, H / 2);
+      ctx.fillStyle = '#f0d080'; ctx.font = '120px Marcellus,Georgia,serif'; ctx.fillText(Math.ceil(D.count), W / 2, H / 2);
     } else {
       const r = D.result;
-      ctx.fillStyle = r.success ? '#f0d080' : '#f0907c'; ctx.font = '600 56px "Songti SC","STSong",serif'; ctx.fillText(r.sub, W / 2, 230);
-      ctx.fillStyle = '#ebe4d0'; ctx.font = '22px "Songti SC",serif'; ctx.fillText(r.title, W / 2, 280);
-      ctx.font = '18px "Songti SC",serif'; ctx.fillStyle = '#c8f5df';
+      ctx.fillStyle = r.success ? '#f0d080' : '#f0907c'; ctx.font = '56px Marcellus,Georgia,serif'; ctx.fillText(r.sub, W / 2, 230);
+      ctx.fillStyle = '#ebe4d0'; ctx.font = '23px "EB Garamond",Georgia,serif'; ctx.fillText(r.title, W / 2, 280);
+      ctx.font = '19px "EB Garamond",Georgia,serif'; ctx.fillStyle = '#c8f5df';
       r.lines.forEach((l, i) => ctx.fillText(l, W / 2, 340 + i * 34));
-      if (D.resT > 0.6) { ctx.fillStyle = `rgba(224,184,90,${0.6 + 0.4 * Math.sin(t * 4)})`; ctx.font = '600 20px "Songti SC",serif'; ctx.fillText('Click or press Enter to return to the shrine', W / 2, 500); }
+      if (D.resT > 0.6) { ctx.fillStyle = `rgba(224,184,90,${0.6 + 0.4 * Math.sin(t * 4)})`; ctx.font = '20px Marcellus,Georgia,serif'; ctx.fillText('Click or press Enter to return to the shrine', W / 2, 500); }
     }
   }
 }
@@ -2126,6 +2309,7 @@ function bar(x, y, w, h, k, col) {
 const STYLE_G = {
   hero: { robe: '#d9e6dc', trim: '#3fae8a', hat: 'crown', weapon: 'sword', glow: 'rgba(116,198,157,0.35)' },
   warrior: { robe: '#2f3d48', trim: '#c8463a', hat: 'band', weapon: 'spear' },
+  yin: { robe: '#8fc8dc', trim: '#e0f6ff', hat: 'hood', weapon: 'spear', glow: 'rgba(140,220,255,0.45)', alpha: 0.62 },
   spirit: { robe: '#7fe0b8', trim: '#e0fff0', hat: 'crown', weapon: 'sword', glow: 'rgba(120,240,190,0.5)', alpha: 0.7, armor: true }
 };
 const STYLE_E = {
@@ -2135,6 +2319,8 @@ const STYLE_E = {
   elder: { robe: '#2a0e12', trim: '#d8b45a', hat: 'crown', hair: '#e8e8e0', beard: true, weapon: 'bigsword', s: 1.7, glow: 'rgba(255,60,40,0.4)', outline: '#e63946' },
   retainer: { robe: '#2b4a7a', trim: '#d8d0b0', hat: 'band', bandCol: '#d8d0b0', weapon: 'spear', outline: '#e63946' },
   crossbow: { robe: '#2b4a7a', trim: '#111', hat: 'hood', weapon: 'bow', outline: '#e63946' },
+  shaman: { robe: '#2e4a3a', trim: '#b7ff5a', hat: 'hood', weapon: 'orb', glow: 'rgba(150,255,120,0.3)', outline: '#e63946' },
+  mercenary: { robe: '#5a3e26', trim: '#c8a060', hat: 'band', bandCol: '#e63946', weapon: 'bigsword', s: 1.15, outline: '#e63946' },
   champion: { robe: '#55555f', trim: '#ffd166', hat: 'crown', hair: '#bbbbbb', beard: true, weapon: 'bigsword', s: 1.6, glow: 'rgba(230,57,70,0.4)', outline: '#e63946' }
 };
 function hpBar(x, y, k, col) { ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(x - 13, y, 26, 4); ctx.fillStyle = col; ctx.fillRect(x - 12, y + 1, 24 * clamp(k, 0, 1), 2); }
@@ -2238,9 +2424,9 @@ function drawBanner(dt) {
   const g = ctx.createLinearGradient(0, 0, W, 0); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(0.5, 'rgba(0,0,0,0.65)'); g.addColorStop(1, 'rgba(0,0,0,0)');
   ctx.fillStyle = g; ctx.fillRect(0, 120, W, 100);
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.font = '600 38px "Songti SC","STSong",serif'; ctx.fillStyle = b.col; ctx.shadowColor = b.col; ctx.shadowBlur = 18;
+  ctx.font = '38px Marcellus,Georgia,serif'; ctx.fillStyle = b.col; ctx.shadowColor = b.col; ctx.shadowBlur = 18;
   ctx.fillText(b.title, W / 2, 158); ctx.shadowBlur = 0;
-  ctx.font = '18px "Songti SC",serif'; ctx.fillStyle = '#ebe4d0'; ctx.fillText(b.sub, W / 2, 198);
+  ctx.font = '19px "EB Garamond",Georgia,serif'; ctx.fillStyle = '#ebe4d0'; ctx.fillText(b.sub, W / 2, 198);
   ctx.restore();
 }
 function onTree(x, y) { return dist(x, y, TREE_X, 360) < 185 || (Math.abs(x - TREE_X) < 36 && y > 340 && y < TREE_Y + 8); }
@@ -2264,10 +2450,10 @@ function drawVillage(dt) {
     if (k === 'v') { const st = VSTYLE[u.role]; drawFigure(u.x, u.y, { ...st, dir: u.dir, walk: u.walk, moving: u.moving, kneel: u.kneel, bow: u.role === 'devotees' ? u.bow : 0, carry: u.carry }); }
     else if (k === 'g') {
       const st = STYLE_G[u.kind];
-      drawFigure(u.x, u.y, { ...st, dir: u.dir, walk: u.walk, moving: u.moving, atk: u.atkAnim, flash: u.hitT > 0.08, armor: st.armor || armor, lying: u.down, alpha: u.down ? 0.6 : (st.alpha != null ? st.alpha * (u.kind === 'spirit' ? Math.min(1, u.life / 1.5) : 1) : null),
+      drawFigure(u.x, u.y, { ...st, dir: u.dir, walk: u.walk, moving: u.moving, atk: u.atkAnim, flash: u.hitT > 0.08, armor: st.armor || armor, lying: u.down, alpha: u.down ? 0.6 : (st.alpha != null ? st.alpha * (u.kind === 'spirit' ? Math.min(1, u.life / 1.5) : u.kind === 'yin' ? 0.8 + 0.35 * (1 - daylight()) : 1) : null),
         glow: inf && !u.down ? 'rgba(120,255,150,0.45)' : st.glow });
-      if (!u.down && u.hp < u.maxHp) hpBar(u.x, u.y - 40, u.hp / u.maxHp, u.kind === 'spirit' ? '#9ef0c8' : '#74c69d');
-      if (u.kind === 'hero' && !u.down) { ctx.fillStyle = 'rgba(200,240,220,0.75)'; ctx.font = '11px "Songti SC",serif'; ctx.textAlign = 'center'; ctx.fillText('Qingyu', u.x, u.y - 46); }
+      if (!u.down && u.hp < u.maxHp) hpBar(u.x, u.y - 40, u.hp / u.maxHp, u.kind === 'spirit' ? '#9ef0c8' : u.kind === 'yin' ? '#a8dcff' : '#74c69d');
+      if (u.kind === 'hero' && !u.down) { ctx.fillStyle = 'rgba(200,240,220,0.75)'; ctx.font = '12px "EB Garamond",Georgia,serif'; ctx.textAlign = 'center'; ctx.fillText('Qingyu', u.x, u.y - 46); }
     } else {
       const T = ETYPES[u.type];
       if (T.totem) drawTotem(u, t);
@@ -2284,11 +2470,15 @@ function drawVillage(dt) {
       }
     }
   }
+  const night = 1 - daylight();
+  if (night > 0.01) { ctx.fillStyle = `rgba(10,16,34,${0.22 * night})`; ctx.fillRect(0, 0, W, H); }
+  drawNightGlows(t, night);
+  drawCasualties(t);
   drawProjs(); drawFx(t); drawBarrier(t); drawMist(t); drawParts(); drawGolden(t); drawFloaters();
   // raid HUD
   if (G.raid) {
     const left = G.raid.queue.length + enemies.filter(e => !e.dead).length;
-    ctx.textAlign = 'center'; ctx.font = '600 16px "Songti SC",serif'; ctx.fillStyle = '#ff9a80';
+    ctx.textAlign = 'center'; ctx.font = '16px Marcellus,Georgia,serif'; ctx.fillStyle = '#ff9a80';
     ctx.fillText(`Raid ${G.raid.r}: ${raidInfo(G.raid.r).en} · Foes remaining: ${left}`, W / 2, 24);
   }
   // targeting & hover hints
@@ -2298,7 +2488,7 @@ function drawVillage(dt) {
       ctx.strokeStyle = ready ? 'rgba(140,230,150,0.85)' : 'rgba(200,100,90,0.6)'; ctx.lineWidth = 1.5; ctx.setLineDash([5, 5]);
       ctx.beginPath(); ctx.ellipse(mouse.x, mouse.y, 80 * (1 + 0.2 * up('root')), 45 * (1 + 0.2 * up('root')), 0, 0, TAU); ctx.stroke(); ctx.setLineDash([]);
     } else if (onTree(mouse.x, mouse.y)) {
-      ctx.textAlign = 'center'; ctx.font = '13px "Songti SC",serif'; ctx.fillStyle = 'rgba(200,255,225,0.8)';
+      ctx.textAlign = 'center'; ctx.font = '14px "EB Garamond",Georgia,serif'; ctx.fillStyle = 'rgba(200,255,225,0.8)';
       ctx.fillText(`Click to gather ${G.auto.qiAll ? 'all ' : ''}Qi (${Math.floor(G.qi)}/${qiMax()})`, mouse.x, mouse.y - 18);
     }
   }
@@ -2310,6 +2500,7 @@ function render(dt) {
   ctx.save();
   if (G.shake > 0.2) ctx.translate(rand(-G.shake, G.shake), rand(-G.shake, G.shake));
   ctx.drawImage(bg, 0, 0, W, H);
+  if (G.mode === 'village') { const dl = daylight(); if (dl > 0.01) { ctx.globalAlpha = dl; ctx.drawImage(bgDay, 0, 0, W, H); ctx.globalAlpha = 1; } }
   if (G.mode === 'deduction' && G.ded) drawDeduction(); else drawVillage(dt);
   ctx.restore();
   if (G.flash > 0) { ctx.fillStyle = `rgba(255,245,215,${G.flash * 0.6})`; ctx.fillRect(0, 0, W, H); }
@@ -2374,8 +2565,14 @@ function buildUI() {
     S.appendChild(b);
   });
   $('legend').innerHTML = Object.values(CATS).map(c => `<span><i style="background:${c.col}"></i>${c.en}</span>`).join('');
+  const hudEls = { vit: '.chip.vit', faith: '.chip.fai', rice: '.chip.ric', pop: '.chip.pop', yin: '.chip.yin', day: '#vDay', speed: '#btnSpeed', qiall: '#btnQiAll', tree: '.meter:not(#mRaid)', raid: '#mRaid' };
+  for (const [id, sel] of Object.entries(hudEls)) {
+    const el = document.querySelector(sel); if (!el) continue;
+    el.removeAttribute('title');
+    el.addEventListener('mouseenter', () => showTip('hud:' + id, el)); el.addEventListener('mouseleave', hideTip);
+  }
 }
-let tipKey = null, tipBtn = null;
+let tipKey = null, tipBtn = null, tipCas = null;
 function actBlock(id) {
   if (G.mode !== 'village' || G.over) return 'Unavailable right now.';
   switch (id) {
@@ -2411,7 +2608,7 @@ function actTip(id) {
       'A tree cannot speak, but it can visit dreams. Choose Omen of War (reveal and prepare for the next raid), Locust Sword Dream (teach Qingyu a sword art) or Ancestral Solace (cure sickness, boost Faith).',
       'All dreams share a 30-second cooldown.'],
     deduce: ['Cultivation', '#ffd166', '25 Vitality',
-      'Send your consciousness into a 30-second trial realm. Steer your roots toward drifting orbs and dodge the red hazard zones. Survive to choose 1 of 3 insights: a new art, an art upgrade or a permanent blessing.',
+      'Send your consciousness into a 20-second trial realm. Steer your roots toward drifting orbs and dodge the red hazard zones. Survive to choose 1 of 3 insights: a new art, an art upgrade or a permanent blessing.',
       `Next realm: ${REALMS[G.dedRuns % REALMS.length].en} · Deductions completed: ${G.deductions}.`],
     miracle: ['Codex', '#b9c3bd', 'Free',
       "Open the Divine Arts codex: every art's description, type, level, cost and cooldown, with a Cast button for each.", ''],
@@ -2436,9 +2633,77 @@ function actTip(id) {
   const html = `<div class="t"><b>${a.en}</b><span class="cat">${T[0]}</span></div><div class="meta"><span>Cost: ${T[2]}</span></div><div>${T[3]}</div>${T[4] ? `<div class="note">${T[4]}</div>` : ''}${auto}<div class="note ${blk ? 'lock' : 'ok'}">${blk || 'Ready. Click to use.'}</div>`;
   return { html, col: T[1] };
 }
+function hudTip(id) {
+  const dl = daylight(), day = dl >= 0.5, L = DAY_LEN;
+  const toNext = day ? Math.max(0, 0.6 * L - G.dayT) : L - G.dayT;
+  const yinHp = Math.round(80 * (1 + 0.1 * G.rank)), yinDmg = Math.round(11 * (1 + 0.1 * G.rank) * (1 + 0.35 * (1 - dl)));
+  const pend = casualties.filter(c => c.state === 'injured').length, corpses = casualties.length - pend;
+  const raidEta = G.raid ? 0 : Math.ceil((100 - G.raidMeter) / (100 / raidTime()) + Math.max(0, G.mistPause));
+  const T = {
+    yin: ['Yin Soldiers', 'Ghost Army', '#a8dcff',
+      'Fallen clansmen whose bodies reach the Divine Tree before the corpse turns cold are bound into Ancestral Soul Tablets (10 Faith). They become a permanent spectral army.',
+      [`In every raid, up to ${YIN_CAP} rise from their tablets to fight beside your warriors. If defeated, they are only banished until the raid ends, never lost.`,
+       'They eat no Blood Rice, but they do not farm, hunt or have children.',
+       '☾ At night they deal +35% damage and regenerate HP, and the Soul Tablets resonate for +0.04 Faith/s per soldier.',
+       'Divine Leaf Armor doubles their defense.'],
+      `Army: ${G.yin} · each ${yinHp} HP, ${yinDmg} damage ${day ? '(daytime)' : '(night-empowered)'}`],
+    day: [day ? 'Daytime · Solar Essence' : 'Night · Lunar Essence', 'Day/Night Cycle', day ? '#ffd166' : '#a8dcff',
+      `Each day lasts ${L}s: about ${Math.round(0.6 * L)}s of sunlight and ${Math.round(0.4 * L)}s of moonlight, with a short dawn and dusk.`,
+      ['☀ Day: Blood Rice grows 30% faster, beast blood offerings +25%, ambient Qi regenerates 30% faster, and the tree draws +50% vitality.',
+       '☾ Night: Faith +40%, the Soul Tablets resonate (+Faith per Yin Soldier), and Yin Soldiers deal +35% damage and regenerate.',
+       `An Ancestral Festival is held every 7 days (next on day ${G.festivalDay}).`],
+      `${day ? 'Nightfall' : 'Dawn'} in ${Math.ceil(toNext)}s.`],
+    speed: [`Game Speed · ${G.auto.speed}×`, 'Time', '#74c69d',
+      'Toggles between normal and double speed. At 2×, the village, raids and every timer run twice as fast, including casualty countdowns, so keep an eye on your fallen.',
+      ['World Deduction always runs at 1× so it stays playable.'], 'Click to toggle.'],
+    vit: ['Vitality', 'Resource', '#7fe08f', 'Life energy from beast blood offered at the altar, and from Qi drawn in by clicking the tree.',
+      ["Sources: hunters' offerings and hunts (+25% by day), tree clicks, enemy blood in raids, trade, and the tree's own growth (+50% by day).",
+       `Spent on: tree growth, healing, World Deduction, Root Spikes, Infusion, and saving injured clansmen (${CAS_HEAL}).`], `Current: ${Math.floor(G.vit)}`],
+    faith: ['Incense Faith', 'Resource', '#ffd166', 'Prayers and incense from the Chen clan. They power miracles and barriers.',
+      ['Sources: devotees (+40% at night), festivals, victories, trade, and Soul Tablet resonance at night.',
+       `Spent on: most Divine Arts, Spirit Dreams, blessings, and binding souls (${CAS_BIND}).`], `Current: ${Math.floor(G.faith)}`],
+    rice: ['Blood Rice', 'Resource', '#e0607a', 'Grown on terraces fed by the Blood Spring. It feeds the clan and funds the village.',
+      ['Sources: farmer harvests (+30% growth by day), raid plunder, events.',
+       `Upkeep: ${(popTotal() * 0.04).toFixed(2)}/s for ${popTotal()} living clansmen. If it runs out, they collapse from hunger.`,
+       'Spent on: hunts, births, expansion, trade, recruiting.'], `Fields ${Math.floor(G.fieldGrowth * 100)}% grown`],
+    pop: ['Chen Clan', 'Population', '#cfd8e0', 'Living clansmen and housing capacity. Assign them in Clan Duties. A child is born every 18s while rice and housing allow.',
+      [`Idle ${G.idle} · Farmers ${G.roles.farmers} · Hunters ${G.roles.hunters} · Devotees ${G.roles.devotees} · Warriors ${G.roles.warriors}`,
+       'Yin Soldiers are counted separately and need no housing.'],
+      pend || corpses ? `Casualties waiting: ${pend} injured, ${corpses} awaiting binding.` : 'No casualties.'],
+    tree: [`The Locust Tree · ${STAGES[G.treeLvl].en}`, 'Your Body', '#74c69d',
+      'If the tree falls, the game is lost. Outside raids it heals slowly. Heal the Tree, Reversed Pill and Golden Body restore it.',
+      [`Stage ${G.treeLvl}/5 · Max HP ${treeMax()}`], `HP ${Math.ceil(G.treeHp)}/${treeMax()}`],
+    raid: ['Raid Danger', TIER_NAMES[tierOf(Math.min(G.raidCount + 1, FINAL_RAID))], '#e63946',
+      'Rival forces are gathering. When the meter reaches 100%, a raid begins, and each raid comes sooner than the last.',
+      ['One Leaf Obscuring Sight lowers and pauses the meter. Omen of War reveals the next raid and prepares the clan.'],
+      G.raid ? `Raid ${G.raid.r} in progress!` : `Next: raid ${G.raidCount + 1}, ${raidInfo(G.raidCount + 1).en}, in about ${raidEta}s.`],
+    qiall: ['Tree Click Mode', 'Option', '#74c69d', 'Chooses what a click on the tree gathers: one floating Qi orb, or every orb at once.',
+      [`Each orb gives ${1 + 0.5 * (G.treeLvl - 1)} Vitality. Qi regenerates over time, and faster by day.`],
+      `Currently: collect ${G.auto.qiAll ? 'ALL' : '1'} (${Math.floor(G.qi)}/${qiMax()} orbs). Click to toggle.`]
+  }[id];
+  if (!T) return null;
+  const [title, cat, col, desc, bullets, status] = T;
+  return { col, html: `<div class="t"><b>${title}</b><span class="cat">${cat}</span></div><div style="margin-top:4px">${desc}</div>${bullets.map(b => `<div class="note">${b}</div>`).join('')}<div class="note ok">${status}</div>` };
+}
+function casTip() {
+  const c = tipCas; if (!c || !casualties.includes(c)) return null;
+  const inj = c.state === 'injured', who = { farmers: 'Farmer', hunters: 'Hunter', devotees: 'Devotee', warriors: 'Warrior', idle: 'Clansman' }[c.role] || 'Clansman';
+  const can = inj ? G.vit >= CAS_HEAL : G.faith >= CAS_BIND;
+  const desc = inj ? `${c.cause.charAt(0).toUpperCase() + c.cause.slice(1)}. Rush them to the Divine Tree: click to heal for ${CAS_HEAL} Vitality, and they return to their duty.`
+    : `They have died. Click before the corpse turns cold to bind their soul into an Ancestral Soul Tablet for ${CAS_BIND} Faith. They will rise as a Yin Soldier in every raid.`;
+  const timer = inj ? `If not healed within ${Math.ceil(c.t)}s they die, but you can still bind the body.` : `In ${Math.ceil(c.t)}s the body turns cold and they are lost forever.`;
+  return { col: inj ? '#e63946' : '#a8dcff', html: `<div class="t"><b>${inj ? 'Injured' : 'Fallen'} ${who}</b><span class="cat">${inj ? 'Dying' : 'Corpse cooling'}</span></div><div style="margin-top:4px">${desc}</div><div class="note">${timer}</div><div class="note ${can ? 'ok' : 'lock'}">${can ? `Click to ${inj ? 'heal' : 'bind'}.` : `Needs ${inj ? CAS_HEAL + ' Vitality' : CAS_BIND + ' Faith'}.`}</div>` };
+}
+function casRect(c) {
+  const r = cvs.getBoundingClientRect(), x = r.left + c.x / W * r.width, y = r.top + (c.y - 36) / H * r.height;
+  return { left: x - 14, right: x + 14, top: y - 14, bottom: y + 14, width: 28, height: 28 };
+}
 function tipContent(key) {
   const [k, id] = key.split(':');
-  return k === 'sk' ? { html: tipHTML(id), col: catCol(id) } : actTip(id);
+  if (k === 'sk') return { html: tipHTML(id), col: catCol(id) };
+  if (k === 'hud') return hudTip(id);
+  if (k === 'cas') return casTip();
+  return actTip(id);
 }
 function tipHTML(id) {
   const a = ARTS[id], i = ART_ORDER.indexOf(id), lv = up(id), un = G.arts[id], cd = G.cds[id] || 0, blk = un ? artBlock(id) : null;
@@ -2454,13 +2719,14 @@ function tipHTML(id) {
 }
 function placeTip() {
   if (!tipBtn) return;
-  const t = $('tip'), r = tipBtn.getBoundingClientRect(), tw = t.offsetWidth, th = t.offsetHeight;
+  const t = $('tip'), r = typeof tipBtn === 'function' ? tipBtn() : tipBtn.getBoundingClientRect(), tw = t.offsetWidth, th = t.offsetHeight;
   const x = clamp(r.left + r.width / 2 - tw / 2, 8, window.innerWidth - tw - 8);
   let y = r.top - th - 8; if (y < 8) y = r.bottom + 8;
   t.style.left = x + 'px'; t.style.top = y + 'px';
 }
 function showTip(key, btn) {
-  tipKey = key; tipBtn = btn; const t = $('tip'), c = tipContent(key);
+  const c = tipContent(key); if (!c) return;
+  tipKey = key; tipBtn = btn; const t = $('tip');
   t.style.setProperty('--cat', c.col); t.dataset.h = c.html; t.innerHTML = c.html; placeTip(); t.classList.add('show');
 }
 function hideTip() { tipKey = null; tipBtn = null; $('tip').classList.remove('show'); }
@@ -2473,7 +2739,7 @@ function updateUI() {
   const rm = G.raid ? 100 : G.raidMeter; $('bRaid').style.width = rm + '%';
   setT('vRaid', G.raid ? `RAID ${G.raid.r}!` : G.mistPause > 0 ? `${Math.floor(rm)}% (veiled ${Math.ceil(G.mistPause)}s)` : `${Math.floor(rm)}% · raids repelled ${G.raidCount}/${FINAL_RAID}`);
   $('mRaid').classList.toggle('hot', !!G.raid || G.raidMeter >= 80);
-  setT('vDay', `Day ${G.day}`); setT('vTier', TIER_NAMES[tierOf(Math.min(G.raidCount + 1, FINAL_RAID))]);
+  setT('vDay', `Day ${G.day} · ${daylight() >= 0.5 ? '☀ Daytime' : '☾ Night'}`); setT('vYin', G.yin); setT('btnSpeed', `${G.auto.speed}×`); $('btnSpeed').classList.toggle('on', G.auto.speed > 1); setT('vTier', TIER_NAMES[tierOf(Math.min(G.raidCount + 1, FINAL_RAID))]);
   // actions
   const bc = blessCost(), ty = tradeYield();
   const info = {
@@ -2507,9 +2773,11 @@ function updateUI() {
     setT('sklv-' + id, up(id) ? '◆'.repeat(up(id)) : '');
     setT('skc-' + id, G.arts[id] ? costText(a.cost) : 'Sealed · Deduce');
   }
-  if (tipKey) { const c = tipContent(tipKey); if ($('tip').dataset.h !== c.html) { $('tip').dataset.h = c.html; $('tip').innerHTML = c.html; placeTip(); } }
+  if (tipKey) { const c = tipContent(tipKey); if (!c) hideTip(); else if ($('tip').dataset.h !== c.html) { $('tip').dataset.h = c.html; $('tip').innerHTML = c.html; placeTip(); } }
   // status chips
   const st = [];
+  const nc = casualties.length; if (nc) st.push(['bad', `${nc} casualt${nc > 1 ? 'ies' : 'y'}: click to save!`]);
+  st.push(daylight() >= 0.5 ? ['gold', '☀ Solar essence: rice, blood, growth up'] : ['good', '☾ Lunar essence: Faith, Yin Soldiers up']);
   if (G.plague > 0) st.push(['bad', `Plague ${Math.ceil(G.plague)}s`]);
   if (G.poison > 0) st.push(['bad', `Hunters poisoned ${Math.ceil(G.poison)}s`]);
   if (G.starveT > 0) st.push(['bad', 'Starving']);
@@ -2562,8 +2830,12 @@ function gameOver(reason) { if (G.over) return; G.over = true; Sfx.playFail(); S
 
 /* ================= INPUT ================= */
 function toLogical(e) { const r = cvs.getBoundingClientRect(); return { x: (e.clientX - r.left) / r.width * W, y: (e.clientY - r.top) / r.height * H }; }
-cvs.addEventListener('pointermove', e => { const p = toLogical(e); mouse.x = p.x; mouse.y = p.y; mouse.inside = true; if (G.ded) G.ded.mouseSteer = true; });
-cvs.addEventListener('pointerleave', () => { mouse.inside = false; });
+cvs.addEventListener('pointermove', e => { const p = toLogical(e); mouse.x = p.x; mouse.y = p.y; mouse.inside = true; if (G.ded) G.ded.mouseSteer = true; cvs.style.cursor = G.mode === 'village' && (casualtyAt(p.x, p.y) || onTree(p.x, p.y)) ? 'pointer' : 'default';
+  const ch = G.mode === 'village' && !modalOpen ? casualtyAt(p.x, p.y) : null;
+  if (ch) { if (tipKey !== 'cas' || tipCas !== ch) { tipCas = ch; showTip('cas', () => casRect(ch)); } }
+  else if (tipKey === 'cas') hideTip();
+});
+cvs.addEventListener('pointerleave', () => { mouse.inside = false; if (tipKey === 'cas') hideTip(); });
 cvs.addEventListener('contextmenu', e => { e.preventDefault(); if (G) G.targeting = null; });
 cvs.addEventListener('pointerdown', e => {
   Sfx.init(); if (e.button === 2) return;
@@ -2577,6 +2849,7 @@ cvs.addEventListener('pointerdown', e => {
     return;
   }
   if (G.userPause) return;
+  const cas = casualtyAt(p.x, p.y); if (cas) { tendCasualty(cas); return; }
   if (G.targeting === 'root') { if (performArt('root', p.x, p.y)) G.targeting = null; else toast(artBlock('root') || ''); return; }
   if (onTree(p.x, p.y)) { gatherQi(p.x, p.y); return; }
   if (G.raid && p.y > 540) { const b = artBlock('root'); if (!b) performArt('root', p.x, p.y); else toast(b); }
@@ -2606,6 +2879,7 @@ document.addEventListener('click', e => {
   const pk = t.closest && t.closest('[data-pick]'); if (pk) { applyChoice(+pk.dataset.pick); return; }
   const dr = t.closest && t.closest('[data-dream]'); if (dr) { sendDream(dr.dataset.dream); return; }
   if (t.id === 'btnPickClose') { closeModal(); return; }
+  if (t.id === 'btnSpeed') { G.auto.speed = G.auto.speed > 1 ? 1 : 2; toast(`Game speed ${G.auto.speed}×`); updateUI(); return; }
   if (t.id === 'btnQiAll') { G.auto.qiAll = !G.auto.qiAll; toast(G.auto.qiAll ? 'Clicking the tree now collects all floating Qi at once.' : 'Clicking the tree now collects one Qi orb.'); updateUI(); return; }
   if (t.id === 'btnStart') { Sfx.init(); closeModal(); Sfx.playChime(); }
   else if (t.id === 'btnCodexClose') closeModal();
@@ -2624,7 +2898,7 @@ function resize() {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   const w = Math.max(320, Math.round(r.width * dpr)), h = Math.max(180, Math.round(r.height * dpr));
   if (cvs.width === w && cvs.height === h) return;
-  cvs.width = w; cvs.height = h; bg.width = w; bg.height = h;
+  cvs.width = w; cvs.height = h; bg.width = w; bg.height = h; bgDay.width = w; bgDay.height = h;
   renderBackground();
 }
 let last = performance.now(), uiT = 0;
@@ -2633,7 +2907,10 @@ function frame(now) {
   const paused = G.userPause || modalOpen !== null || G.over;
   G.anim += dt;
   if (G.mode === 'village') updateSmoke(dt);
-  if (!paused) { if (G.mode === 'village') updateVillage(dt); else if (G.mode === 'deduction') updateDeduction(dt); }
+  if (!paused) {
+    if (G.mode === 'village') { for (let s = 0; s < (G.auto.speed || 1); s++) if (G.mode === 'village' && !G.over) updateVillage(dt); }
+    else if (G.mode === 'deduction') updateDeduction(dt);
+  }
   else if (G.over) updateParts(dt);
   G.shake = Math.max(0, G.shake - dt * 30); G.flash = Math.max(0, G.flash - dt * 1.5);
   render(paused && G.mode === 'village' && !G.over ? 0 : dt);
