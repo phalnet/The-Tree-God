@@ -2565,8 +2565,14 @@ function buildUI() {
     S.appendChild(b);
   });
   $('legend').innerHTML = Object.values(CATS).map(c => `<span><i style="background:${c.col}"></i>${c.en}</span>`).join('');
+  const hudEls = { vit: '.chip.vit', faith: '.chip.fai', rice: '.chip.ric', pop: '.chip.pop', yin: '.chip.yin', day: '#vDay', speed: '#btnSpeed', qiall: '#btnQiAll', tree: '.meter:not(#mRaid)', raid: '#mRaid' };
+  for (const [id, sel] of Object.entries(hudEls)) {
+    const el = document.querySelector(sel); if (!el) continue;
+    el.removeAttribute('title');
+    el.addEventListener('mouseenter', () => showTip('hud:' + id, el)); el.addEventListener('mouseleave', hideTip);
+  }
 }
-let tipKey = null, tipBtn = null;
+let tipKey = null, tipBtn = null, tipCas = null;
 function actBlock(id) {
   if (G.mode !== 'village' || G.over) return 'Unavailable right now.';
   switch (id) {
@@ -2627,9 +2633,77 @@ function actTip(id) {
   const html = `<div class="t"><b>${a.en}</b><span class="cat">${T[0]}</span></div><div class="meta"><span>Cost: ${T[2]}</span></div><div>${T[3]}</div>${T[4] ? `<div class="note">${T[4]}</div>` : ''}${auto}<div class="note ${blk ? 'lock' : 'ok'}">${blk || 'Ready. Click to use.'}</div>`;
   return { html, col: T[1] };
 }
+function hudTip(id) {
+  const dl = daylight(), day = dl >= 0.5, L = DAY_LEN;
+  const toNext = day ? Math.max(0, 0.6 * L - G.dayT) : L - G.dayT;
+  const yinHp = Math.round(80 * (1 + 0.1 * G.rank)), yinDmg = Math.round(11 * (1 + 0.1 * G.rank) * (1 + 0.35 * (1 - dl)));
+  const pend = casualties.filter(c => c.state === 'injured').length, corpses = casualties.length - pend;
+  const raidEta = G.raid ? 0 : Math.ceil((100 - G.raidMeter) / (100 / raidTime()) + Math.max(0, G.mistPause));
+  const T = {
+    yin: ['Yin Soldiers', 'Ghost Army', '#a8dcff',
+      'Fallen clansmen whose bodies reach the Divine Tree before the corpse turns cold are bound into Ancestral Soul Tablets (10 Faith). They become a permanent spectral army.',
+      [`In every raid, up to ${YIN_CAP} rise from their tablets to fight beside your warriors. If defeated, they are only banished until the raid ends, never lost.`,
+       'They eat no Blood Rice, but they do not farm, hunt or have children.',
+       '☾ At night they deal +35% damage and regenerate HP, and the Soul Tablets resonate for +0.04 Faith/s per soldier.',
+       'Divine Leaf Armor doubles their defense.'],
+      `Army: ${G.yin} · each ${yinHp} HP, ${yinDmg} damage ${day ? '(daytime)' : '(night-empowered)'}`],
+    day: [day ? 'Daytime · Solar Essence' : 'Night · Lunar Essence', 'Day/Night Cycle', day ? '#ffd166' : '#a8dcff',
+      `Each day lasts ${L}s: about ${Math.round(0.6 * L)}s of sunlight and ${Math.round(0.4 * L)}s of moonlight, with a short dawn and dusk.`,
+      ['☀ Day: Blood Rice grows 30% faster, beast blood offerings +25%, ambient Qi regenerates 30% faster, and the tree draws +50% vitality.',
+       '☾ Night: Faith +40%, the Soul Tablets resonate (+Faith per Yin Soldier), and Yin Soldiers deal +35% damage and regenerate.',
+       `An Ancestral Festival is held every 7 days (next on day ${G.festivalDay}).`],
+      `${day ? 'Nightfall' : 'Dawn'} in ${Math.ceil(toNext)}s.`],
+    speed: [`Game Speed · ${G.auto.speed}×`, 'Time', '#74c69d',
+      'Toggles between normal and double speed. At 2×, the village, raids and every timer run twice as fast, including casualty countdowns, so keep an eye on your fallen.',
+      ['World Deduction always runs at 1× so it stays playable.'], 'Click to toggle.'],
+    vit: ['Vitality', 'Resource', '#7fe08f', 'Life energy from beast blood offered at the altar, and from Qi drawn in by clicking the tree.',
+      ["Sources: hunters' offerings and hunts (+25% by day), tree clicks, enemy blood in raids, trade, and the tree's own growth (+50% by day).",
+       `Spent on: tree growth, healing, World Deduction, Root Spikes, Infusion, and saving injured clansmen (${CAS_HEAL}).`], `Current: ${Math.floor(G.vit)}`],
+    faith: ['Incense Faith', 'Resource', '#ffd166', 'Prayers and incense from the Chen clan. They power miracles and barriers.',
+      ['Sources: devotees (+40% at night), festivals, victories, trade, and Soul Tablet resonance at night.',
+       `Spent on: most Divine Arts, Spirit Dreams, blessings, and binding souls (${CAS_BIND}).`], `Current: ${Math.floor(G.faith)}`],
+    rice: ['Blood Rice', 'Resource', '#e0607a', 'Grown on terraces fed by the Blood Spring. It feeds the clan and funds the village.',
+      ['Sources: farmer harvests (+30% growth by day), raid plunder, events.',
+       `Upkeep: ${(popTotal() * 0.04).toFixed(2)}/s for ${popTotal()} living clansmen. If it runs out, they collapse from hunger.`,
+       'Spent on: hunts, births, expansion, trade, recruiting.'], `Fields ${Math.floor(G.fieldGrowth * 100)}% grown`],
+    pop: ['Chen Clan', 'Population', '#cfd8e0', 'Living clansmen and housing capacity. Assign them in Clan Duties. A child is born every 18s while rice and housing allow.',
+      [`Idle ${G.idle} · Farmers ${G.roles.farmers} · Hunters ${G.roles.hunters} · Devotees ${G.roles.devotees} · Warriors ${G.roles.warriors}`,
+       'Yin Soldiers are counted separately and need no housing.'],
+      pend || corpses ? `Casualties waiting: ${pend} injured, ${corpses} awaiting binding.` : 'No casualties.'],
+    tree: [`The Locust Tree · ${STAGES[G.treeLvl].en}`, 'Your Body', '#74c69d',
+      'If the tree falls, the game is lost. Outside raids it heals slowly. Heal the Tree, Reversed Pill and Golden Body restore it.',
+      [`Stage ${G.treeLvl}/5 · Max HP ${treeMax()}`], `HP ${Math.ceil(G.treeHp)}/${treeMax()}`],
+    raid: ['Raid Danger', TIER_NAMES[tierOf(Math.min(G.raidCount + 1, FINAL_RAID))], '#e63946',
+      'Rival forces are gathering. When the meter reaches 100%, a raid begins, and each raid comes sooner than the last.',
+      ['One Leaf Obscuring Sight lowers and pauses the meter. Omen of War reveals the next raid and prepares the clan.'],
+      G.raid ? `Raid ${G.raid.r} in progress!` : `Next: raid ${G.raidCount + 1}, ${raidInfo(G.raidCount + 1).en}, in about ${raidEta}s.`],
+    qiall: ['Tree Click Mode', 'Option', '#74c69d', 'Chooses what a click on the tree gathers: one floating Qi orb, or every orb at once.',
+      [`Each orb gives ${1 + 0.5 * (G.treeLvl - 1)} Vitality. Qi regenerates over time, and faster by day.`],
+      `Currently: collect ${G.auto.qiAll ? 'ALL' : '1'} (${Math.floor(G.qi)}/${qiMax()} orbs). Click to toggle.`]
+  }[id];
+  if (!T) return null;
+  const [title, cat, col, desc, bullets, status] = T;
+  return { col, html: `<div class="t"><b>${title}</b><span class="cat">${cat}</span></div><div style="margin-top:4px">${desc}</div>${bullets.map(b => `<div class="note">${b}</div>`).join('')}<div class="note ok">${status}</div>` };
+}
+function casTip() {
+  const c = tipCas; if (!c || !casualties.includes(c)) return null;
+  const inj = c.state === 'injured', who = { farmers: 'Farmer', hunters: 'Hunter', devotees: 'Devotee', warriors: 'Warrior', idle: 'Clansman' }[c.role] || 'Clansman';
+  const can = inj ? G.vit >= CAS_HEAL : G.faith >= CAS_BIND;
+  const desc = inj ? `${c.cause.charAt(0).toUpperCase() + c.cause.slice(1)}. Rush them to the Divine Tree: click to heal for ${CAS_HEAL} Vitality, and they return to their duty.`
+    : `They have died. Click before the corpse turns cold to bind their soul into an Ancestral Soul Tablet for ${CAS_BIND} Faith. They will rise as a Yin Soldier in every raid.`;
+  const timer = inj ? `If not healed within ${Math.ceil(c.t)}s they die, but you can still bind the body.` : `In ${Math.ceil(c.t)}s the body turns cold and they are lost forever.`;
+  return { col: inj ? '#e63946' : '#a8dcff', html: `<div class="t"><b>${inj ? 'Injured' : 'Fallen'} ${who}</b><span class="cat">${inj ? 'Dying' : 'Corpse cooling'}</span></div><div style="margin-top:4px">${desc}</div><div class="note">${timer}</div><div class="note ${can ? 'ok' : 'lock'}">${can ? `Click to ${inj ? 'heal' : 'bind'}.` : `Needs ${inj ? CAS_HEAL + ' Vitality' : CAS_BIND + ' Faith'}.`}</div>` };
+}
+function casRect(c) {
+  const r = cvs.getBoundingClientRect(), x = r.left + c.x / W * r.width, y = r.top + (c.y - 36) / H * r.height;
+  return { left: x - 14, right: x + 14, top: y - 14, bottom: y + 14, width: 28, height: 28 };
+}
 function tipContent(key) {
   const [k, id] = key.split(':');
-  return k === 'sk' ? { html: tipHTML(id), col: catCol(id) } : actTip(id);
+  if (k === 'sk') return { html: tipHTML(id), col: catCol(id) };
+  if (k === 'hud') return hudTip(id);
+  if (k === 'cas') return casTip();
+  return actTip(id);
 }
 function tipHTML(id) {
   const a = ARTS[id], i = ART_ORDER.indexOf(id), lv = up(id), un = G.arts[id], cd = G.cds[id] || 0, blk = un ? artBlock(id) : null;
@@ -2645,13 +2719,14 @@ function tipHTML(id) {
 }
 function placeTip() {
   if (!tipBtn) return;
-  const t = $('tip'), r = tipBtn.getBoundingClientRect(), tw = t.offsetWidth, th = t.offsetHeight;
+  const t = $('tip'), r = typeof tipBtn === 'function' ? tipBtn() : tipBtn.getBoundingClientRect(), tw = t.offsetWidth, th = t.offsetHeight;
   const x = clamp(r.left + r.width / 2 - tw / 2, 8, window.innerWidth - tw - 8);
   let y = r.top - th - 8; if (y < 8) y = r.bottom + 8;
   t.style.left = x + 'px'; t.style.top = y + 'px';
 }
 function showTip(key, btn) {
-  tipKey = key; tipBtn = btn; const t = $('tip'), c = tipContent(key);
+  const c = tipContent(key); if (!c) return;
+  tipKey = key; tipBtn = btn; const t = $('tip');
   t.style.setProperty('--cat', c.col); t.dataset.h = c.html; t.innerHTML = c.html; placeTip(); t.classList.add('show');
 }
 function hideTip() { tipKey = null; tipBtn = null; $('tip').classList.remove('show'); }
@@ -2698,7 +2773,7 @@ function updateUI() {
     setT('sklv-' + id, up(id) ? '◆'.repeat(up(id)) : '');
     setT('skc-' + id, G.arts[id] ? costText(a.cost) : 'Sealed · Deduce');
   }
-  if (tipKey) { const c = tipContent(tipKey); if ($('tip').dataset.h !== c.html) { $('tip').dataset.h = c.html; $('tip').innerHTML = c.html; placeTip(); } }
+  if (tipKey) { const c = tipContent(tipKey); if (!c) hideTip(); else if ($('tip').dataset.h !== c.html) { $('tip').dataset.h = c.html; $('tip').innerHTML = c.html; placeTip(); } }
   // status chips
   const st = [];
   const nc = casualties.length; if (nc) st.push(['bad', `${nc} casualt${nc > 1 ? 'ies' : 'y'}: click to save!`]);
@@ -2755,8 +2830,12 @@ function gameOver(reason) { if (G.over) return; G.over = true; Sfx.playFail(); S
 
 /* ================= INPUT ================= */
 function toLogical(e) { const r = cvs.getBoundingClientRect(); return { x: (e.clientX - r.left) / r.width * W, y: (e.clientY - r.top) / r.height * H }; }
-cvs.addEventListener('pointermove', e => { const p = toLogical(e); mouse.x = p.x; mouse.y = p.y; mouse.inside = true; if (G.ded) G.ded.mouseSteer = true; cvs.style.cursor = G.mode === 'village' && (casualtyAt(p.x, p.y) || onTree(p.x, p.y)) ? 'pointer' : 'default'; });
-cvs.addEventListener('pointerleave', () => { mouse.inside = false; });
+cvs.addEventListener('pointermove', e => { const p = toLogical(e); mouse.x = p.x; mouse.y = p.y; mouse.inside = true; if (G.ded) G.ded.mouseSteer = true; cvs.style.cursor = G.mode === 'village' && (casualtyAt(p.x, p.y) || onTree(p.x, p.y)) ? 'pointer' : 'default';
+  const ch = G.mode === 'village' && !modalOpen ? casualtyAt(p.x, p.y) : null;
+  if (ch) { if (tipKey !== 'cas' || tipCas !== ch) { tipCas = ch; showTip('cas', () => casRect(ch)); } }
+  else if (tipKey === 'cas') hideTip();
+});
+cvs.addEventListener('pointerleave', () => { mouse.inside = false; if (tipKey === 'cas') hideTip(); });
 cvs.addEventListener('contextmenu', e => { e.preventDefault(); if (G) G.targeting = null; });
 cvs.addEventListener('pointerdown', e => {
   Sfx.init(); if (e.button === 2) return;
